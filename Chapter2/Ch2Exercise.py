@@ -72,4 +72,75 @@ fig, axs = subplots(4, 4, figsize = (16,16))
 for row in range(0,4):
   for column in range(0,4):
     College.hist(numeric_columns[row * 4 + column], ax = axs[row,column]);
+# %% [markdown]
+# ### Count of private and public colleges
+
+# %%
+College["Private"].value_counts()
+
+# %%
+College["AcceptanceRate"] = round(College["Accept"]/College["Apps"],2)
+College["AcceptanceRate"]
+
+# %%
+### Plot boxplot for acceptance rate by College Type : Elite or not
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("AcceptanceRate", by = "Elite", ax = ax);
+
+# %%
+### Plot boxplot for acceptance rate for Private colleges or not
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("AcceptanceRate", by = "Private", ax = ax);
+
+# %%
+College["EnrollmentRate"] = round(College["Enroll"]/College["Accept"], 2)
+College["EnrollmentRate"]
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("EnrollmentRate", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("EnrollmentRate", by = "Private", ax = ax);
+
+# %%
+College["StudentCosts"] = College["Outstate"] + College["Room.Board"] + College["Books"] + College["Personal"]
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("StudentCosts", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("StudentCosts", by = "Private", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("PhD", by = "Private", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("PhD", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("Terminal", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("Terminal", by = "Private", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("S.F.Ratio", by = "Private", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("S.F.Ratio", by = "Elite", ax = ax);
+
 # %%
