@@ -64,3 +64,12 @@ fig , ax = subplots(figsize=(8,8))
 College.hist("Apps", ax = ax);
 
 # %%
+numeric_columns = College.select_dtypes(include="number").columns.tolist()
+numeric_columns
+
+# %%
+fig, axs = subplots(4, 4, figsize = (16,16))
+for row in range(0,4):
+  for column in range(0,4):
+    College.hist(numeric_columns[row * 4 + column], ax = axs[row,column]);
+# %%
