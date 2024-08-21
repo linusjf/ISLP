@@ -166,3 +166,6 @@ cython_debug/
 *.jpg
 *.png
 *.pdf
+
+# ignore ipynb files
+*.ipynb
