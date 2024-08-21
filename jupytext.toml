@@ -1,3 +1,2 @@
 # Pair ipynb notebooks to py:percent text notebooks
 formats = "ipynb,py:percent"
-outdated_text_notebook_margin = 5
