@@ -175,3 +175,39 @@ mean_grad_rate
 mean_grad_rate.plot(y = ["AcceptanceRate","EnrollmentRate","Grad.Rate"],kind="bar", rot=0);
 
 # %%
+Auto = pd.read_csv("Auto.csv")
+Auto
+
+# %%
+### Which predictors are quantitative and which are qualitative?
+
+# %%
+Auto = Auto.dropna()
+Auto
+
+# %%
+Auto.describe()
+
+# %%
+Auto["cylinders"] = Auto.cylinders.astype("category")
+Auto["year"] = Auto.year.astype("category")
+Auto["origin"] = Auto.origin.astype("category")
+Auto.describe()
+
+# %%
+Auto.head()
+
+# %%
+Auto = Auto.set_index("name")
+
+# %%
+Auto
+
+# %%
+Auto_new = Auto.drop(Auto.index[10:86])
+Auto_new.describe()
+
+# %%
+Auto_new
+
+# %%
