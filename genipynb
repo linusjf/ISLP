@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+find . -maxdepth 2 -type d -name "*.py" -exec jupytext --to 'ipynb' --update "{}" \;
