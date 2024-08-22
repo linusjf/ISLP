@@ -79,7 +79,7 @@ for row in range(0,4):
 College["Private"].value_counts()
 
 # %%
-College["AcceptanceRate"] = round(College["Accept"]/College["Apps"],2)
+College["AcceptanceRate"] = round(College["Accept"]/College["Apps"] * 100,2)
 College["AcceptanceRate"]
 
 # %%
@@ -97,7 +97,7 @@ fig, ax = subplots(figsize=(8,8))
 College.boxplot("AcceptanceRate", by = "Private", ax = ax);
 
 # %%
-College["EnrollmentRate"] = round(College["Enroll"]/College["Accept"], 2)
+College["EnrollmentRate"] = round(College["Enroll"]/College["Accept"] * 100, 2)
 College["EnrollmentRate"]
 
 # %%
@@ -142,5 +142,36 @@ College.boxplot("S.F.Ratio", by = "Private", ax = ax);
 # %%
 fig, ax = subplots(figsize=(8,8))
 College.boxplot("S.F.Ratio", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("perc.alumni", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("perc.alumni", by = "Private", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("Expend", by = "Private", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("Expend", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("Grad.Rate", by = "Elite", ax = ax);
+
+# %%
+fig, ax = subplots(figsize=(8,8))
+College.boxplot("Grad.Rate", by = "Private", ax = ax);
+
+# %%
+mean_grad_rate = College.groupby("Elite", observed=True)[["AcceptanceRate","EnrollmentRate","Grad.Rate"]].mean()
+mean_grad_rate
+
+# %%
+mean_grad_rate.plot(y = ["AcceptanceRate","EnrollmentRate","Grad.Rate"],kind="bar", rot=0);
 
 # %%
