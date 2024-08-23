@@ -175,24 +175,37 @@ mean_grad_rate
 mean_grad_rate.plot(y = ["AcceptanceRate","EnrollmentRate","Grad.Rate"],kind="bar", rot=0);
 
 # %%
-Auto = pd.read_csv("Auto.csv")
-Auto
+Auto = pd.read_csv("Auto.csv", na_values={"?"})
+print(Auto.shape)
+np.unique(Auto["horsepower"])
 
 # %%
 ### Which predictors are quantitative and which are qualitative?
 
+# %% [markdown]
+# Rename the misleading column name acceleration to timetoacceleration since it's a tad misleading.
+
+# %%
+Auto["timetoacceleration"] = Auto["acceleration"]
+Auto = Auto.drop("acceleration", axis = 1)
+
 # %%
 Auto = Auto.dropna()
-Auto
+Auto.shape
 
 # %%
 Auto.describe()
 
 # %%
-Auto["cylinders"] = Auto.cylinders.astype("category")
-Auto["year"] = Auto.year.astype("category")
 Auto["origin"] = Auto.origin.astype("category")
-Auto.describe()
+Auto["year"] = Auto.year.astype("category")
+Auto["cylinders"] = Auto.cylinders.astype("category")
+print(np.unique(Auto["year"]))
+print(np.unique(Auto["cylinders"]))
+
+# %%
+Auto["origin"] = Auto["origin"].cat.rename_categories({1: "American",2: "European",3:"Japanese"})
+np.unique(Auto["origin"])
 
 # %%
 Auto.head()
@@ -210,4 +223,33 @@ Auto_new.describe()
 # %%
 Auto_new
 
+# %% [markdown]
+# Using the full data set, investigate the predictors graphically, using scatter plots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings.
+
 # %%
+pd.plotting.scatter_matrix(Auto, figsize=(14,14));
+
+# %% [markdown]
+# ### Findings:
+# 1. Weight and displacement seem to be negatively correlated with MPG.
+# 2. timetoacceleration (0–60 mph in seconds) seems to be positively correlated with MPG. As time to acceleration increases, MPG also increases. The longer the time to acceleration, the better the fuel efficiency.
+# 3. weight is also positively correlated with displacement. As weight increases, so does displacement, i.e., as the body weight increases, so does displacement need to increase.
+# 4. Displacement is seen to increase as the number of cylinders increase. This is expected since displacement is a function of the number of cylinders, amongst other components.
+#
+# We can conclude that MPG can be predicted using the variables weight, displacement and timetoacceleration.
+
+# %%
+mean_mpg_origin = Auto.groupby(["origin"], observed=True)[["mpg"]].mean()
+mean_mpg_origin
+
+# %%
+mean_mpg_year = Auto.groupby(["year"], observed=True)[["mpg"]].mean()
+mean_mpg_year
+
+# %%
+mean_mpg_cylinders = Auto.groupby(["cylinders"], observed=True)[["mpg"]].mean()
+mean_mpg_cylinders
+
+# %% [markdown]
+# We can also observe that fuel efficiency is affected by the make of the car. Japanese > European > American
+# The year also plays a significant role. Later model cars are more fuel efficient than the earlier models. Cars are also more fuel efficient with lesser number of cylinders. These can also be used as predictors to deduce the MPG. 
