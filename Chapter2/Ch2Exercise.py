@@ -253,3 +253,22 @@ mean_mpg_cylinders
 # %% [markdown]
 # We can also observe that fuel efficiency is affected by the make of the car. Japanese > European > American
 # The year also plays a significant role. Later model cars are more fuel efficient than the earlier models. Cars are also more fuel efficient with lesser number of cylinders. These can also be used as predictors to deduce the MPG. 
+
+# %%
+from ISLP import load_data
+Boston = load_data('Boston')
+Boston.columns
+
+# %%
+Boston.shape
+
+# %% [markdown]
+# The rows represent data for 506 suburbs in Boston. The columns represent housing values and variables of interest that may predict housing values in each suburb.
+
+# %%
+Boston.describe()
+
+# %%
+pd.plotting.scatter_matrix(Boston.drop("chas", axis = 1), figsize=(20,25));
+
+# %%
