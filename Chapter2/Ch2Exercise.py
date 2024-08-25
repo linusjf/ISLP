@@ -269,6 +269,30 @@ Boston.shape
 Boston.describe()
 
 # %%
-pd.plotting.scatter_matrix(Boston.drop("chas", axis = 1), figsize=(20,25));
+Boston_quant = Boston.drop("chas", axis = 1)
+
+# %%
+print(np.unique(Boston_quant["zn"]))
+median_medv = Boston_quant.groupby(["zn"], observed=True)[["medv"]].median()
+median_medv
+
+# %%
+print(np.unique(Boston_quant["rad"]))
+mean_rad = Boston_quant.groupby(["rad"], observed=True)[["medv"]].mean()
+mean_rad
+
+# %%
+import seaborn as sns
+sns.set_theme(style="ticks")
+g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["medv"]);
+
+# %% [markdown]
+# Plotting the other quantitative columns against medv (Median value of owner-occupied homes), we can see that:
+# 1. crim is negatively correlated with medv. i.e., as crime rate increases, median value of homes decrease.
+# 2. indus is negatively correlated with medv which is expected as industrialisation of a town increases, the house prices decrease.
+# 3. nox is negatively correlated with medv which is also expected.
+# 4. as the number of rooms (rm) increase, so does the value of the home.
+# 5. as the proportion of homes built prior to 1940 increase, the value of homes in that area decrease. There are some notable outliers, but that appears to be the general trend.
+# 6. There is a clear relationship in the lsat (lower status of population percent) versus medv where medv decreases with the increase in lstat on the x-axis.
 
 # %%
