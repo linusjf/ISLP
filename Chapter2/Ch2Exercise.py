@@ -296,3 +296,21 @@ g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars
 # 6. There is a clear relationship in the lsat (lower status of population percent) versus medv where medv decreases with the increase in lstat on the x-axis.
 
 # %%
+Boston_quant["zn"].value_counts()
+
+# %%
+import seaborn as sns
+sns.set_theme(style="ticks")
+g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["crim"]);
+
+# %% [markdown]
+# We've already seen that there appears to be a relationship b/w crime rate and medv where a higher crime rate is associated with lower property prices.
+# Additionally, plotting the other quantitative variables against crime rate (crim), we can perceive the following:
+# 1. No-zoned areas or towns are associated with higher crime rate compared to all other zoning percentages.
+# 2. For some reason, industrialization of around 18% displays a spike in the crime rate compared to the other suburbs. This might be worth investigating further.
+# 3. Suburbs with nox > 0.55 or so have an elevated crime rate. That could be because lower strata income people live in those areas, and they are more inclined to criminal activities.
+# 4. There also seems to be an increasing relationship b/w crime rate and percentage  of homes built prior to 1940. Once that percentage crosses 40%, there is an increasing number of suburbs that exhibit elevated crime rates.
+# 5. Suburbs within a distance to Boston employment centres that range from 1 to 4.5 show an elevated crime rate. This needs to be investigated further. Where are these employment centres located?
+# 6. There seems to be a higher incidence of crimes for areas with tax rate around 670. Why? 
+# 7. The crime rate does not seem to have a strong relationship with ptratio, but for around point 20.1 where the crime rate spikes compared to the other areas. 
+# 8. Crime rate decreases as the median value of properties rise across suburbs as a whole.
