@@ -277,6 +277,7 @@ median_medv = Boston_quant.groupby(["zn"], observed=True)[["medv"]].median()
 median_medv
 
 # %%
+import seaborn as sns
 from numpy import median
 sns.catplot(data=Boston_quant, x="zn", y="medv", kind="bar", height = 10, aspect = 2, estimator = median);
 
@@ -289,7 +290,6 @@ mean_rad
 sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height = 10, aspect = 2);
 
 # %%
-import seaborn as sns
 sns.set_theme(style="ticks")
 g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["medv"]);
 
@@ -346,11 +346,27 @@ sns.displot(data=Boston_quant, x="ptratio", y="crim",height = 4, aspect = 3);
 # %% [markdown]
 #  *Do any of the suburbs of Boston appear to have particularly high crime rates? Tax rates? Pupil-teacher ratios? Comment on the range of each predictor.*
 
+# %%
+Boston_crim = Boston_quant.sort_values(by="crim", axis = 0, ascending = False, inplace=False)
+top_crim = Boston_crim.head()
+print(top_crim)
+df = pd.DataFrame((Boston_quant.min(), Boston_quant.max()), index=["Min","Max"])
+df
+
+# %% [markdown]
+# As we can see from the dataset above, the top five crime rate suburbs are unzoned, have an industrialization rate of 18.1%, nox of 0.671, rooms ranging from 4.5 to 7, percentage of houses built prior to 1940 ranging from 92 to 100%, high tax rate of $666 per 10,000$ property tax , ptratio of 20.2. The lstat varies from 10.11 rto 36.98 and the median house values from 5.0 to 15.0 which are among the lowest. The index of accessibility to radial highways is 24 which is the best rank amongst all the suburbs.
+
 # %% [markdown]
 # *How many of the suburbs in this data set bound the Charles River?*
 
 # %%
+len(Boston.query("chas == 1"))
+
+# %%
 *What is the median pupil-teacher ratio among the towns in this data set?*
+
+# %%
+median(Boston_quant["ptratio"])
 
 # %%
 *Which suburb of Boston has lowest median value of owner-occupied homes? What are the values of the other predictors for that suburb, and how do those values compare to the overall ranges for those predictors? Comment on your findings.*
