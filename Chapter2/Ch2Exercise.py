@@ -17,6 +17,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
 import pandas as pd
+from ISLP import load_data
+import seaborn as sns
+from numpy import median
 
 # %%
 College = pd.read_csv("College.csv")
@@ -255,7 +258,6 @@ mean_mpg_cylinders
 # The year also plays a significant role. Later model cars are more fuel efficient than the earlier models. Cars are also more fuel efficient with lesser number of cylinders. These can also be used as predictors to deduce the MPG. 
 
 # %%
-from ISLP import load_data
 Boston = load_data('Boston')
 Boston.columns
 
@@ -277,8 +279,6 @@ median_medv = Boston_quant.groupby(["zn"], observed=True)[["medv"]].median()
 median_medv
 
 # %%
-import seaborn as sns
-from numpy import median
 sns.catplot(data=Boston_quant, x="zn", y="medv", kind="bar", height = 10, aspect = 2, estimator = median);
 
 # %%
@@ -306,8 +306,6 @@ g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars
 Boston_quant["zn"].value_counts()
 
 # %%
-import seaborn as sns
-sns.set_theme(style="ticks")
 g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["crim"]);
 
 # %%
@@ -362,14 +360,42 @@ df
 # %%
 len(Boston.query("chas == 1"))
 
-# %%
-*What is the median pupil-teacher ratio among the towns in this data set?*
+# %% [markdown]
+# *What is the median pupil-teacher ratio among the towns in this data set?*
 
 # %%
 median(Boston_quant["ptratio"])
 
-# %%
-*Which suburb of Boston has lowest median value of owner-occupied homes? What are the values of the other predictors for that suburb, and how do those values compare to the overall ranges for those predictors? Comment on your findings.*
+# %% [markdown]
+# *Which suburb of Boston has lowest median value of owner-occupied homes? What are the values of the other predictors for that suburb, and how do those values compare to the overall ranges for those predictors? Comment on your findings.*
 
 # %%
-*In this data set, how many of the suburbs average more than seven rooms per dwelling? More than eight rooms per dwelling? Comment on the suburbs that average more than eight rooms per dwelling.*
+lowest_medv = Boston_quant[Boston_quant["medv"] == Boston_quant["medv"].min()]
+lowest_medv
+
+# %% [markdown]
+# From the above two data points with the lowest median value for owner-occupied homes, it's evident that crime rate by itself does not determine the median value of homes for those regions. Except for lstat and crim, the other predictors match exactly the two data points. lstat for these two data points are high at 22.98 and 30.59 respectively. In these two cases, the other predictors do a better job of explaining the median value for the homes in these suburbs or these suburbs are neighbouring each other.
+
+# %% [markdown]
+# *In this data set, how many of the suburbs average more than seven rooms per dwelling? More than eight rooms per dwelling? Comment on the suburbs that average more than eight rooms per dwelling.*
+
+# %%
+len(Boston_quant[Boston_quant["rm"] > 7])
+
+# %%
+eight_rooms = Boston_quant[Boston_quant["rm"] > 8]
+print(len(eight_rooms))
+eight_rooms
+
+# %%
+There are 13 suburbs that average more that 8 rooms per dwelling.
+  
+The median value for these dwellings range from 21.9 to 50.0 which is the priciest.
+  
+The crime rate in these suburbs is extremely low with the highest at around 3.5%.
+  
+Industrialization of these suburbs is also low with 19.58 the maximum.
+  
+The percentage of people from the lower income strata tops out at 7.44%
+  
+A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%. 
