@@ -277,9 +277,16 @@ median_medv = Boston_quant.groupby(["zn"], observed=True)[["medv"]].median()
 median_medv
 
 # %%
+from numpy import median
+sns.catplot(data=Boston_quant, x="zn", y="medv", kind="bar", height = 10, aspect = 2, estimator = median);
+
+# %%
 print(np.unique(Boston_quant["rad"]))
 mean_rad = Boston_quant.groupby(["rad"], observed=True)[["medv"]].mean()
 mean_rad
+
+# %%
+sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height = 10, aspect = 2);
 
 # %%
 import seaborn as sns
@@ -303,6 +310,27 @@ import seaborn as sns
 sns.set_theme(style="ticks")
 g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["crim"]);
 
+# %%
+sns.catplot(data=Boston_quant, x="zn", y="crim", kind="bar", height = 6, aspect = 2);
+
+# %%
+sns.displot(data=Boston_quant, x="indus", y="crim",height = 4, aspect = 3);
+
+# %%
+sns.displot(data=Boston_quant, x="age", y="crim",height = 4, aspect = 3);
+
+# %%
+sns.displot(data=Boston_quant, x="nox", y="crim",height = 4, aspect = 3);
+
+# %%
+sns.displot(data=Boston_quant, x="dis", y="crim",height = 4, aspect = 3);
+
+# %%
+sns.displot(data=Boston_quant, x="tax", y="crim",height = 4, aspect = 3);
+
+# %%
+sns.displot(data=Boston_quant, x="ptratio", y="crim",height = 4, aspect = 3);
+
 # %% [markdown]
 # We've already seen that there appears to be a relationship b/w crime rate and medv where a higher crime rate is associated with lower property prices.
 # Additionally, plotting the other quantitative variables against crime rate (crim), we can perceive the following:
@@ -314,3 +342,18 @@ g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars
 # 6. There seems to be a higher incidence of crimes for areas with tax rate around 670. Why? 
 # 7. The crime rate does not seem to have a strong relationship with ptratio, but for around point 20.1 where the crime rate spikes compared to the other areas. 
 # 8. Crime rate decreases as the median value of properties rise across suburbs as a whole.
+
+# %% [markdown]
+#  *Do any of the suburbs of Boston appear to have particularly high crime rates? Tax rates? Pupil-teacher ratios? Comment on the range of each predictor.*
+
+# %% [markdown]
+# *How many of the suburbs in this data set bound the Charles River?*
+
+# %%
+*What is the median pupil-teacher ratio among the towns in this data set?*
+
+# %%
+*Which suburb of Boston has lowest median value of owner-occupied homes? What are the values of the other predictors for that suburb, and how do those values compare to the overall ranges for those predictors? Comment on your findings.*
+
+# %%
+*In this data set, how many of the suburbs average more than seven rooms per dwelling? More than eight rooms per dwelling? Comment on the suburbs that average more than eight rooms per dwelling.*
