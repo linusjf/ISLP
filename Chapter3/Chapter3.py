@@ -73,4 +73,27 @@ len(Boston.columns)
 # %%
 # Boston?
 
+# %% [markdown]
+# Use sm.OLS to fit a simple linear regression
+
+# %%
+X = pd.DataFrame({"intercept": np.ones(Boston.shape[0]),
+                                       "lstat": Boston["lstat"]})
+X.head()
+
+
+# %% [markdown]
+# Extract the response and fit the model.
+
+# %%
+y = Boston["medv"]
+model = sm.OLS(y, X)
+results = model.fit()
+
+# %% [markdown]
+# Summarize the results using the ISLP method summarize
+
+# %%
+summarize(results)
+
 # %%
