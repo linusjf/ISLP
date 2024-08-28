@@ -7,9 +7,9 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: islpenv
 #     language: python
-#     name: python3
+#     name: islpenv
 # ---
 
 # %%
@@ -387,15 +387,17 @@ eight_rooms = Boston_quant[Boston_quant["rm"] > 8]
 print(len(eight_rooms))
 eight_rooms
 
+# %% [markdown]
+# There are 13 suburbs that average more that 8 rooms per dwelling.
+#   
+# The median value for these dwellings range from 21.9 to 50.0 which is the priciest.
+#   
+# The crime rate in these suburbs is extremely low with the highest at around 3.5%.
+#   
+# Industrialization of these suburbs is also low with 19.58 the maximum.
+#   
+# The percentage of people from the lower income strata tops out at 7.44%
+#   
+# A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%. 
+
 # %%
-There are 13 suburbs that average more that 8 rooms per dwelling.
-  
-The median value for these dwellings range from 21.9 to 50.0 which is the priciest.
-  
-The crime rate in these suburbs is extremely low with the highest at around 3.5%.
-  
-Industrialization of these suburbs is also low with 19.58 the maximum.
-  
-The percentage of people from the lower income strata tops out at 7.44%
-  
-A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%. 
