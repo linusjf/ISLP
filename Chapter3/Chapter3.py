@@ -7,9 +7,9 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: islpenv
 #     language: python
-#     name: python3
+#     name: islpenv
 # ---
 
 # %% [markdown]
@@ -95,5 +95,51 @@ results = model.fit()
 
 # %%
 summarize(results)
+
+# %% [markdown]
+# ## Using Transformations: Fit and Transform
+
+# %%
+design = MS(["lstat"])
+design = design.fit(Boston)
+X = design.transform(Boston)
+X.head()
+
+# %%
+design = MS(["lstat"])
+design = design.fit_transform(Boston)
+X.head()
+
+# %% [markdown]
+# Full and exhaustive summary of the fit
+
+# %%
+results.summary()
+
+# %% [markdown]
+# Fitted coefficients can be retrieved as the *params* attribute of results
+
+# %%
+results.params
+
+# %% [markdown]
+# ### Computing predictions
+
+# %%
+design = MS(["lstat"])
+new_df = pd.DataFrame({"lstat": [5,10,15]})
+print(new_df)
+newX = design.fit_transform(new_df)
+newX
+
+# %%
+new_predictions = results.get_prediction(newX)
+new_predictions.predicted_mean
+
+# %%
+new_predictions.conf_int(alpha=0.05)
+
+# %%
+new_predictions.conf_int(obs=True,alpha=0.05)
 
 # %%
