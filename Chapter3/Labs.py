@@ -184,3 +184,22 @@ ax.axhline(0, c='k', ls='--');
 
 # %% [markdown]
 # On the basis of the residual plot, there is some evidence of non-linearity.
+
+# %% [markdown]
+# Leverage statistics can be computed for any number of predictors using the hat_matrix_diag attribute of the value returned by the get_influence() method.
+
+# %%
+infl = results.get_influence()
+_, ax = subplots(figsize=(8,8))
+ax.scatter(np.arange(X.shape[0]),infl.hat_matrix_diag)
+ax.set_xlabel("Index")
+ax.set_ylabel("Leverage")
+high_leverage = np.argmax(infl.hat_matrix_diag)
+max_leverage = np.max(infl.hat_matrix_diag)
+print(high_leverage, max_leverage)
+ax.plot(high_leverage, max_leverage, "ro");
+
+# %% [markdown]
+# The np.argmax() function returns the index of the highest valued element of an array. Here, we determine which element has the highest leverage.
+
+# %%
