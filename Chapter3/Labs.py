@@ -136,10 +136,51 @@ newX
 new_predictions = results.get_prediction(newX)
 new_predictions.predicted_mean
 
+# %% [markdown]
+# We can predict confidence intervals for the predicted values.
+
 # %%
 new_predictions.conf_int(alpha=0.05)
+
+# %% [markdown]
+# We can obtain prediction intervals for the values which are wider than the confidence intervals since they're for a specific instance of lstat by setting obs=True.
 
 # %%
 new_predictions.conf_int(obs=True,alpha=0.05)
 
+
+# %% [markdown]
+# Plot medv and lstat using DataFrame.plot.scatter() and add the regression line to the resulting plot.
+
+# %% [markdown]
+# Define our abline function
+
 # %%
+def abline(ax, b, m, *args, **kwargs):
+  "Add a line with slope m and intercept b to ax"
+  xlim = ax.get_xlim()
+  ylim = [m * xlim[0] + b, m + xlim[1] + b]
+  ax.plot(xlim, ylim, *args, **kwargs)
+
+
+# %%
+ax = Boston.plot.scatter("lstat", "medv")
+abline(ax, results.params.iloc[0], results.params.iloc[1], "r--", linewidth=3);
+
+# %% [markdown]
+# There is some evidence of non-linearity in the relationship b/w lstat and medv.
+
+# %% [markdown]
+# Find the fitted values and residuals of the fit as attributes of the results object as *results.fittedvalues* and *results.resid*.
+# The get_influence() method computes various influence measures of the regression.
+#
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c='k', ls='--');
+
+# %% [markdown]
+# On the basis of the residual plot, there is some evidence of non-linearity.
