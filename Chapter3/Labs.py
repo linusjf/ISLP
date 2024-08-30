@@ -203,12 +203,65 @@ ax.plot(high_leverage, max_leverage, "ro");
 # %% [markdown]
 # The np.argmax() function returns the index of the highest valued element of an array. Here, we determine which element has the highest leverage.
 
-# %%
+# %% [markdown]
+# ### Multiple linear regression
 
 # %%
+Boston.plot.scatter("age", "medv");
+X = MS(["lstat","age"]).fit_transform(Boston)
+model1 = sm.OLS(y, X)
+results1 = model1.fit()
+summarize(results1)
 
 # %%
+Boston["logage"] = np.log(Boston["age"])
+Boston.plot.scatter("logage", "medv");
+X = MS(["lstat","logage"]).fit_transform(Boston)
+model1 = sm.OLS(y, X)
+results1 = model1.fit()
+print(summarize(results1))
 
 # %%
+Boston["sqrtage"] = np.sqrt(Boston["age"])
+Boston.plot.scatter("sqrtage", "medv");
+X = MS(["lstat","sqrtage"]).fit_transform(Boston)
+model1 = sm.OLS(y, X)
+results1 = model1.fit()
+summarize(results1)
 
 # %%
+Boston = Boston.drop(columns=["logage","sqrtage"])
+
+# %%
+terms = Boston.columns.drop("medv")
+terms
+
+# %%
+X = MS(terms).fit_transform(Boston)
+model = sm.OLS(y, X)
+results = model.fit()
+summarize(results)
+
+# %%
+Age has a high p-value. So how about we drop it from the predictors?
+
+# %%
+minus_age = Boston.columns.drop(["medv", "age"])
+Xma = MS(minus_age).fit_transform(Boston)
+model1 = sm.OLS(y, Xma)
+summarize(model1.fit())
+
+# %%
+np.unique(Boston["indus"])
+
+# %% [raw]
+# Similarly, indus has a high p-value. Let's drop it as well.
+
+# %%
+minus_age_indus = Boston.columns.drop(["medv", "age", "indus"])
+Xmai = MS(minus_age_indus).fit_transform(Boston)
+model1 = sm.OLS(y, Xmai)
+summarize(model1.fit())
+
+# %%
+### Multivariate Goodness of Fit
