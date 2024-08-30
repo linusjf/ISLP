@@ -22,7 +22,7 @@
 import numpy as np
 import pandas as pd
 from matplotlib.pyplot import subplots
-import seaborn as sns
+#import seaborn as sns
 
 # %% [markdown]
 # New imports
@@ -129,7 +129,8 @@ results.params
 design = MS(["lstat"])
 new_df = pd.DataFrame({"lstat": [5,10,15]})
 print(new_df)
-newX = design.fit_transform(new_df)
+design = design.fit(new_df)
+newX = design.transform(new_df)
 newX
 
 # %%
@@ -201,5 +202,13 @@ ax.plot(high_leverage, max_leverage, "ro");
 
 # %% [markdown]
 # The np.argmax() function returns the index of the highest valued element of an array. Here, we determine which element has the highest leverage.
+
+# %%
+
+# %%
+
+# %%
+
+# %%
 
 # %%
