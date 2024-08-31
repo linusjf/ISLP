@@ -257,11 +257,63 @@ np.unique(Boston["indus"])
 # %% [raw]
 # Similarly, indus has a high p-value. Let's drop it as well.
 
+# %% [markdown]
+# minus_age_indus = Boston.columns.drop(["medv", "age", "indus"])
+# Xmai = MS(minus_age_indus).fit_transform(Boston)
+# model1 = sm.OLS(y, Xmai)
+# results1 = model1.fit()
+# summarize(results1)
+
 # %%
-minus_age_indus = Boston.columns.drop(["medv", "age", "indus"])
-Xmai = MS(minus_age_indus).fit_transform(Boston)
-model1 = sm.OLS(y, Xmai)
-summarize(model1.fit())
+We can also observe the F-statistic for the regression.
+
+# %%
+(results1.fvalue,results1.f_pvalue)
 
 # %%
 ### Multivariate Goodness of Fit
+
+# %% [markdown]
+# We can access the individual components of results by name.
+
+# %%
+dir(results1)
+
+# %% [markdown]
+# results.rsquared gives us the R<sup>2</sup> and np.sqrt(results.scale) gives us the RSE.
+
+# %%
+print("RSE", np.sqrt(results1.scale))
+
+# %%
+("R", results1.rsquared)
+
+# %% [markdown]
+# Variance Inflation Factors are sometimes useful to assess the collinearity effect in our regression model.
+
+# %%
+### Compute VIFs and List Comprehension
+
+# %%
+vals = [VIF(X,i) for i in range(1, X.shape[1])]
+print(vals)
+
+# %%
+vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+print(vif)
+("VIF Range:", np.min(vif), np.max(vif))
+
+# %% [markdown]
+# The VIFs are not very large. If there was some collinearity between predictors, they would tend to blow up.
+
+# %%
+### Interaction terms
+
+# %%
+X = MS(["lstat", "age", ("lstat", "age")]).fit_transform(Boston)
+model2 = sm.OLS(y, X)
+results2 = model2.fit()
+summarize(results2)
+
+# %% [markdown]
+# The interaction terms lstat:age are statistically significant and while the p-value for age exceeds 0.05 ( or 0.01), you do not drop it from the regression since it is a component of a significant interaction.
