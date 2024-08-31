@@ -264,8 +264,8 @@ np.unique(Boston["indus"])
 # results1 = model1.fit()
 # summarize(results1)
 
-# %%
-We can also observe the F-statistic for the regression.
+# %% [markdown]
+# We can also observe the F-statistic for the regression.
 
 # %%
 (results1.fvalue,results1.f_pvalue)
@@ -317,3 +317,41 @@ summarize(results2)
 
 # %% [markdown]
 # The interaction terms lstat:age are statistically significant and while the p-value for age exceeds 0.05 ( or 0.01), you do not drop it from the regression since it is a component of a significant interaction.
+
+# %% [markdown]
+# ### Non-linear transformation of the predictors
+
+# %% [markdown]
+# The poly() function specifies the first argument term to be added to the model matrix
+
+# %%
+X = MS([poly("lstat", degree = 2), "age"]).fit_transform(Boston)
+model3 = sm.OLS(y, X)
+results3 = model3.fit()
+summarize(results3)
+
+# %% [markdown]
+# The effectively 0 p-value associated with the quadratic term suggests an improved model. The R<sup>2</sup> confirms it
+
+# %%
+print(results3.rsquared, " > ", results1.rsquared)
+
+# %% [markdown]
+# By default, poly() creates a basis matrix for inclusion in the model matrix whose columns are orthogonal polynomials which are designed for stable least squares computations. If we had included another argument, raw = True , the basis matrix would consist of lstat and lstat ** 2. Both represent quadratic polynomials. The fitted values would not change. Just the polynomial coefficients. The columns created by poly() do not include an intercept column. These are provided by MS().
+
+# %% [markdown]
+# Questions:
+# What are orthogonal polynomials?
+# <http://home.iitk.ac.in/~shalab/regression/Chapter12-Regression-PolynomialRegression.pdf>
+# <https://stats.stackexchange.com/questions/258307/raw-or-orthogonal-polynomial-regression>
+
+# %%
+X = MS([poly("lstat", degree = 2, raw = True), "age"]).fit_transform(Boston)
+model3 = sm.OLS(y, X)
+results3 = model3.fit()
+summarize(results3)
+
+# %%
+print(results3.rsquared, " > ", results1.rsquared)
+
+# %%
