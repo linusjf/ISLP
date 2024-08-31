@@ -342,7 +342,9 @@ print(results3.rsquared, " > ", results1.rsquared)
 # %% [markdown]
 # Questions:
 # What are orthogonal polynomials?
+#
 # <http://home.iitk.ac.in/~shalab/regression/Chapter12-Regression-PolynomialRegression.pdf>
+#
 # <https://stats.stackexchange.com/questions/258307/raw-or-orthogonal-polynomial-regression>
 
 # %%
@@ -353,5 +355,11 @@ summarize(results3)
 
 # %%
 print(results3.rsquared, " > ", results1.rsquared)
+
+# %% [markdown]
+# Use the anova_lm() function to further quantify the superiority of the quadratic fit.
+
+# %%
+anova_lm(results1, results3)
 
 # %%
