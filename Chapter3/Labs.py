@@ -218,16 +218,16 @@ Boston["logage"] = np.log(Boston["age"])
 Boston.plot.scatter("logage", "medv");
 X = MS(["lstat","logage"]).fit_transform(Boston)
 model1 = sm.OLS(y, X)
-results1 = model1.fit()
-print(summarize(results1))
+resultslog = model1.fit()
+print(summarize(resultslog))
 
 # %%
 Boston["sqrtage"] = np.sqrt(Boston["age"])
 Boston.plot.scatter("sqrtage", "medv");
 X = MS(["lstat","sqrtage"]).fit_transform(Boston)
 model1 = sm.OLS(y, X)
-results1 = model1.fit()
-summarize(results1)
+resultssqrt = model1.fit()
+summarize(resultssqrt)
 
 # %%
 Boston = Boston.drop(columns=["logage","sqrtage"])
@@ -315,8 +315,11 @@ model2 = sm.OLS(y, X)
 results2 = model2.fit()
 summarize(results2)
 
+# %%
+(results2.rsquared, " > ", results1.rsquared)
+
 # %% [markdown]
-# The interaction terms lstat:age are statistically significant and while the p-value for age exceeds 0.05 ( or 0.01), you do not drop it from the regression since it is a component of a significant interaction.
+# The interaction terms lstat:age are not statistically significant at 0.01 level of significance, and R<sup>2</sup> does not significantly explain the variation in the model. Suffice to say, the interaction term can be dropped.
 
 # %% [markdown]
 # ### Non-linear transformation of the predictors
@@ -334,7 +337,7 @@ summarize(results3)
 # The effectively 0 p-value associated with the quadratic term suggests an improved model. The R<sup>2</sup> confirms it
 
 # %%
-print(results3.rsquared, " > ", results1.rsquared)
+print(results3.rsquared, " > ", results2.rsquared)
 
 # %% [markdown]
 # By default, poly() creates a basis matrix for inclusion in the model matrix whose columns are orthogonal polynomials which are designed for stable least squares computations. If we had included another argument, raw = True , the basis matrix would consist of lstat and lstat ** 2. Both represent quadratic polynomials. The fitted values would not change. Just the polynomial coefficients. The columns created by poly() do not include an intercept column. These are provided by MS().
@@ -362,4 +365,44 @@ print(results3.rsquared, " > ", results1.rsquared)
 # %%
 anova_lm(results1, results3)
 
+# %% [markdown]
+# results1 corresponds to the linear model containing predictors lstat and age only.
+# results3 includes the quadratic term in lstat.
+# The anova_lm() function performs a hypothesis test on the two models.
+# H<sub>0</sub>: The quadratic term in the model is not needed.
+# H<sub>a</sub>: The larger model including the quadratic term is superior.
+# Here, the F-statistic is 177.28 and the associated p-value is 0.
+# The F-statistic is the t-statistic squared for the quadratic term in results3.
+# These nested models differ by 1 degree of freedom.
+# This provides very clear evidence that the quadratic term improves the model.
+# The anova_lm() function can take more than two models as input.
+# The comparison is successive pair-wise.
+# That explains the NaNs in the first row of the output above, since there is no previous model with which to compare the output.
+
+# %% [markdown]
+# We can further plot the residuals of the regression against the fitted values to check of there still is a pattern discernible.
+
 # %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results3.fittedvalues, results3.resid)
+ax.set_xlabel("Fitted values")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %% [markdown]
+# We can also try and add the interaction term (lstat, age) to the regression and check the results.
+
+# %%
+X = MS([poly("lstat", degree = 2, raw = True), "age", ("lstat","age")]).fit_transform(Boston)
+model4 = sm.OLS(y, X)
+results4 = model4.fit()
+summarize(results4)
+
+# %%
+print(results4.rsquared, " > ", results3.rsquared)
+
+# %% [markdown]
+# The R<sup>2</sup> in the interaction model again does not exceedingly explain the variance in the model compared to simply having the quadratic term.
+
+# %%
+### Qualitative Predictors
