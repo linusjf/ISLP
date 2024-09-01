@@ -2,7 +2,7 @@
 
 ## Install packages globally
 
-pip install jupyterlab voila jupytext
+pip install jupyterlab voila jupytext notebook
 
 ## Create virtual environment
 
