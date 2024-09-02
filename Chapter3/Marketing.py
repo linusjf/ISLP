@@ -127,7 +127,7 @@ results.conf_int(alpha=0.05)
 # The interval for Newspaper includes zero indicating that it is not statistically significant given values of TV and Radio.
 
 # %%
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vals = [VIF(X, i) for i in range(1, X.shape[1])]
 print(vals)
 
 # %% [markdown]
@@ -135,12 +135,6 @@ print(vals)
 
 # %% [markdown]
 # In order to assess the association of each medium individually on sales, we can perform three separate linear regressions.
-
-# %%
-TV = Advertising["TV"]
-Radio = Advertising["Radio"]
-Newspaper = Advertising["Newspaper"]
-
 
 # %%
 TV = MS(["TV"]).fit_transform(Advertising)
