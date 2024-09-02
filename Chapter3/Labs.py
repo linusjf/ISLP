@@ -406,3 +406,38 @@ print(results4.rsquared, " > ", results3.rsquared)
 
 # %%
 ### Qualitative Predictors
+
+# %% [markdown]
+# Carseats data
+
+# %%
+Carseats = load_data("Carseats")
+Carseats.columns
+
+# %%
+Carseats.shape
+
+# %%
+Carseats.describe()
+
+# %% [markdown]
+# ModelSpec() generates dummy variables for categorical columns automatically. This is termed a one-hot encoding of the categorical feature.
+
+# %% [markdown]
+# Their columns sum to one. To avoid collinearity with the intercept, the first column is dropped.
+
+# %% [markdown]
+# Below we fit a multiple regression model with interaction terms.
+
+# %%
+allvars = list(Carseats.columns.drop("Sales"))
+y = Carseats["Sales"]
+final = allvars + [("Income","Advertising"), ("Price", "Age")]
+X = MS(final).fit_transform(Carseats)
+model = sm.OLS(y, X)
+summarize(model.fit())
+
+# %% [markdown]
+# It can be seen that ShelvLoc is significant and a good shelving location is associated with high sales (relative to a bad location). Medium has a smaller coefficient than Good leading us to believe that it leads to higher sales than a bad location, but lesser than a good location.
+
+# %%
