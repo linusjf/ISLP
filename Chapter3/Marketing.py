@@ -192,8 +192,8 @@ new_predictions.predicted_mean
 # %%
 new_predictions.conf_int(alpha=0.05)
 
-# %%
-We predict the prediction interval for a particular city as follows:
+# %% [markdown]
+# We predict the prediction interval for a particular city as follows:
 
 # %%
 new_predictions.conf_int(alpha=0.05, obs=True)
@@ -247,13 +247,68 @@ ax.axhline(0, c="k", ls="--");
 # %% [markdown]
 # While the fit has improved as seen from the R<sup>2</sup> increasing by 2 percentage points, there is still some non-linearity visible in the residuals plot against fitted values.
 
-# %%
-References:
-<https://www.kellogg.northwestern.edu/faculty/weber/emp/_session_3/nonlinearities.htm>
-<https://online.stat.psu.edu/stat462/node/120/>
+# %% [markdown]
+# References:
+#
+# <https://www.kellogg.northwestern.edu/faculty/weber/emp/_session_3/nonlinearities.htm>
+#
+# <https://online.stat.psu.edu/stat462/node/120/>
 
 # %%
 ## Is there synergy among the advertising media?
 
 # %% [markdown]
 # Synergy implies an interaction effect. That's what we test out now.
+
+# %%
+X = MS([poly("TV", raw=True, degree=2), "Radio", ("TV", "Radio")]).fit_transform(Advertising)
+model = sm.OLS(y, X)
+results = model.fit()
+summarize(results)
+
+# %%
+results.summary()
+
+# %% [markdown]
+# Finally, when we add an interaction term TV * Radio to the model, we can see that the residual fit exhibits no pattern. And the R<sup>2</sup> is 98.6%.
+
+# %% [markdown]
+# Compute VIFs and List Comprehension
+
+# %%
+vals = [VIF(X,i) for i in range(1, X.shape[1])]
+print(vals)
+
+# %%
+vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+print(vif)
+("VIF Range:", np.min(vif), np.max(vif))
+
+# %% [markdown]
+# The VIF ranges are high. These can be reduced by transforming variables to mean 0.
+#
+# <https://stats.stackexchange.com/questions/23538/quadratic-term-and-variance-inflation-factor-in-ols-estimation>
+
+# %%
+Advertising["TV"] = Advertising["TV"] - Advertising["TV"].mean()
+Advertising["Radio"] = Advertising["Radio"] - Advertising["Radio"].mean()
+
+# %%
+X = MS([poly("TV", raw=True, degree=2), "Radio", ("TV", "Radio")]).fit_transform(Advertising)
+model = sm.OLS(y, X)
+results = model.fit()
+summarize(results)
+
+# %%
+results.summary()
+
+# %%
+vals = [VIF(X,i) for i in range(1, X.shape[1])]
+print(vals)
+
+# %%
+vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+print(vif)
+("VIF Range:", np.min(vif), np.max(vif))
+
+# %%
