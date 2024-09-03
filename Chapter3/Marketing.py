@@ -159,8 +159,8 @@ print(summarize(results))
 # %% [markdown]
 # Given that $100,000 is spent on TV advertising, and $20,000 is spent on Radio advertising, we need to compute the 95% Confidence intervals for each city (i.e., the mean) and the prediction interval for a particular city (also at 95% confidence intervals).
 
-# %%
-Fit the regression dropping the Newspaper column as insignificant
+# %% [markdown]
+# Fit the regression dropping the Newspaper column as insignificant
 
 # %%
 y = Advertising["Sales"]
@@ -173,6 +173,9 @@ results = model.fit()
 print("F-value", results.fvalue)
 print("F-pvalue", results.f_pvalue)
 summarize(results)
+
+# %%
+results.summary()
 
 # %%
 design = MS(["TV","Radio"])
@@ -202,4 +205,55 @@ new_predictions.conf_int(alpha=0.05, obs=True)
 ## Is the relationship linear?
 
 # %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(Advertising["TV"], results.resid)
+ax.set_xlabel("TV")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(Advertising["Radio"], results.resid)
+ax.set_xlabel("Radio")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %% [markdown]
+# There is evidence of non-linearity in the model from the residuals plotted against the fitted values. Looking at the residuals versus predictors plots, it appears that TV is a better candidate for quadratification.
+
+# %%
+X = MS([poly("TV", degree = 2, raw = True), "Radio"]).fit_transform(Advertising)
+model = sm.OLS(y, X)
+results = model.fit()
+summarize(results)
+
+# %%
+results.summary()
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %% [markdown]
+# While the fit has improved as seen from the R<sup>2</sup> increasing by 2 percentage points, there is still some non-linearity visible in the residuals plot against fitted values.
+
+# %%
+References:
+<https://www.kellogg.northwestern.edu/faculty/weber/emp/_session_3/nonlinearities.htm>
+<https://online.stat.psu.edu/stat462/node/120/>
+
+# %%
 ## Is there synergy among the advertising media?
+
+# %% [markdown]
+# Synergy implies an interaction effect. That's what we test out now.
