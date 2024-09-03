@@ -151,10 +151,52 @@ results = model.fit()
 print(summarize(results))
 
 # %% [markdown]
-# Looking at the p-values, there is evidence of a strong association b/w TV and sales and Radio and sales. There is evidence of a mild association between Newspaper and sales when TV and radio are ignored.
+# Looking at the p-values, there is evidence of a strong association b/w TV and sales and radio and sales. There is evidence of a mild association between Newspaper and sales when TV and radio are ignored.
 
 # %%
 ## How accurately can we predict future sales?
+
+# %% [markdown]
+# Given that $100,000 is spent on TV advertising, and $20,000 is spent on Radio advertising, we need to compute the 95% Confidence intervals for each city (i.e., the mean) and the prediction interval for a particular city (also at 95% confidence intervals).
+
+# %%
+Fit the regression dropping the Newspaper column as insignificant
+
+# %%
+y = Advertising["Sales"]
+cols = list(Advertising.columns)
+cols.remove("Sales")
+cols.remove("Newspaper")
+X = MS(cols).fit_transform(Advertising)
+model = sm.OLS(y, X)
+results = model.fit()
+print("F-value", results.fvalue)
+print("F-pvalue", results.f_pvalue)
+summarize(results)
+
+# %%
+design = MS(["TV","Radio"])
+new_df = pd.DataFrame({"TV": [100],
+                       "Radio":[20]})
+print(new_df)
+new_X = design.fit_transform(new_df)
+new_predictions = results.get_prediction(new_X)
+new_predictions.predicted_mean
+
+# %% [markdown]
+# We predict the confidence intervals at 95% as follows:
+
+# %%
+new_predictions.conf_int(alpha=0.05)
+
+# %%
+We predict the prediction interval for a particular city as follows:
+
+# %%
+new_predictions.conf_int(alpha=0.05, obs=True)
+
+# %% [markdown]
+# Both intervals are centered at 11,256 but the prediction intervals are wider reflecting the additional uncertainty around sales for a particular city as against the average sales for many locations.
 
 # %%
 ## Is the relationship linear?
