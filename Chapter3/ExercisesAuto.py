@@ -145,10 +145,75 @@ ax = Auto.plot.scatter("horsepower", "mpg");
 ax.axline((ax.get_xlim()[0], results.params.iloc[0]), slope=results.params.iloc[1], color="r", linewidth=3);
 
 # %% [markdown]
-# + The least sqaures regression line is plotted above using ax.axline(). The plot displays some evidence of non-linearity in the relationship between horsepower and mpg.
+# + The least squares regression line is plotted above using ax.axline(). The plot displays some evidence of non-linearity in the relationship between horsepower and mpg.
 
 # %% [markdown]
 # ### (c) Produce some of diagnostic plots of the least squares regression fit as described in the lab.
 # ### Comment on any problems you see with the fit.
+
+# %%
+#### Plot of fitted values versus residuals.
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c='k', ls='--');
+
+# %% [markdown]
+# #### We can also plot the residuals vs predictor plot where horsepower is the predictor.
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(Auto["horsepower"], results.resid)
+ax.set_xlabel("Horsepower")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c='k', ls='--');
+
+# %% [markdown]
+# #### Conclusions:
+# + There is evidence of non-linearity in the relationship between residuals and fitted values.
+# + There is evidence of heteroskedasticity i.e., non-constant variance in the residuals across the fitted values.
+
+# %%
+RSS = np.sum((y - results.fittedvalues) ** 2)
+RSS
+
+# %%
+RSE = np.sqrt(RSS/ (Auto.shape[0] - 2))
+RSE
+
+# %% [markdown]
+# ### OLSResults.scale()
+#
+# + Gives us a scale factor for the covariance matrix.
+# + The Default value is ssr/(n-p). Note that the square root of scale is often called the standard error of the regression.
+#
+# + <https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.OLSResults.scale.html>
+
+# %%
+np.sqrt(results.scale)
+
+# %%
+mpg_mean = Auto["mpg"].mean()
+
+# %%
+print("Percentage error in mpg estimation using model above is: " )
+np.round(RSE / mpg_mean * 100, decimals = 2)
+
+# %% [markdown]
+# ### Leverage statistics
+
+# %%
+infl = results.get_influence()
+_, ax = subplots(figsize=(8,8))
+ax.scatter(np.arange(X.shape[0]),infl.hat_matrix_diag)
+ax.set_xlabel("Index")
+ax.set_ylabel("Leverage")
+high_leverage = np.argmax(infl.hat_matrix_diag)
+max_leverage = np.max(infl.hat_matrix_diag)
+print(high_leverage, np.round(max_leverage, decimals = 2) )
+ax.plot(high_leverage, max_leverage, "ro");
 
 # %%
