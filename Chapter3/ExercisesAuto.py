@@ -86,8 +86,7 @@ Auto.describe()
 
 # %%
 y = Auto["mpg"]
-Auto = Auto.drop("mpg", axis=1)
-Auto.head()
+y.head()
 
 # %%
 design = MS(["horsepower"])
@@ -136,5 +135,20 @@ new_predictions.conf_int(alpha=0.05, obs=True)
 
 # %% [markdown]
 # + The 95% prediction interval is (14.82, 34.13)
+
+# %% [markdown]
+# ### (b) Plot the response and the predictor in a new set of axes ax.
+# ### Use the ax.axline() method or the abline() function defined in the lab to display the least squares regression line.
+
+# %%
+ax = Auto.plot.scatter("horsepower", "mpg");
+ax.axline((ax.get_xlim()[0], results.params.iloc[0]), slope=results.params.iloc[1], color="r", linewidth=3);
+
+# %% [markdown]
+# + The least sqaures regression line is plotted above using ax.axline(). The plot displays some evidence of non-linearity in the relationship between horsepower and mpg.
+
+# %% [markdown]
+# ### (c) Produce some of diagnostic plots of the least squares regression fit as described in the lab.
+# ### Comment on any problems you see with the fit.
 
 # %%

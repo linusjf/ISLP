@@ -149,24 +149,12 @@ new_predictions.conf_int(alpha=0.05)
 # %%
 new_predictions.conf_int(obs=True,alpha=0.05)
 
-
 # %% [markdown]
 # Plot medv and lstat using DataFrame.plot.scatter() and add the regression line to the resulting plot.
 
-# %% [markdown]
-# Define our abline function
-
-# %%
-def abline(ax, b, m, *args, **kwargs):
-  "Add a line with slope m and intercept b to ax"
-  xlim = ax.get_xlim()
-  ylim = [m * xlim[0] + b, m + xlim[1] + b]
-  ax.plot(xlim, ylim, *args, **kwargs)
-
-
 # %%
 ax = Boston.plot.scatter("lstat", "medv")
-abline(ax, results.params.iloc[0], results.params.iloc[1], "r--", linewidth=3);
+ax.axline((ax.get_xlim()[0],results.params.iloc[0]), slope=results.params.iloc[1], color="r", linewidth=3);
 
 # %% [markdown]
 # There is some evidence of non-linearity in the relationship b/w lstat and medv.
