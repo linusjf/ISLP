@@ -236,6 +236,21 @@ print(Auto.iloc[outliers_indexes])
 # %% [markdown]
 # Conclusions:
 # + From the standardized residuals versus fitted values, there are two outliers present in the data.
-# + These points can be investigated further as to whether to retain them in the dataset.
+# + These points can be investigated further whether to retain them in the dataset.
+#
+# Note:
+# - We could drop the outliers from the data and regress the model without these points. That is an exercise for you!
+
+# %% [markdown]
+# We can also plot residuals versus order.
 
 # %%
+_, ax = subplots(figsize=(14,8))
+ax.scatter(np.arange(X.shape[0]),results.resid)
+ax.set_xlabel("Observation Order")
+ax.set_ylabel("Residuals");
+ax.axhline(0, c='k', ls='--');
+
+# %% [markdown]
+# Conclusions:
+# - While there seems to be little evidence of negative or positive correlation over time, there is evidence of overestimation from observations 300 onwards. There also seems to be a time trend in the data from observation 300 or so where the expectation of the model is that mpg will be higher, but the actual values are much lower.
