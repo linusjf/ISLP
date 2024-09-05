@@ -21,8 +21,8 @@
 # %%
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
-#import seaborn as sns
 
 # %% [markdown]
 # New imports
@@ -46,9 +46,6 @@ import ISLP
 from ISLP import models
 from ISLP import load_data
 from ISLP.models import (ModelSpec as MS, summarize, poly)
-
-# %%
-dir()
 
 # %%
 Auto = load_data('Auto')
@@ -242,7 +239,7 @@ print(Auto.iloc[outliers_indexes])
 # - We could drop the outliers from the data and regress the model without these points. That is an exercise for you!
 
 # %% [markdown]
-# We can also plot residuals versus order.
+# #### We can also plot residuals versus order.
 
 # %%
 _, ax = subplots(figsize=(14,8))
@@ -253,4 +250,15 @@ ax.axhline(0, c='k', ls='--');
 
 # %% [markdown]
 # Conclusions:
-# - While there seems to be little evidence of negative or positive correlation over time, there is evidence of overestimation from observations 300 onwards. There also seems to be a time trend in the data from observation 300 or so where the expectation of the model is that mpg will be higher, but the actual values are much lower.
+# - While there seems to be little evidence of negative or positive correlation over time, there is evidence of underestimation from observations 300 onwards. There also seems to be a time trend in the data from observation 300 or so where the expectation of the model is that mpg will be lower, but the actual values are much higher. This indicates that fuel mileage improved much more than expected in the later models from observation 300 onwards. This indicates that column year should be added to the model.
+
+# %%
+sm.qqplot(results.resid,line="s");
+
+# %%
+# Plot histogram of residuals
+plt.hist(results.resid, bins=10);
+
+# %%
+Conclusions:
+- From the above two plots for qq and histograms for residuals, we can deduce that the residuals are approximately normal.
