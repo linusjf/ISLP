@@ -213,7 +213,29 @@ ax.set_xlabel("Index")
 ax.set_ylabel("Leverage")
 high_leverage = np.argmax(infl.hat_matrix_diag)
 max_leverage = np.max(infl.hat_matrix_diag)
+print("Max leverage point:")
 print(high_leverage, np.round(max_leverage, decimals = 2) )
 ax.plot(high_leverage, max_leverage, "ro");
+
+# %% [markdown]
+# #### Outlier identification using Standardized Residuals versus Fitted Values plot
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid_pearson)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Standardized residuals")
+ax.axhline(0, c='k', ls='--');
+outliers_indexes = np.where((results.resid_pearson > 3.0) | (results.resid_pearson < -3.0))[0]
+for idx in range(len(outliers_indexes)):
+  ax.plot(results.fittedvalues.iloc[outliers_indexes[idx]],
+          results.resid_pearson[outliers_indexes[idx]], "ro");
+print("Outlier rows: ")
+print(Auto.iloc[outliers_indexes])
+
+# %% [markdown]
+# Conclusions:
+# + From the standardized residuals versus fitted values, there are two outliers present in the data.
+# + These points can be investigated further as to whether to retain them in the dataset.
 
 # %%
