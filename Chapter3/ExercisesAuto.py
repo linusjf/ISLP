@@ -12,11 +12,11 @@
 #     name: islpenv
 # ---
 
-# %% [raw]
-# # Applied : Auto dataset
+# %% [markdown]
+# # Applied : Auto dataset - Simple Linear Regression
 
 # %% [markdown]
-# Import standard libraries
+# ## Import standard libraries
 
 # %%
 import numpy as np
@@ -25,13 +25,13 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
 
 # %% [markdown]
-# New imports
+# ## New imports
 
 # %%
 import statsmodels.api as sm
 
 # %% [markdown]
-# Import statsmodel.objects
+# ## Import statsmodel.objects
 
 # %%
 from statsmodels.stats.outliers_influence import variance_inflation_factor as VIF
@@ -39,7 +39,7 @@ from statsmodels.stats.outliers_influence import summary_table
 from statsmodels.stats.anova import anova_lm
 
 # %% [markdown]
-# Import ISLP objects
+# ## Import ISLP objects
 
 # %%
 import ISLP
@@ -259,6 +259,10 @@ sm.qqplot(results.resid,line="s");
 # Plot histogram of residuals
 plt.hist(results.resid, bins=10);
 
-# %%
-Conclusions:
-- From the above two plots for qq and histograms for residuals, we can deduce that the residuals are approximately normal.
+# %% [markdown]
+# Conclusions:
+# - From the above two plots for qq and histograms for residuals, we can deduce that the residuals are approximately normal.
+
+# %% [markdown]
+# References:
+# <https://github.com/linusjf/LearnR/tree/development/Stats462>
