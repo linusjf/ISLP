@@ -55,7 +55,7 @@ Auto.columns
 # %%
 Auto.shape
 
-# %%
+# %% jupyter={"outputs_hidden": true}
 Auto.describe()
 
 # %% [markdown]
@@ -67,8 +67,14 @@ Auto.describe()
 # %%
 pd.plotting.scatter_matrix(Auto, figsize = (14, 14));
 
+# %% [markdown]
+# ### (b) Compute the matrix of correlations between the variables using the DataFrame.corr() method.
+
 # %%
 Auto.corr()
+
+# %% [markdown]
+# ### (c) Use the sm.OLS() function to perform a multiple linear regression with mpg as the response and all other variables except name as the predictors. Use the summarize() function to print the results. Comment on the output. For instance:
 
 # %% [markdown]
 # ## Convert cylinders and origin columns to categorical types
@@ -98,7 +104,21 @@ model = smf.ols(f'mpg ~ {formula}', data=Auto)
 results = model.fit()
 summarize(results)
 
+# %% [markdown]
+# #### i. Is there a relationship between the predictors and the response? Use the anova_lm() function from statsmodels to answer this question.
+# #### ii. Which predictors appear to have a statistically significant relationship to the response? 
+# #### iii. What does the coefficient for the year variable suggest?
+
 # %%
 anova_lm(results)
+
+# %% [markdown]
+# ### (d) Produce some of diagnostic plots of the linear regression fit as described in the lab. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?
+
+# %% [markdown]
+# ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
+
+# %% [markdown]
+# ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
 
 # %%
