@@ -149,9 +149,40 @@ anova_lm(results)
 # ### (d) Produce some of diagnostic plots of the linear regression fit as described in the lab. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?
 
 # %% [markdown]
+# #### Before producing the diagnostic plots, let's first create the model suggested hy the analysis above by dropping the feature acceleration from the model.
+
+# %%
+cols.remove("acceleration")
+X = MS(cols).fit_transform(Auto)
+formula = ' + '.join(cols)
+model = smf.ols(f'mpg ~ {formula}', data=Auto)
+results = model.fit()
+results.summary()
+
+# %% [markdown]
+# #### From the modified model, it is evident that displacement is not statistically significant. This is, perhaps, because of the collinearity with number of cylinders. So we can drop it from the model as well.
+
+# %%
+cols.remove("displacement")
+X = MS(cols).fit_transform(Auto)
+formula = ' + '.join(cols)
+model = smf.ols(f'mpg ~ {formula}', data=Auto)
+results = model.fit()
+results.summary()
+
+# %% [markdown]
+# #### We note that though the R<sup>2</sup> decreases by 0.001 to -.873, the Adjusted R<sup>2</sup> remains constant at 0.867.
+
+# %%
+display("Thus, the final model is the one below: ")
+display("mpg ~ " + formula)
+      
+
+# %% [markdown]
+# #### We can now try and plot the diagnostics for the model.
+
+# %% [markdown]
 # ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
-
-# %%
