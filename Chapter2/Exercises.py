@@ -13,6 +13,19 @@
 # ---
 
 # %%
+from IPython.core.interactiveshell import InteractiveShell
+InteractiveShell.ast_node_interactivity = "all"
+
+## Import up sound alert dependencies
+from IPython.display import Audio, display
+
+def allDone():
+  url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
+  display(Audio(url=url, autoplay=True))
+
+
+
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
@@ -401,3 +414,4 @@ eight_rooms
 # A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%. 
 
 # %%
+allDone()

@@ -13,6 +13,19 @@
 #     name: islpenv
 # ---
 
+# %%
+from IPython.core.interactiveshell import InteractiveShell
+InteractiveShell.ast_node_interactivity = "all"
+
+## Import up sound alert dependencies
+from IPython.display import Audio, display
+
+def allDone():
+  url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
+  display(Audio(url=url, autoplay=True))
+
+
+
 # %% [markdown]
 # # Chapter 2 Lab
 
@@ -515,3 +528,4 @@ Auto[["cylinders"]].describe()
 Auto[["mpg"]].describe()
 
 # %%
+allDone()
