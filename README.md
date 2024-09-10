@@ -8,7 +8,7 @@ pip install jupyter voila jupytext
 
 python -m venv islpenv
 
-## Set up virtual environment
+## Activate virtual environment
 
 source islpenv/bin/activate
 
