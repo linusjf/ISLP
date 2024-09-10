@@ -19,6 +19,16 @@
 from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "all"
 
+# %%
+## Import up sound alert dependencies
+from IPython.display import Audio, display
+
+def allDone():
+  display(Audio(url='https://sound.peal.io/ps/audios/000/000/537/original/woo_vu_luvub_dub_dub.wav', autoplay=True))
+## Insert whatever audio file you want above
+
+
+
 # %% [markdown]
 # ## Import standard libraries
 
@@ -176,13 +186,36 @@ results.summary()
 # %%
 display("Thus, the final model is the one below: ")
 display("mpg ~ " + formula)
-      
+
 
 # %% [markdown]
 # #### We can now try and plot the diagnostics for the model.
+
+# %%
+TSS = np.sum((y - np.mean(y)) ** 2)
+TSS
+RSS = np.sum((y - results.fittedvalues) ** 2)
+RSS
+RSE = np.sqrt(RSS/results.df_model)
+RSE
+
+# %% [markdown]
+# #### Auto data rresults
+# | Quantity | Value |
+# | -------- | ------ |
+# | RSE | 12.28 |
+# | R<sup>2</sup> Adjusted | 
+#
 
 # %% [markdown]
 # ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
+
+# %%
+allDone()
+
+# %%
+
+# %%
