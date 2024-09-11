@@ -108,6 +108,7 @@ sns.relplot(Auto, x="year", y="weight", col="origin", hue="cylinders", style="cy
 # %%
 sns.relplot(Auto, x="year", y="mpg", col="origin", hue="cylinders", style="cylinders", estimator='mean', kind="line");
 
+
 # %% [markdown]
 # #### It can be seen that after the [oil shock of 1973](https://en.wikipedia.org/wiki/1973_oil_crisis) and the regulations and actions taken by the US government, the mileage for American made cars rose across all models. This was, however, matched by the European and Japanese models which were already lighter and more fuel efficient.
 
@@ -115,19 +116,33 @@ sns.relplot(Auto, x="year", y="mpg", col="origin", hue="cylinders", style="cylin
 # ### Encode categorical variables as dummy variables dropping the first to remove multicollinearity.
 
 # %%
-Auto = pd.get_dummies(Auto, columns=list(["cylinders", "origin", "year"]), drop_first = True, dtype = np.uint8)
-Auto.columns
+def categorize_for_oil_shock(row):
+  # we add 3 years because it takes approximately that long for car manufacturers to introduce a new model
+  if row["year"] in (70, 71, 72, 73, 74, 75, 76):
+    return 0;
+  return 1;
+
+Auto["oilshock"] = Auto.apply(categorize_for_oil_shock, axis=1);
 
 # %%
-y = Auto["mpg"]
-Auto.columns.drop("mpg")
+Auto.boxplot(column="mpg", by=["oilshock", "origin"]);
 
 # %%
-cols = list(Auto.columns)
+Auto_os = Auto.drop(["year"], axis = 1)
+Auto_os.columns
+Auto_os = pd.get_dummies(Auto_os, columns=list(["cylinders", "origin"]), drop_first = True, dtype = np.uint8)
+Auto_os.columns
+
+# %%
+y = Auto_os["mpg"]
+Auto_os.columns.drop("mpg")
+
+# %%
+cols = list(Auto_os.columns)
 cols.remove("mpg")
-X = MS(cols).fit_transform(Auto)
+X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
 results.summary()
 
@@ -145,27 +160,7 @@ anova_lm(results)
 #
 # <https://stats.stackexchange.com/questions/24298/can-i-ignore-coefficients-for-non-significant-levels-of-factors-in-a-linear-mode>
 #
-# The coefficients for the year variable range over the following values:
-#
-# | Year   | Coefficient | 
-# | ------- | --------- |
-# | year_71	| 0.9104 |	
-# | year_72 |	-0.4903	|
-# | year_73	| -0.5529	|
-# | year_74	| 1.2420	|
-# | year_75	| 0.8704	|
-# | year_76	| 1.4967	|
-# | year_77	| 2.9987	|
-# | year_78	| 2.9738	|
-# | year_79	| 4.8962	|
-# | year_80	| 9.0589	|
-# | year_81	| 6.4582	|
-# | year_82 |	7.8376	|
-#
-#
-# which suggest that that except for years 72 and 73 (which are not statistically significant), the mpg increases over the base year 1970 by the coefficient value for that year. The most improvement is seen in the year 1980 where the mileage increases by 9 units over the base mpg. 
-#
-# Note: Year has been converted to a cetegorical variable to better capture the effect of each year. 
+# Note: Year has been converted to a categorical variable oilshock to better capture the effects of the oil shock of 1973 on the mileage.
 
 # %% [markdown]
 # ### (d) Produce some of diagnostic plots of the linear regression fit as described in the lab. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?
@@ -175,9 +170,9 @@ anova_lm(results)
 
 # %%
 cols.remove("acceleration")
-X = MS(cols).fit_transform(Auto)
+X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
 results.summary()
 
@@ -186,14 +181,11 @@ results.summary()
 
 # %%
 cols.remove("displacement")
-X = MS(cols).fit_transform(Auto)
+X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
 results.summary()
-
-# %% [markdown]
-# #### We note that though the R<sup>2</sup> decreases by 0.001 to -.873, the Adjusted R<sup>2</sup> remains constant at 0.867.
 
 # %%
 display("Thus, the final model is the one below: ")
@@ -212,11 +204,11 @@ RSE = np.sqrt(RSS/results.df_model)
 RSE
 
 # %% [markdown]
-# #### Auto data rresults
+# #### Auto data results
 # | Quantity | Value |
 # | -------- | ------ |
-# | RSE | 12.28 |
-# | R<sup>2</sup> Adjusted | 
+# | RSE | 21.08 |
+# | R<sup>2</sup> Adjusted | 0.828 |
 #
 
 # %% [markdown]
