@@ -64,6 +64,8 @@ from ISLP.models import (ModelSpec as MS, summarize, poly)
 
 # %%
 Auto = load_data('Auto')
+Auto = Auto.sort_values(by=['year'], ascending=True)
+Auto.head()
 Auto.columns
 
 # %%
@@ -91,10 +93,9 @@ Auto.corr()
 # ### (c) Use the sm.OLS() function to perform a multiple linear regression with mpg as the response and all other variables except name as the predictors. Use the summarize() function to print the results. Comment on the output. For instance:
 
 # %% [markdown]
-# ## Convert cylinders, year and origin columns to categorical types
+# ## Convert year and origin columns to categorical types
 
 # %%
-Auto["cylinders"] = Auto["cylinders"].astype("category")
 Auto["origin"] = Auto["origin"].astype("category")
 Auto["year"] = Auto["year"].astype("category")
 Auto.describe()
@@ -130,7 +131,7 @@ Auto.boxplot(column="mpg", by=["oilshock", "origin"]);
 # %%
 Auto_os = Auto.drop(["year"], axis = 1)
 Auto_os.columns
-Auto_os = pd.get_dummies(Auto_os, columns=list(["cylinders", "origin"]), drop_first = True, dtype = np.uint8)
+Auto_os = pd.get_dummies(Auto_os, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
 Auto_os.columns
 
 # %%
@@ -175,17 +176,7 @@ formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
 results.summary()
-
-# %% [markdown]
-# #### From the modified model, it is evident that displacement is not statistically significant. This is, perhaps, because of the collinearity with number of cylinders. So we can drop it from the model as well.
-
-# %%
-cols.remove("displacement")
-X = MS(cols).fit_transform(Auto_os)
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
+anova_lm(results)
 
 # %%
 display("Thus, the final model is the one below: ")
@@ -201,18 +192,54 @@ TSS
 RSS = np.sum((y - results.fittedvalues) ** 2)
 RSS
 RSE = np.sqrt(RSS/results.df_model)
-RSE
+display("RSE " + str(RSE))
+display("R-squared adjusted : " + str(results.rsquared_adj)) 
+display("F-statistic : " + str(results.fvalue))
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
 
 # %% [markdown]
-# #### Auto data results
-# | Quantity | Value |
-# | -------- | ------ |
-# | RSE | 21.08 |
-# | R<sup>2</sup> Adjusted | 0.828 |
-#
+# There is some evidence of non-linearity and heteroskedasticity from the residuals plot above.
+
+# %% [markdown]
+# ##### Compute VIFs and List Comprehension
+
+# %%
+vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+vif
+("VIF Range:", np.min(vif), np.max(vif))
 
 # %% [markdown]
 # ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
+
+# %%
+X = MS(cols).fit_transform(Auto_os)
+formula = ' + '.join(cols)
+formula += " + " + "horsepower: weight"
+# the oil shock led to the Malaise era for American cars. While mileage increased, horsepower suffered
+formula += " + " + "horsepower: oilshock" 
+# American cars were roomier and heavier than their European and Japanese counterparts.
+# This should have led to less heavier cars with better mileage post the oil shock of 1973.
+# These two interactions should provide an indication if it's true
+formula += " + " + "weight: oilshock"
+formula += " + " + "horsepower: oilshock: weight"
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
+results = model.fit()
+results.summary()
+anova_lm(results)
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.

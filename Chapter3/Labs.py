@@ -211,7 +211,7 @@ Boston.plot.scatter("age", "medv");
 X = MS(["lstat","age"]).fit_transform(Boston)
 model1 = sm.OLS(y, X)
 results1 = model1.fit()
-summarize(results1)
+summarize(results1);
 
 # %%
 Boston["logage"] = np.log(Boston["age"])
