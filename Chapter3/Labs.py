@@ -24,7 +24,6 @@ def allDone():
   display(Audio(url=url, autoplay=True))
 
 
-
 # %% [markdown]
 # # Lab: Linear Regression
 

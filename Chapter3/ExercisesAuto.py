@@ -24,7 +24,6 @@ def allDone():
   display(Audio(url=url, autoplay=True))
 
 
-
 # %% [markdown]
 # # Applied : Auto dataset - Simple Linear Regression
 

@@ -24,7 +24,6 @@ def allDone():
   display(Audio(url=url, autoplay=True))
 
 
-
 # %% [markdown]
 # Import standard libraries
 

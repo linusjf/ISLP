@@ -24,7 +24,6 @@ def allDone():
   display(Audio(url=url, autoplay=True))
 
 
-
 # %%
 import numpy as np
 import matplotlib.pyplot as plt

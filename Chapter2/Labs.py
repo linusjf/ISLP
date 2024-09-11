@@ -25,7 +25,6 @@ def allDone():
   display(Audio(url=url, autoplay=True))
 
 
-
 # %% [markdown]
 # # Chapter 2 Lab
 

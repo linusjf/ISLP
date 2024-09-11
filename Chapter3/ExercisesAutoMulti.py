@@ -24,9 +24,8 @@ InteractiveShell.ast_node_interactivity = "all"
 from IPython.display import Audio, display
 
 def allDone():
-  display(Audio(url='https://sound.peal.io/ps/audios/000/000/537/original/woo_vu_luvub_dub_dub.wav', autoplay=True))
-## Insert whatever audio file you want above
-
+  url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
+  display(Audio(url=url, autoplay=True))
 
 
 # %% [markdown]
@@ -37,6 +36,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
+import seaborn as sns
 
 # %% [markdown]
 # ## New imports
@@ -98,6 +98,18 @@ Auto["cylinders"] = Auto["cylinders"].astype("category")
 Auto["origin"] = Auto["origin"].astype("category")
 Auto["year"] = Auto["year"].astype("category")
 Auto.describe()
+
+# %%
+sns.relplot(Auto, x="year", y="weight", col="origin", hue="cylinders", style="cylinders", estimator='mean', kind="line");
+
+# %% [markdown]
+# #### The weight of the 8-cylinder American made models show a decline from the highs of 1972. It can also be seen that American made cars are heavier than their European and Japanese counterparts especially in the most common models with 4 cylinders.
+
+# %%
+sns.relplot(Auto, x="year", y="mpg", col="origin", hue="cylinders", style="cylinders", estimator='mean', kind="line");
+
+# %% [markdown]
+# #### It can be seen that after the [oil shock of 1973](https://en.wikipedia.org/wiki/1973_oil_crisis) and the regulations and actions taken by the US government, the mileage for American made cars rose across all models. This was, however, matched by the European and Japanese models which were already lighter and more fuel efficient.
 
 # %% [markdown]
 # ### Encode categorical variables as dummy variables dropping the first to remove multicollinearity.
