@@ -216,6 +216,47 @@ vif
 ("VIF Range:", np.min(vif), np.max(vif))
 
 # %% [markdown]
+# #### There is evidence of high multicollinearity in the above predictors with cylinders and displacement exhibiting VIFs above 10.
+# #### We can drop one of the variables and check the VIFS once more. 
+
+# %%
+display("We drop displacement which has a VIF of " + str(np.max(vif)))
+
+# %%
+cols.remove("displacement")
+X = MS(cols).fit_transform(Auto_os)
+formula = ' + '.join(cols)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
+results = model.fit()
+results.summary()
+anova_lm(results)
+
+# %%
+vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+vif
+("VIF Range:", np.min(vif), np.max(vif))
+
+# %%
+display("We still have two variables with VIF above 5")
+display("Let's drop cylinders despite it having a slightly lower VIF than weight since that's consistent with our knowledge of horspower being a function of both cylinders and displacement")
+
+# %%
+cols.remove("cylinders")
+X = MS(cols).fit_transform(Auto_os)
+formula = ' + '.join(cols)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
+results = model.fit()
+results.summary()
+anova_lm(results)
+
+# %%
+vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+vif
+("VIF Range:", np.min(vif), np.max(vif))
+
+# %% [markdown]
 # ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
 
 # %%
