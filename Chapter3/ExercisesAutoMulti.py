@@ -37,6 +37,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
 import seaborn as sns
+import itertools
 
 # %% [markdown]
 # ## New imports
@@ -65,6 +66,7 @@ from ISLP.models import (ModelSpec as MS, summarize, poly)
 # %%
 Auto = load_data('Auto')
 Auto = Auto.sort_values(by=['year'], ascending=True)
+
 Auto.head()
 Auto.columns
 
@@ -72,6 +74,13 @@ Auto.columns
 Auto.shape
 
 # %%
+Auto.describe()
+
+# %%
+Auto["weight"] = Auto["weight"] - Auto["weight"].mean()
+Auto["horsepower"] = Auto["horsepower"] - Auto["horsepower"].mean()
+Auto["displacement"] = Auto["displacement"] - Auto["displacement"].mean()
+Auto["acceleration"] = Auto["acceleration"] - Auto["acceleration"].mean()
 Auto.describe()
 
 # %% [markdown]
@@ -249,6 +258,7 @@ model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
 results.summary()
 anova_lm(results)
+no_interactions = results
 
 # %%
 vals = [VIF(X,i) for i in range(1, X.shape[1])]
@@ -274,6 +284,7 @@ model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
 results.summary()
 anova_lm(results)
+simple_interactions = results
 
 # %%
 _, ax = subplots(figsize=(8,8))
@@ -281,6 +292,29 @@ ax.scatter(results.fittedvalues, results.resid)
 ax.set_xlabel("Fitted values for mpg")
 ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
+
+# %%
+X = MS(cols).fit_transform(Auto_os)
+formula = ' + '.join(cols)
+for a, b in itertools.combinations(cols,2):
+  formula += " + " + a + ":" + b
+# drop the origin_2:origin_3 interaction because of divide by zero error encountered
+formula += " - " + "origin_2:origin_3" 
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
+results = model.fit()
+results.summary()
+anova_lm(results)
+complex_interactions = results
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+anova_lm(no_interactions, simple_interactions, complex_interactions)
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
