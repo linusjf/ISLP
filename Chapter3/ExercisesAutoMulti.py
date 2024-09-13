@@ -150,7 +150,6 @@ Auto_os.columns.drop("mpg")
 # %%
 cols = list(Auto_os.columns)
 cols.remove("mpg")
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
@@ -180,7 +179,6 @@ anova_lm(results)
 
 # %%
 cols.remove("acceleration")
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
@@ -219,6 +217,7 @@ ax.axhline(0, c="k", ls="--");
 # ##### Compute VIFs and List Comprehension
 
 # %%
+X = MS(cols).fit_transform(Auto_os)
 vals = [VIF(X,i) for i in range(1, X.shape[1])]
 vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
 vif
@@ -233,7 +232,6 @@ display("We drop displacement which has a VIF of " + str(np.max(vif)))
 
 # %%
 cols.remove("displacement")
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
@@ -241,6 +239,7 @@ results.summary()
 anova_lm(results)
 
 # %%
+X = MS(cols).fit_transform(Auto_os)
 vals = [VIF(X,i) for i in range(1, X.shape[1])]
 vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
 vif
@@ -253,7 +252,6 @@ display("Also dropping weight drops the explainability of the model, i.e., R<sup
 
 # %%
 cols.remove("cylinders")
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
 results = model.fit()
@@ -262,6 +260,7 @@ anova_lm(results)
 no_interactions = results
 
 # %%
+X = MS(cols).fit_transform(Auto_os)
 vals = [VIF(X,i) for i in range(1, X.shape[1])]
 vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
 vif
@@ -271,7 +270,6 @@ vif
 # ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
 
 # %%
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 formula += " + " + "horsepower: weight"
 # the oil shock led to the Malaise era for American cars. While mileage increased, horsepower suffered
@@ -295,7 +293,6 @@ ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
 
 # %%
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 for a, b in itertools.combinations(cols,2):
   formula += " + " + a + ":" + b
@@ -335,7 +332,6 @@ anova_lm(no_interactions, simple_interactions, complex_interactions)
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
 
 # %%
-X = MS(cols).fit_transform(Auto_os)
 formula = ' + '.join(cols)
 formula += " + " + "horsepower: weight"
 formula += " + " + "horsepower: oilshock" 
@@ -360,13 +356,7 @@ Auto_sqrt["sqrt_horsepower"] = np.sqrt(Auto_sqrt["horsepower"])
 Auto_sqrt = Auto_sqrt.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
 cols = list(Auto_sqrt.columns)
 cols.remove("mpg")
-X = MS(cols).fit_transform(Auto_sqrt)
 formula = ' + '.join(cols)
-#formula += " + " + "sqrt_horsepower: sqrt_weight"
-#formula += " + " + "sqrt_horsepower: oilshock" 
-#formula += " + " + "sqrt_weight: oilshock"
-#formula += " + " + "sqrt_horsepower: oilshock: sqrt_weight"
-# Add higher order transformations for weight and horsepower
 model = smf.ols(f'mpg ~ {formula}', data=Auto_sqrt)
 results = model.fit()
 results.summary()
@@ -376,9 +366,6 @@ squareroot_transformations = results
 # %%
 anova_lm(no_interactions, squareroot_transformations)
 anova_lm( squareroot_transformations, simple_interactions)
-
-# %% [markdown]
-# While model squareroot_transformations provides a significantly better fit than model simple_interactions, its R<sup>2</sup> adjusted is lower than model simple_interactions' at 0.67.
 
 # %%
 cols = list(Auto_sqrt.columns)
@@ -400,7 +387,3 @@ anova_lm( simple_interactions, squareroot_transformations_interactions)
 
 # %%
 allDone()
-
-# %%
-
-# %%
