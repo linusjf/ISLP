@@ -334,9 +334,13 @@ anova_lm(no_interactions, simple_interactions, complex_interactions)
 # %%
 formula = ' + '.join(cols)
 formula += " + " + "horsepower: weight"
+formula += " + " + "I(horsepower**2): weight"
 formula += " + " + "horsepower: oilshock" 
+formula += " + " + "I(horsepower**2): oilshock"
 formula += " + " + "weight: oilshock"
+formula += " + " + "I(weight**2): oilshock"
 formula += " + " + "horsepower: oilshock: weight"
+formula += " + " + "I(horsepower**2): oilshock: I(weight**2)"
 # Add higher order transformations for weight and horsepower
 formula += " + " + "I(horsepower**2)"
 formula += " + " + "I(weight**2)"
@@ -348,6 +352,13 @@ squared_transformations = results
 
 # %%
 anova_lm(simple_interactions, squared_transformations)
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
 
 # %%
 Auto_sqrt = Auto_os
@@ -364,8 +375,14 @@ anova_lm(results)
 squareroot_transformations = results
 
 # %%
-anova_lm(no_interactions, squareroot_transformations)
 anova_lm( squareroot_transformations, simple_interactions)
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
 
 # %%
 cols = list(Auto_sqrt.columns)
@@ -383,7 +400,74 @@ squareroot_transformations_interactions = results
 
 # %%
 anova_lm(squareroot_transformations, squareroot_transformations_interactions)
-anova_lm( simple_interactions, squareroot_transformations_interactions)
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+Auto_log = Auto_os
+Auto_log["log_weight"] = np.sqrt(Auto_log["weight"])
+Auto_log["log_horsepower"] = np.sqrt(Auto_log["horsepower"])
+Auto_log = Auto_log.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
+cols = list(Auto_log.columns)
+cols.remove("mpg")
+formula = ' + '.join(cols)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_log)
+results = model.fit()
+results.summary()
+anova_lm(results)
+log_transformations = results
+
+# %%
+anova_lm( log_transformations, simple_interactions)
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+cols = list(Auto_log.columns)
+cols.remove("mpg")
+formula = ' + '.join(cols)
+formula += " + " + "log_horsepower: log_weight"
+formula += " + " + "log_horsepower: oilshock" 
+formula += " + " + "log_weight: oilshock"
+formula += " + " + "log_horsepower: oilshock: log_weight"
+model = smf.ols(f'mpg ~ {formula}', data=Auto_log)
+results = model.fit()
+results.summary()
+anova_lm(results)
+log_transformations_interactions = results
+
+# %%
+anova_lm(log_transformations, log_transformations_interactions)
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(results.fittedvalues, results.resid)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+display("We can conclude that the model with the most explainability of " + str(squared_transformations.rsquared_adj) + "is the model " +  squared_transformations.model.formula)
+
+# %%
+display("However, the simplest models are : " + log_transformations.model.formula + " and " + squareroot_transformations.model.formula + " with explainability of " + str(log_transformations.rsquared_adj) + " and " + str(squareroot_transformations.rsquared_adj) + " respectively.")
+display("In fact, log and sqrt transformations behave identically.")
+
+# %%
+display("If interactions need to be captured, the simplest model is : " + simple_interactions.model.formula + " with explainability of " + str(simple_interactions.rsquared_adj))
+
+# %%
+display("None of the models can fully get rid of the heteroskedasticity visible in the residuuals plot versus fitted values, though.")
 
 # %%
 allDone()
