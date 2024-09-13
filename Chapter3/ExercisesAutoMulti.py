@@ -77,10 +77,10 @@ Auto.shape
 Auto.describe()
 
 # %%
-Auto["weight"] = Auto["weight"] - Auto["weight"].mean()
-Auto["horsepower"] = Auto["horsepower"] - Auto["horsepower"].mean()
-Auto["displacement"] = Auto["displacement"] - Auto["displacement"].mean()
-Auto["acceleration"] = Auto["acceleration"] - Auto["acceleration"].mean()
+#Auto["weight"] = Auto["weight"] - Auto["weight"].mean()
+#Auto["horsepower"] = Auto["horsepower"] - Auto["horsepower"].mean()
+#Auto["displacement"] = Auto["displacement"] - Auto["displacement"].mean()
+#Auto["acceleration"] = Auto["acceleration"] - Auto["acceleration"].mean()
 Auto.describe()
 
 # %% [markdown]
@@ -333,6 +333,70 @@ anova_lm(no_interactions, simple_interactions, complex_interactions)
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
+
+# %%
+X = MS(cols).fit_transform(Auto_os)
+formula = ' + '.join(cols)
+formula += " + " + "horsepower: weight"
+formula += " + " + "horsepower: oilshock" 
+formula += " + " + "weight: oilshock"
+formula += " + " + "horsepower: oilshock: weight"
+# Add higher order transformations for weight and horsepower
+formula += " + " + "I(horsepower**2)"
+formula += " + " + "I(weight**2)"
+model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
+results = model.fit()
+results.summary()
+anova_lm(results)
+squared_transformations = results
+
+# %%
+anova_lm(simple_interactions, squared_transformations)
+
+# %%
+Auto_sqrt = Auto_os
+Auto_sqrt["sqrt_weight"] = np.sqrt(Auto_sqrt["weight"])
+Auto_sqrt["sqrt_horsepower"] = np.sqrt(Auto_sqrt["horsepower"])
+Auto_sqrt = Auto_sqrt.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
+cols = list(Auto_sqrt.columns)
+cols.remove("mpg")
+X = MS(cols).fit_transform(Auto_sqrt)
+formula = ' + '.join(cols)
+#formula += " + " + "sqrt_horsepower: sqrt_weight"
+#formula += " + " + "sqrt_horsepower: oilshock" 
+#formula += " + " + "sqrt_weight: oilshock"
+#formula += " + " + "sqrt_horsepower: oilshock: sqrt_weight"
+# Add higher order transformations for weight and horsepower
+model = smf.ols(f'mpg ~ {formula}', data=Auto_sqrt)
+results = model.fit()
+results.summary()
+anova_lm(results)
+squareroot_transformations = results
+
+# %%
+anova_lm(no_interactions, squareroot_transformations)
+anova_lm( squareroot_transformations, simple_interactions)
+
+# %% [markdown]
+# While model squareroot_transformations provides a significantly better fit than model simple_interactions, its R<sup>2</sup> adjusted is lower than model simple_interactions' at 0.67.
+
+# %%
+cols = list(Auto_sqrt.columns)
+cols.remove("mpg")
+formula = ' + '.join(cols)
+formula += " + " + "sqrt_horsepower: sqrt_weight"
+formula += " + " + "sqrt_horsepower: oilshock" 
+formula += " + " + "sqrt_weight: oilshock"
+formula += " + " + "sqrt_horsepower: oilshock: sqrt_weight"
+model = smf.ols(f'mpg ~ {formula}', data=Auto_sqrt)
+results = model.fit()
+results.summary()
+anova_lm(results)
+squareroot_transformations_interactions = results
+
+# %%
+anova_lm(squareroot_transformations, squareroot_transformations_interactions)
+anova_lm( simple_interactions, squareroot_transformations_interactions)
 
 # %%
 allDone()
