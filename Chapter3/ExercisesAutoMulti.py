@@ -249,6 +249,7 @@ vif
 # %%
 display("We still have two variables with VIF above 5")
 display("Let's drop cylinders despite it having a slightly lower VIF than weight since that's consistent with our knowledge of horspower being a function of both cylinders and displacement")
+display("Also dropping weight drops the explainability of the model, i.e., R<sup>2</sup> by 10 percentage points.")
 
 # %%
 cols.remove("cylinders")
@@ -310,6 +311,20 @@ complex_interactions = results
 _, ax = subplots(figsize=(8,8))
 ax.scatter(results.fittedvalues, results.resid)
 ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(Auto_os["weight"], results.resid)
+ax.set_xlabel("Weight")
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--");
+
+# %%
+_, ax = subplots(figsize=(8,8))
+ax.scatter(Auto_os["horsepower"], results.resid)
+ax.set_xlabel("Horsepower")
 ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
 
