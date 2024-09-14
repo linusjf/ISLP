@@ -34,6 +34,10 @@ def allDone():
 # %%
 import numpy as np
 import pandas as pd
+pd.set_option('display.max_rows', 1000)
+pd.set_option('display.max_columns', 1000)
+pd.set_option('display.width', 1000)
+pd.set_option("display.max.colwidth", None)
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
 import seaborn as sns
@@ -66,7 +70,6 @@ from ISLP.models import (ModelSpec as MS, summarize, poly)
 # %%
 Auto = load_data('Auto')
 Auto = Auto.sort_values(by=['year'], ascending=True)
-
 Auto.head()
 Auto.columns
 
@@ -74,13 +77,6 @@ Auto.columns
 Auto.shape
 
 # %%
-Auto.describe()
-
-# %%
-#Auto["weight"] = Auto["weight"] - Auto["weight"].mean()
-#Auto["horsepower"] = Auto["horsepower"] - Auto["horsepower"].mean()
-#Auto["displacement"] = Auto["displacement"] - Auto["displacement"].mean()
-#Auto["acceleration"] = Auto["acceleration"] - Auto["acceleration"].mean()
 Auto.describe()
 
 # %% [markdown]
@@ -145,7 +141,6 @@ Auto_os.columns
 
 # %%
 y = Auto_os["mpg"]
-Auto_os.columns.drop("mpg")
 
 # %%
 cols = list(Auto_os.columns)
@@ -186,8 +181,7 @@ results.summary()
 anova_lm(results)
 
 # %%
-display("Thus, the final model is the one below: ")
-display("mpg ~ " + formula)
+display("The above results suggest that cylnders can be dropped from the model: mpg ~ " + formula + " since the linear regression coefficient is not significant.")
 
 
 # %% [markdown]
@@ -214,7 +208,7 @@ ax.axhline(0, c="k", ls="--");
 # There is some evidence of non-linearity and heteroskedasticity from the residuals plot above.
 
 # %% [markdown]
-# ##### Compute VIFs and List Comprehension
+# ##### Compute VIFs
 
 # %%
 X = MS(cols).fit_transform(Auto_os)
@@ -248,9 +242,11 @@ vif
 # %%
 display("We still have two variables with VIF above 5")
 display("Let's drop cylinders despite it having a slightly lower VIF than weight since that's consistent with our knowledge of horspower being a function of both cylinders and displacement")
-display("Also dropping weight drops the explainability of the model, i.e., R<sup>2</sup> by 10 percentage points.")
+display("Also. its coefficient in the linear regression model is not statistically significant.")
+display("Dropping weight reduces the explainability of the model, i.e., R<sup>2</sup> by 10 percentage points.")
 
 # %%
+models = []
 cols.remove("cylinders")
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
@@ -258,6 +254,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 no_interactions = results
+models.append({"name": "no_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 X = MS(cols).fit_transform(Auto_os)
@@ -284,6 +281,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 simple_interactions = results
+models.append({"name": "simple_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 _, ax = subplots(figsize=(8,8))
@@ -303,6 +301,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 complex_interactions = results
+models.append({"name": "complex_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 _, ax = subplots(figsize=(8,8))
@@ -326,7 +325,12 @@ ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
 
 # %%
+
+# %%
 anova_lm(no_interactions, simple_interactions, complex_interactions)
+
+# %% [markdown]
+# + We can see that the complexinteractions model does not add to the explainability of the model.
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
@@ -349,6 +353,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 squared_transformations = results
+models.append({"name": "squared_transformation", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 anova_lm(simple_interactions, squared_transformations)
@@ -361,7 +366,7 @@ ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
 
 # %%
-Auto_sqrt = Auto_os
+Auto_sqrt = Auto_os.copy(deep=True)
 Auto_sqrt["sqrt_weight"] = np.sqrt(Auto_sqrt["weight"])
 Auto_sqrt["sqrt_horsepower"] = np.sqrt(Auto_sqrt["horsepower"])
 Auto_sqrt = Auto_sqrt.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
@@ -373,6 +378,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 squareroot_transformations = results
+models.append({"name": "squareroot_transformations", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 anova_lm( squareroot_transformations, simple_interactions)
@@ -397,6 +403,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 squareroot_transformations_interactions = results
+models.append({"name": "squareroot_transformations_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 anova_lm(squareroot_transformations, squareroot_transformations_interactions)
@@ -409,9 +416,9 @@ ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
 
 # %%
-Auto_log = Auto_os
-Auto_log["log_weight"] = np.sqrt(Auto_log["weight"])
-Auto_log["log_horsepower"] = np.sqrt(Auto_log["horsepower"])
+Auto_log = Auto_os.copy(deep=True)
+Auto_log["log_weight"] = np.log(Auto_log["weight"])
+Auto_log["log_horsepower"] = np.log(Auto_log["horsepower"])
 Auto_log = Auto_log.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
 cols = list(Auto_log.columns)
 cols.remove("mpg")
@@ -421,6 +428,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 log_transformations = results
+models.append({"name": "log_transformations", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 anova_lm( log_transformations, simple_interactions)
@@ -445,6 +453,7 @@ results = model.fit()
 results.summary()
 anova_lm(results)
 log_transformations_interactions = results
+models.append({"name": "log_transformations_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 anova_lm(log_transformations, log_transformations_interactions)
@@ -457,17 +466,23 @@ ax.set_ylabel("Residuals")
 ax.axhline(0, c="k", ls="--");
 
 # %%
-display("We can conclude that the model with the most explainability of " + str(squared_transformations.rsquared_adj) + "is the model " +  squared_transformations.model.formula)
+display("We can conclude that the model with the most explainability of " + str(squared_transformations.rsquared_adj) + " is the model " +  squared_transformations.model.formula)
 
 # %%
-display("However, the simplest models are : " + log_transformations.model.formula + " and " + squareroot_transformations.model.formula + " with explainability of " + str(log_transformations.rsquared_adj) + " and " + str(squareroot_transformations.rsquared_adj) + " respectively.")
-display("In fact, log and sqrt transformations behave identically.")
+display("However, the simplest model without interactions is : " + log_transformations.model.formula + " with explainability of " + str(log_transformations.rsquared_adj)  + ".")
 
 # %%
 display("If interactions need to be captured, the simplest model is : " + simple_interactions.model.formula + " with explainability of " + str(simple_interactions.rsquared_adj))
 
 # %%
 display("None of the models can fully get rid of the heteroskedasticity visible in the residuuals plot versus fitted values, though.")
+
+# %%
+pd.DataFrame(models)
+
+# %% [markdown]
+# ### We can also test if there are two regimes that contribute to the heteroskedasticity by running separate regressions for pre-oilshock and post-oilshock.
+# ### We will stick with the sparse model of mpg ~ horsepower + weight + oilshock + origin_2 + origin_3
 
 # %%
 allDone()
