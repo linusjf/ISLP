@@ -50,7 +50,7 @@ import itertools
 import statsmodels.api as sm
 
 # %% [markdown]
-# ## Import statsmodel.objects
+# ## Import statsmodels.objects
 
 # %%
 from statsmodels.stats.outliers_influence import variance_inflation_factor as VIF
@@ -479,10 +479,6 @@ display("None of the models can fully get rid of the heteroskedasticity visible 
 
 # %%
 pd.DataFrame(models)
-
-# %% [markdown]
-# ### We can also test if there are two regimes that contribute to the heteroskedasticity by running separate regressions for pre-oilshock and post-oilshock.
-# ### We will stick with the sparse model of mpg ~ horsepower + weight + oilshock + origin_2 + origin_3
 
 # %%
 allDone()
