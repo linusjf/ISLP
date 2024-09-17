@@ -76,6 +76,35 @@ from ISLP import models
 from ISLP import load_data
 from ISLP.models import (ModelSpec as MS, summarize, poly)
 
+
+# %% [markdown]
+# #### Define user functions
+
+# %% [markdown]
+# ##### Display residuals plot function
+
+# %%
+def display_residuals_plot(results):
+  _, ax = subplots(figsize=(8,8))
+  ax.scatter(results.fittedvalues, results.resid)
+  ax.set_xlabel("Fitted values for " + results.model.endog_names)
+  ax.set_ylabel("Residuals")
+  ax.axhline(0, c="k", ls="--");
+
+
+# %% [markdown]
+# ##### Identify least statistically significant variable or column
+
+# %%
+def identify_least_significant_feature(results, alpha=0.05):
+  if results.pvalues.iloc[np.argmax(results.pvalues)] > alpha:
+    variable = results.pvalues.index[np.argmax(results.pvalues)]
+    display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(results.pvalues.iloc[np.argmax(results.pvalues)]))
+    display("Using the backward methodology, we drop " + variable + " from the new model")
+  else:
+    display("No variables are statistically insignificant.")
+
+
 # %% [markdown]
 # #### Set level of significance (alpha)
 
@@ -151,17 +180,10 @@ anova_lm(results)
 # #### Residual plot for all variables model for pre-oil shock
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+display_residuals_plot(results)
 
 # %%
-if results.pvalues.iloc[np.argmax(results.pvalues)] > LOS_Alpha:
-  variable = results.pvalues.index[np.argmax(results.pvalues)]
-  display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(results.pvalues.iloc[np.argmax(results.pvalues)]))
-  display("Using the backward methodology, we drop " + variable + " from the new model")
+identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
 # #### Linear Regression after dropping displacement in pre-oil shock.
@@ -178,17 +200,10 @@ anova_lm(results)
 # #### Residual plot for model that drops displacement for pre-oil shock
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+display_residuals_plot(results)
 
 # %%
-if results.pvalues.iloc[np.argmax(results.pvalues)] > LOS_Alpha:
-  variable = results.pvalues.index[np.argmax(results.pvalues)]
-  display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(results.pvalues.iloc[np.argmax(results.pvalues)]))
-  display("Using the backward methodology, we drop " + variable + " from the new model")
+identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
 # #### Linear Regression after dropping displacement and acceleration in pre-oil shock.
@@ -205,17 +220,10 @@ anova_lm(results)
 # #### Residual plot for model that drops displacement and acceleration for pre-oil shock
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+display_residuals_plot(results)
 
 # %%
-if results.pvalues.iloc[np.argmax(results.pvalues)] > LOS_Alpha:
-  variable = results.pvalues.index[np.argmax(results.pvalues)]
-  display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(results.pvalues.iloc[np.argmax(results.pvalues)]))
-  display("Using the backward methodology, we drop " + variable + " from the new model")
+identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
 # #### Linear Regression after dropping displacement, acceleration and cylinders in pre-oil shock.
@@ -232,17 +240,10 @@ anova_lm(results)
 # #### Residual plot for model that drops displacement, acceleration and cylinders for pre-oil shock
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+display_residuals_plot(results)
 
 # %%
-if results.pvalues.iloc[np.argmax(results.pvalues)] > LOS_Alpha:
-  variable = results.pvalues.index[np.argmax(results.pvalues)]
-  display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(results.pvalues.iloc[np.argmax(results.pvalues)]))
-  display("Using the backward methodology, we drop " + variable + " from the new model")
+identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
 # #### Linear Regression after dropping displacement, acceleration, cylinders and horsepower in pre-oil shock.
@@ -250,6 +251,22 @@ if results.pvalues.iloc[np.argmax(results.pvalues)] > LOS_Alpha:
 # %%
 cols.remove("horsepower")
 formula = ' + '.join(cols)
+model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
+results = model.fit()
+results.summary()
+anova_lm(results)
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+display("We don't want to drop the intercept. So we center the weight and year variables instead")
+
+# %%
+formula = ' + '.join(cols)
+# center Xs
+Auto_preos["weight"] = Auto_preos["weight"] - np.mean(Auto_preos["weight"])
+Auto_preos["year"] = Auto_preos["year"] - np.mean(Auto_preos["year"])
 model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
 results = model.fit()
 results.summary()
@@ -274,11 +291,7 @@ anova_lm(results)
 # #### Residual plot for all variables model for post-oil shock
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+display_residuals_plot(results)
 
 # %% [markdown]
 # ## Finished
