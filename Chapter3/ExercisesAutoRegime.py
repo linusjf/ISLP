@@ -37,11 +37,12 @@ def allDone():
   display(Audio(url=url, autoplay=True))
 
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# %% [markdown]
 # #### Import standard libraries
 
 # %%
 import numpy as np
+from scipy import stats
 import pandas as pd
 pd.set_option('display.max_rows', 1000)
 pd.set_option('display.max_columns', 1000)
@@ -52,13 +53,13 @@ from matplotlib.pyplot import subplots
 import seaborn as sns
 import itertools
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# %% [markdown]
 # #### Statsmodels imports
 
 # %%
 import statsmodels.api as sm
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# %% [markdown]
 # #### Import statsmodels.objects
 
 # %%
@@ -66,6 +67,7 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor as VI
 from statsmodels.stats.outliers_influence import summary_table
 from statsmodels.stats.anova import anova_lm
 import statsmodels.formula.api as smf
+from patsy import dmatrices
 
 # %% [markdown]
 # #### Import ISLP objects
@@ -97,12 +99,43 @@ def display_residuals_plot(results):
 
 # %%
 def identify_least_significant_feature(results, alpha=0.05):
-  if results.pvalues.iloc[np.argmax(results.pvalues)] > alpha:
+  highest_pvalue = results.pvalues.iloc[np.argmax(results.pvalues)]
+  if highest_pvalue > alpha:
     variable = results.pvalues.index[np.argmax(results.pvalues)]
-    display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(results.pvalues.iloc[np.argmax(results.pvalues)]))
+    display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(highest_pvalue))
     display("Using the backward methodology, we drop " + variable + " from the new model")
   else:
     display("No variables are statistically insignificant.")
+    display("The model " + results.model.formula + " cannot be pruned further.")
+
+
+# %% [markdown]
+# ##### Calculate [Variance Inflation Factors(VIFs) for features in a model](https://www.statology.org/how-to-calculate-vif-in-python/)
+
+# %%
+def calculate_VIFs(formula, df):
+  # find design matrix for linear regression model using formula and dataframe
+  _, X = dmatrices(formula, data=df, return_type='dataframe')
+  # calculate VIF for each explanatory variable
+  vif = pd.DataFrame()
+  vif['VIF'] = [VIF(X.values, i) for i in range(1, X.shape[1])]
+  vif['Feature'] = X.columns[1:]
+  vif = vif.set_index(["Feature"])
+  return vif
+
+
+# %% [markdown]
+# ##### Identify feature with highest VIF
+
+# %%
+def identify_highest_VIF_feature(vifdf, threshold=5):
+  highest_vif = vifdf["VIF"].iloc[np.argmax(vifdf)]
+  if highest_vif > threshold:
+    variable = vifdf.index[np.argmax(vifdf["VIF"])]
+    display("We find the highest VIF in this model is " + variable + " with a VIF of " + str(highest_vif))
+    display("Hence, we drop " + variable + " from the model to be fitted.")
+  else:
+    display("No variables are significantly collinear.")
 
 
 # %% [markdown]
@@ -150,26 +183,75 @@ display("If you look at the two datasets as displayed above, it's evident that t
 display(Auto_preos.mean(numeric_only=True), Auto_postos.mean(numeric_only=True))
 display("Mileage increased, number of cylinders decreased, displacement decreased, horsepower decreased, weight decreased and time to acceleration increased thus indicating that less powerful and less performant cars were produced in the immediate period after the oil shock of 1973.")
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# %% [markdown]
 # #### Encode categorical variables as dummy variables dropping the first to remove multicollinearity.
 
 # %%
 Auto_preos = pd.get_dummies(Auto_preos, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
-#Auto_preos = Auto_preos.drop(columns=["cylinders","displacement","acceleration"])
 Auto_preos.columns
 Auto_postos = pd.get_dummies(Auto_postos, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
-#Auto_postos = Auto_postos.drop(columns=["cylinders","displacement","acceleration"])
 Auto_postos.columns
 
 # %% [markdown]
 # ### Analysis for pre-oil shock model
 
 # %% [markdown]
-# #### Linear Regression for all variables in pre-oil shock
+# #### Standardize numeric variables in the model
+
+# %%
+# standardizing dataframe
+Auto_preos["mpg"] = (Auto_preos["mpg"] - Auto_preos["mpg"].mean())/Auto_preos["mpg"].std()
+Auto_preos["cylinders"] = (Auto_preos["cylinders"] - Auto_preos["cylinders"].mean())/Auto_preos["cylinders"].std()
+Auto_preos["horsepower"] = (Auto_preos["horsepower"] - Auto_preos["horsepower"].mean())/Auto_preos["horsepower"].std()
+Auto_preos["weight"] = (Auto_preos["weight"] - Auto_preos["weight"].mean())/Auto_preos["weight"].std()
+Auto_preos["acceleration"] = (Auto_preos["acceleration"] - Auto_preos["acceleration"].mean())/Auto_preos["acceleration"].std()
+Auto_preos["year"] = (Auto_preos["year"] - Auto_preos["year"].mean())/Auto_preos["year"].std()
+Auto_preos["displacement"] = (Auto_preos["displacement"] - Auto_preos["displacement"].mean())/Auto_preos["displacement"].std()
+Auto_preos.describe()
+
+# %% [markdown]
+# #### Test for multicollinearity using correlation matrix and variance inflation factors
+
+# %%
+Auto_preos.corr()
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg", Auto_preos)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement", Auto_preos)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement - weight ", Auto_preos)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement - weight - cylinders ", Auto_preos)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %% [markdown]
+# #### Linear Regression for mpg ~ horsepower + acceleration + year + origin_Europe + origin_Japan
 
 # %%
 cols = list(Auto_preos.columns)
 cols.remove("mpg")
+cols.remove("displacement")
+cols.remove("cylinders")
+cols.remove("weight")
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
 results = model.fit()
@@ -186,10 +268,13 @@ display_residuals_plot(results)
 identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
-# #### Linear Regression after dropping displacement in pre-oil shock.
+# We do not wish to drop the Intercept. The next least significant variable is year. We drop this from the model.
+
+# %% [markdown]
+# #### Linear Regression after dropping year in pre-oil shock. The model now is mpg ~ horsepower + acceleration + origin_Europe + origin_Japan
 
 # %%
-cols.remove("displacement")
+cols.remove("year")
 formula = ' + '.join(cols)
 model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
 results = model.fit()
@@ -197,80 +282,13 @@ results.summary()
 anova_lm(results)
 
 # %% [markdown]
-# #### Residual plot for model that drops displacement for pre-oil shock
+# #### Residual plot for model that drops year for pre-oil shock
 
 # %%
 display_residuals_plot(results)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
-
-# %% [markdown]
-# #### Linear Regression after dropping displacement and acceleration in pre-oil shock.
-
-# %%
-cols.remove("acceleration")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
-results = model.fit()
-results.summary()
-anova_lm(results)
-
-# %% [markdown]
-# #### Residual plot for model that drops displacement and acceleration for pre-oil shock
-
-# %%
-display_residuals_plot(results)
-
-# %%
-identify_least_significant_feature(results, alpha=LOS_Alpha)
-
-# %% [markdown]
-# #### Linear Regression after dropping displacement, acceleration and cylinders in pre-oil shock.
-
-# %%
-cols.remove("cylinders")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
-results = model.fit()
-results.summary()
-anova_lm(results)
-
-# %% [markdown]
-# #### Residual plot for model that drops displacement, acceleration and cylinders for pre-oil shock
-
-# %%
-display_residuals_plot(results)
-
-# %%
-identify_least_significant_feature(results, alpha=LOS_Alpha)
-
-# %% [markdown]
-# #### Linear Regression after dropping displacement, acceleration, cylinders and horsepower in pre-oil shock.
-
-# %%
-cols.remove("horsepower")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
-results = model.fit()
-results.summary()
-anova_lm(results)
-
-# %%
-identify_least_significant_feature(results, alpha=LOS_Alpha)
-
-# %%
-display("We don't want to drop the intercept. So we center the weight and year variables instead")
-
-# %%
-formula = ' + '.join(cols)
-# center Xs
-Auto_preos["weight"] = Auto_preos["weight"] - np.mean(Auto_preos["weight"])
-Auto_preos["year"] = Auto_preos["year"] - np.mean(Auto_preos["year"])
-model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
-results = model.fit()
-results.summary()
-anova_lm(results)
 
 # %% [markdown]
 # ### Analysis for post Oil Shock
