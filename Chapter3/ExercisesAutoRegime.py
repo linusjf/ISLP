@@ -70,7 +70,7 @@ from statsmodels.stats.anova import anova_lm
 import statsmodels.formula.api as smf
 from patsy import dmatrices
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # #### Import ISLP objects
 
 # %%
@@ -100,10 +100,12 @@ def display_residuals_plot(results):
 
 # %%
 def identify_least_significant_feature(results, alpha=0.05):
-  highest_pvalue = results.pvalues.iloc[np.argmax(results.pvalues)]
+  index = np.argmax(results.pvalues)
+  highest_pvalue = results.pvalues.iloc[index]
   if highest_pvalue > alpha:
-    variable = results.pvalues.index[np.argmax(results.pvalues)]
-    display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(highest_pvalue))
+    variable = results.pvalues.index[index]
+    coeff = results.params.iloc[index]
+    display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(highest_pvalue) + " and a coefficient of " + str(coeff))
     display("Using the backward methodology, we drop " + variable + " from the new model")
   else:
     display("No variables are statistically insignificant.")
