@@ -31,3 +31,7 @@ jupyter lab
 ## Deactivate virtual environment
 
 deactivate
+
+### Additional packages installed to help with EDA
+
+<https://www.nb-data.com/p/python-packages-for-automated-eda>
