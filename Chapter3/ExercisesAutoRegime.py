@@ -48,6 +48,7 @@ pd.set_option('display.max_rows', 1000)
 pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
 pd.set_option("display.max.colwidth", None)
+from pandas.api.types import is_numeric_dtype
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import subplots
 import seaborn as sns
@@ -139,6 +140,28 @@ def identify_highest_VIF_feature(vifdf, threshold=5):
 
 
 # %% [markdown]
+# ##### Function to standardize numeric columns
+
+# %%
+def standardize(series):
+  if is_numeric_dtype(series):
+     return stats.zscore(series)
+  return series
+
+
+# %% [markdown]
+# ##### Function to produce linear regression analysis
+
+# %%
+def perform_analysis(response, formula, df):
+  model = smf.ols(f'{response} ~ {formula}', data=df)
+  results = model.fit()
+  display(results.summary())
+  display(anova_lm(results))
+  return results
+
+
+# %% [markdown]
 # #### Set level of significance (alpha)
 
 # %%
@@ -156,16 +179,16 @@ Auto = Auto.dropna()
 Auto.shape
 Auto.describe()
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
-# #### Convert year and origin columns to categorical types
+# %% [markdown]
+# #### Convert origin to categorical type
 
 # %%
 Auto["origin"] = Auto["origin"].astype("category")
 Auto['origin'] = Auto['origin'].cat.rename_categories({1:'America', 2:'Europe', 3:'Japan'})
 Auto.describe()
 
-# %%
-## Create two datasets based on whether the car models have been exposed to the 1973 oil shock or not
+# %% [markdown]
+# ## Create two datasets based on whether the car models have been exposed to the 1973 oil shock or not
 
 # %%
 Auto_preos = Auto[Auto["year"] <= 76]
@@ -184,6 +207,18 @@ display(Auto_preos.mean(numeric_only=True), Auto_postos.mean(numeric_only=True))
 display("Mileage increased, number of cylinders decreased, displacement decreased, horsepower decreased, weight decreased and time to acceleration increased thus indicating that less powerful and less performant cars were produced in the immediate period after the oil shock of 1973.")
 
 # %% [markdown]
+# #### Standardize numeric variables in the model
+
+# %%
+# standardizing dataframes
+Auto_preos = Auto_preos.apply(standardize)
+Auto_postos = Auto_postos.apply(standardize)
+Auto_preos.head()
+Auto_postos.head()
+Auto_preos.describe()
+Auto_postos.describe()
+
+# %% [markdown]
 # #### Encode categorical variables as dummy variables dropping the first to remove multicollinearity.
 
 # %%
@@ -196,24 +231,10 @@ Auto_postos.columns
 # ### Analysis for pre-oil shock model
 
 # %% [markdown]
-# #### Standardize numeric variables in the model
-
-# %%
-# standardizing dataframe
-Auto_preos["mpg"] = (Auto_preos["mpg"] - Auto_preos["mpg"].mean())/Auto_preos["mpg"].std()
-Auto_preos["cylinders"] = (Auto_preos["cylinders"] - Auto_preos["cylinders"].mean())/Auto_preos["cylinders"].std()
-Auto_preos["horsepower"] = (Auto_preos["horsepower"] - Auto_preos["horsepower"].mean())/Auto_preos["horsepower"].std()
-Auto_preos["weight"] = (Auto_preos["weight"] - Auto_preos["weight"].mean())/Auto_preos["weight"].std()
-Auto_preos["acceleration"] = (Auto_preos["acceleration"] - Auto_preos["acceleration"].mean())/Auto_preos["acceleration"].std()
-Auto_preos["year"] = (Auto_preos["year"] - Auto_preos["year"].mean())/Auto_preos["year"].std()
-Auto_preos["displacement"] = (Auto_preos["displacement"] - Auto_preos["displacement"].mean())/Auto_preos["displacement"].std()
-Auto_preos.describe()
-
-# %% [markdown]
 # #### Test for multicollinearity using correlation matrix and variance inflation factors
 
 # %%
-Auto_preos.corr()
+Auto_preos.corr(numeric_only=True)
 
 # %%
 vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg", Auto_preos)
@@ -253,22 +274,10 @@ cols.remove("displacement")
 cols.remove("cylinders")
 cols.remove("weight")
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
-results = model.fit()
-results.summary()
-anova_lm(results)
-
-# %% [markdown]
-# #### Residual plot for all variables model for pre-oil shock
-
-# %%
-display_residuals_plot(results)
+results = perform_analysis("mpg",formula,Auto_preos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
-
-# %% [markdown]
-# We do not wish to drop the Intercept. The next least significant variable is year. We drop this from the model.
 
 # %% [markdown]
 # #### Linear Regression after dropping year in pre-oil shock. The model now is mpg ~ horsepower + acceleration + origin_Europe + origin_Japan
@@ -276,19 +285,16 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %%
 cols.remove("year")
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_preos)
-results = model.fit()
-results.summary()
-anova_lm(results)
+results = perform_analysis("mpg",formula,Auto_preos)
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
 # #### Residual plot for model that drops year for pre-oil shock
 
 # %%
 display_residuals_plot(results)
-
-# %%
-identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
 # ### Analysis for post Oil Shock
@@ -300,10 +306,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 cols = list(Auto_postos.columns)
 cols.remove("mpg")
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_postos)
-results = model.fit()
-results.summary()
-anova_lm(results)
+results = perform_analysis("mpg",formula,Auto_postos)
 
 # %% [markdown]
 # #### Residual plot for all variables model for post-oil shock
