@@ -21,7 +21,7 @@
 # %% [markdown]
 # ### Imports for python objects and libraries
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
+# %% [markdown]
 # #### Set up IPython libraries for customizing notebook display
 
 # %%
@@ -42,15 +42,12 @@ def allDone():
 
 # %%
 import numpy as np
-from scipy import stats
 import pandas as pd
 pd.set_option('display.max_rows', 1000)
 pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
 pd.set_option("display.max.colwidth", None)
-from pandas.api.types import is_numeric_dtype
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import subplots
 import seaborn as sns
 import itertools
 
@@ -64,13 +61,10 @@ import statsmodels.api as sm
 # #### Import statsmodels.objects
 
 # %%
-from statsmodels.stats.outliers_influence import variance_inflation_factor as VIF
 from statsmodels.stats.outliers_influence import summary_table
-from statsmodels.stats.anova import anova_lm
-import statsmodels.formula.api as smf
-from patsy import dmatrices
 
-# %% [markdown] jp-MarkdownHeadingCollapsed=true
+
+# %% [markdown]
 # #### Import ISLP objects
 
 # %%
@@ -79,89 +73,16 @@ from ISLP import models
 from ISLP import load_data
 from ISLP.models import (ModelSpec as MS, summarize, poly)
 
-
 # %% [markdown]
-# #### Define user functions
-
-# %% [markdown]
-# ##### Display residuals plot function
+# #### Import user functions
 
 # %%
-def display_residuals_plot(results):
-  _, ax = subplots(figsize=(8,8))
-  ax.scatter(results.fittedvalues, results.resid)
-  ax.set_xlabel("Fitted values for " + results.model.endog_names)
-  ax.set_ylabel("Residuals")
-  ax.axhline(0, c="k", ls="--");
-
-
-# %% [markdown]
-# ##### Identify least statistically significant variable or column
-
-# %%
-def identify_least_significant_feature(results, alpha=0.05):
-  index = np.argmax(results.pvalues)
-  highest_pvalue = results.pvalues.iloc[index]
-  if highest_pvalue > alpha:
-    variable = results.pvalues.index[index]
-    coeff = results.params.iloc[index]
-    display("We find the least significant variable in this model is " + variable + " with a p-value of " + str(highest_pvalue) + " and a coefficient of " + str(coeff))
-    display("Using the backward methodology, we drop " + variable + " from the new model")
-  else:
-    display("No variables are statistically insignificant.")
-    display("The model " + results.model.formula + " cannot be pruned further.")
-
-
-# %% [markdown]
-# ##### Calculate [Variance Inflation Factors(VIFs) for features in a model](https://www.statology.org/how-to-calculate-vif-in-python/)
-
-# %%
-def calculate_VIFs(formula, df):
-  # find design matrix for linear regression model using formula and dataframe
-  _, X = dmatrices(formula, data=df, return_type='dataframe')
-  # calculate VIF for each explanatory variable
-  vif = pd.DataFrame()
-  vif['VIF'] = [VIF(X.values, i) for i in range(1, X.shape[1])]
-  vif['Feature'] = X.columns[1:]
-  vif = vif.set_index(["Feature"])
-  return vif
-
-
-# %% [markdown]
-# ##### Identify feature with highest VIF
-
-# %%
-def identify_highest_VIF_feature(vifdf, threshold=5):
-  highest_vif = vifdf["VIF"].iloc[np.argmax(vifdf)]
-  if highest_vif > threshold:
-    variable = vifdf.index[np.argmax(vifdf["VIF"])]
-    display("We find the highest VIF in this model is " + variable + " with a VIF of " + str(highest_vif))
-    display("Hence, we drop " + variable + " from the model to be fitted.")
-  else:
-    display("No variables are significantly collinear.")
-
-
-# %% [markdown]
-# ##### Function to standardize numeric columns
-
-# %%
-def standardize(series):
-  if is_numeric_dtype(series):
-     return stats.zscore(series)
-  return series
-
-
-# %% [markdown]
-# ##### Function to produce linear regression analysis
-
-# %%
-def perform_analysis(response, formula, df):
-  model = smf.ols(f'{response} ~ {formula}', data=df)
-  results = model.fit()
-  display(results.summary())
-  display(anova_lm(results))
-  return results
-
+from userfuncs import display_residuals_plot
+from userfuncs import identify_least_significant_feature
+from userfuncs import calculate_VIFs
+from userfuncs import identify_highest_VIF_feature
+from userfuncs import standardize
+from userfuncs import perform_analysis
 
 # %% [markdown]
 # #### Set level of significance (alpha)
