@@ -11,6 +11,7 @@ import statsmodels.formula.api as smf
 
 # Display residuals plot function
 def display_residuals_plot(results):
+    """Display residuals plot"""
     _, ax = subplots(figsize=(8, 8))
     ax.scatter(results.fittedvalues, results.resid)
     ax.set_xlabel("Fitted values for " + results.model.endog_names)
@@ -20,6 +21,7 @@ def display_residuals_plot(results):
 
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):
+    """Identify least significant feature"""
     index = np.argmax(results.pvalues)
     highest_pvalue = results.pvalues.iloc[index]
     if highest_pvalue > alpha:
@@ -36,9 +38,12 @@ def identify_least_significant_feature(results, alpha=0.05):
               " cannot be pruned further.")
 
 
-# Calculate [Variance Inflation Factors(VIFs) for features in a model](https://www.statology.org/how-to-calculate-vif-in-python/)
+# Calculate [Variance Inflation Factors(VIFs) for features
+# in a model](https://www.statology.org/how-to-calculate-vif-in-python/)
 def calculate_VIFs(formula, df):
-    # find design matrix for linear regression model using formula and dataframe
+    """Calculate VIFs"""
+    # find design matrix for linear regression model using
+    # formula and dataframe
     _, X = dmatrices(formula, data=df, return_type='dataframe')
     # calculate VIF for each explanatory variable
     vif = pd.DataFrame()
@@ -50,6 +55,7 @@ def calculate_VIFs(formula, df):
 
 # Identify feature with highest VIF
 def identify_highest_VIF_feature(vifdf, threshold=5):
+    """Identify highest VIF feature"""
     highest_vif = vifdf["VIF"].iloc[np.argmax(vifdf)]
     if highest_vif > threshold:
         variable = vifdf.index[np.argmax(vifdf["VIF"])]
@@ -62,14 +68,16 @@ def identify_highest_VIF_feature(vifdf, threshold=5):
 
 # Function to standardize numeric columns
 def standardize(series):
+    """Standardize"""
     if is_numeric_dtype(series):
         return stats.zscore(series)
     return series
 
 
 # Function to produce linear regression analysis
-def perform_analysis(response, formula, df):
-    model = smf.ols(f'{response} ~ {formula}', data=df)
+def perform_analysis(response, formula, dataframe):
+    """Perform analysis"""
+    model = smf.ols(f'{response} ~ {formula}', data=dataframe)
     results = model.fit()
     print(results.summary())
     print(anova_lm(results))
