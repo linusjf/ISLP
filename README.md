@@ -1,9 +1,5 @@
 # ISLP
 
-## Install packages globally
-
-pip install jupyter voila jupytext
-
 ## Create virtual environment
 
 python -m venv islpenv
