@@ -69,7 +69,7 @@ def calculate_VIFs(formula, df):
 
 
 # Identify feature with highest VIF
-def identify_highest_VIF_feature(vifdf, threshold=5):
+def identify_highest_VIF_feature(vifdf, threshold=10):
     """Identify highest VIF feature"""
     highest_vif = vifdf["VIF"].iloc[np.argmax(vifdf)]
     if highest_vif > threshold:

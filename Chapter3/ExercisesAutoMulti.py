@@ -184,19 +184,59 @@ anova_lm(results)
 # ### (d) Produce some of diagnostic plots of the linear regression fit as described in the lab. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?
 
 # %% [markdown]
-# #### Before producing the diagnostic plots, let's first create the model suggested hy the analysis above by dropping the feature acceleration from the model.
+# #### Before producing the diagnostic plots, let's first test for collinearity using correlation matrix and variance inflation factors.
+
+# %%
+Auto_os.corr(numeric_only=True)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_os.columns) + " - mpg", Auto_os)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_os.columns) + " - mpg - displacement", Auto_os)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %% [markdown]
+# ### Linear Regression for mpg ~ cylinders + horsepower + weight + acceleration + oilshock + origin_Europe + origin_Japan
+
+# %%
+cols = list(Auto_os.columns)
+cols.remove("mpg")
+cols.remove("displacement")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg",formula,Auto_os);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %% [markdown]
+# #### Linear Regression after dropping acceleration. The model now is mpg ~ cylinders + horsepower + weight + oilshock +  origin_Europe + origin_Japan
 
 # %%
 cols.remove("acceleration")
 formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
-anova_lm(results)
+results = perform_analysis("mpg",formula,Auto_os);
+simple_model = results
+models = []
+models.append({"name": "simple_model", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
+
+# %% [markdown]
+# #### Linear Regression after dropping cylinders. The model now is mpg ~  horsepower + weight + oilshock +  origin_Europe + origin_Japan
 
 # %%
-display("The above results suggest that cylnders can be dropped from the model: mpg ~ " + formula + " since the linear regression coefficient is not significant.")
-
+cols.remove("cylinders")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg",formula,Auto_os);
+simple_model = results
+models = []
+models.append({"name": "simple_model", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %% [markdown]
 # #### We can now try and plot the diagnostics for the model.
@@ -212,70 +252,10 @@ display("R-squared adjusted : " + str(results.rsquared_adj))
 display("F-statistic : " + str(results.fvalue))
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+display_residuals_plot(results)
 
 # %% [markdown]
 # There is some evidence of non-linearity and heteroskedasticity from the residuals plot above.
-
-# %% [markdown]
-# ##### Compute VIFs
-
-# %%
-X = MS(cols).fit_transform(Auto_os)
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
-vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
-vif
-("VIF Range:", np.min(vif), np.max(vif))
-
-# %% [markdown]
-# #### There is evidence of high multicollinearity in the above predictors with cylinders and displacement exhibiting VIFs above 10.
-# #### We can drop one of the variables and check the VIFS once more. 
-
-# %%
-display("We drop displacement which has a VIF of " + str(np.max(vif)))
-
-# %%
-cols.remove("displacement")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
-anova_lm(results)
-
-# %%
-X = MS(cols).fit_transform(Auto_os)
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
-vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
-vif
-("VIF Range:", np.min(vif), np.max(vif))
-
-# %%
-display("We still have two variables with VIF above 5")
-display("Let's drop cylinders despite it having a slightly lower VIF than weight since that's consistent with our knowledge of horspower being a function of both cylinders and displacement")
-display("Also. its coefficient in the linear regression model is not statistically significant.")
-display("Dropping weight reduces the explainability of the model, i.e., R<sup>2</sup> by 10 percentage points.")
-
-# %%
-models = []
-cols.remove("cylinders")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
-anova_lm(results)
-no_interactions = results
-models.append({"name": "no_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
-
-# %%
-X = MS(cols).fit_transform(Auto_os)
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
-vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
-vif
-("VIF Range:", np.min(vif), np.max(vif))
 
 # %% [markdown]
 # ### (e) Fit some models with interactions as described in the lab. Do any interactions appear to be statistically significant?
@@ -283,213 +263,87 @@ vif
 # %%
 formula = ' + '.join(cols)
 formula += " + " + "horsepower: weight"
-# the oil shock led to the Malaise era for American cars. While mileage increased, horsepower suffered
-formula += " + " + "horsepower: oilshock" 
-# American cars were roomier and heavier than their European and Japanese counterparts.
-# This should have led to less heavier cars with better mileage post the oil shock of 1973.
-# These two interactions should provide an indication if it's true
-formula += " + " + "weight: oilshock"
-formula += " + " + "horsepower: oilshock: weight"
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
-anova_lm(results)
-simple_interactions = results
-models.append({"name": "simple_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+results = perform_analysis("mpg", formula, Auto_os);
+numeric_interactions = results
+models.append({"name": "numeric_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
 formula = ' + '.join(cols)
-for a, b in itertools.combinations(cols,2):
-  formula += " + " + a + ":" + b
-# drop the origin_2:origin_3 interaction because of divide by zero error encountered
-formula += " - " + "origin_2:origin_3" 
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
-anova_lm(results)
-complex_interactions = results
-models.append({"name": "complex_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
+formula += " + " + "horsepower: weight"
+formula += " + " + "oilshock: weight"
+formula += " + " + "oilshock: horsepower"
+results = perform_analysis("mpg", formula, Auto_os);
+oilshock_interactions = results;
+models.append({"name": "oilshock_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(Auto_os["weight"], results.resid)
-ax.set_xlabel("Weight")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(Auto_os["horsepower"], results.resid)
-ax.set_xlabel("Horsepower")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-
-# %%
-anova_lm(no_interactions, simple_interactions, complex_interactions)
+formula = ' + '.join(cols)
+formula += " + " + "oilshock: horsepower"
+formula += " + " + "origin_Europe: horsepower"
+formula += " + " + "origin_Japan: horsepower"
+formula += " + " + "origin_Europe: weight"
+formula += " + " + "origin_Japan: weight"
+formula += " + " + "oilshock: weight"
+formula += " + " + "oilshock: horsepower"
+results = perform_analysis("mpg", formula, Auto_os);
+origin_interactions = results;
 
 # %% [markdown]
-# + We can see that the complexinteractions model does not add to the explainability of the model.
+# + From the above analysis, we can see that there is no significant interaction between origin and weight.
+# + So we can omit them from the model.
+
+# %%
+formula = ' + '.join(cols)
+formula += " + " + "oilshock: horsepower"
+formula += " + " + "origin_Europe: horsepower"
+formula += " + " + "origin_Japan: horsepower"
+formula += " + " + "oilshock: weight"
+formula += " + " + "oilshock: horsepower"
+results = perform_analysis("mpg", formula, Auto_os);
+origin_interactions = results;
+
+# %% [markdown]
+# + From the above analysis, it is evident that with the interaction between origin and horsepower, the interaction between oilshock and weight and horsepower is insignificant. We can drop these from the model as well.
+
+# %%
+formula = ' + '.join(cols)
+formula += " + " + "oilshock: horsepower"
+formula += " + " + "origin_Europe: horsepower"
+formula += " + " + "origin_Japan: horsepower"
+results = perform_analysis("mpg", formula, Auto_os);
+origininteractions = results;
+models.append({"name": "origin_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
+
+# %%
+display_residuals_plot(results)
+
+# %%
+anova_lm(simple_model,numeric_interactions, oilshock_interactions, origin_interactions)
+
+# %%
+pd.DataFrame(models)
 
 # %% [markdown]
 # ### (f) Try a few  different transformations of the variables, such as log(X), √X, X<sup>2</sup> . Comment on your findings.
 
 # %%
-formula = ' + '.join(cols)
-formula += " + " + "horsepower: weight"
-formula += " + " + "I(horsepower**2): weight"
-formula += " + " + "horsepower: oilshock" 
-formula += " + " + "I(horsepower**2): oilshock"
-formula += " + " + "weight: oilshock"
-formula += " + " + "I(weight**2): oilshock"
-formula += " + " + "horsepower: oilshock: weight"
-formula += " + " + "I(horsepower**2): oilshock: I(weight**2)"
-# Add higher order transformations for weight and horsepower
+formula = simple_model.model.formula
+formula =formula[formula.rindex("~") + 1:]
+# Add higher order transformations for horsepower and weight
 formula += " + " + "I(horsepower**2)"
 formula += " + " + "I(weight**2)"
-model = smf.ols(f'mpg ~ {formula}', data=Auto_os)
-results = model.fit()
-results.summary()
-anova_lm(results)
+results = perform_analysis("mpg", formula, Auto_os)
 squared_transformations = results
 models.append({"name": "squared_transformation", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
 
 # %%
-anova_lm(simple_interactions, squared_transformations)
+display_residuals_plot(results)
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+anova_lm( simple_model, squared_transformations )
 
-# %%
-Auto_sqrt = Auto_os.copy(deep=True)
-Auto_sqrt["sqrt_weight"] = np.sqrt(Auto_sqrt["weight"])
-Auto_sqrt["sqrt_horsepower"] = np.sqrt(Auto_sqrt["horsepower"])
-Auto_sqrt = Auto_sqrt.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
-cols = list(Auto_sqrt.columns)
-cols.remove("mpg")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_sqrt)
-results = model.fit()
-results.summary()
-anova_lm(results)
-squareroot_transformations = results
-models.append({"name": "squareroot_transformations", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
-
-# %%
-anova_lm( squareroot_transformations, simple_interactions)
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-cols = list(Auto_sqrt.columns)
-cols.remove("mpg")
-formula = ' + '.join(cols)
-formula += " + " + "sqrt_horsepower: sqrt_weight"
-formula += " + " + "sqrt_horsepower: oilshock" 
-formula += " + " + "sqrt_weight: oilshock"
-formula += " + " + "sqrt_horsepower: oilshock: sqrt_weight"
-model = smf.ols(f'mpg ~ {formula}', data=Auto_sqrt)
-results = model.fit()
-results.summary()
-anova_lm(results)
-squareroot_transformations_interactions = results
-models.append({"name": "squareroot_transformations_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
-
-# %%
-anova_lm(squareroot_transformations, squareroot_transformations_interactions)
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-Auto_log = Auto_os.copy(deep=True)
-Auto_log["log_weight"] = np.log(Auto_log["weight"])
-Auto_log["log_horsepower"] = np.log(Auto_log["horsepower"])
-Auto_log = Auto_log.drop(columns=["weight", "horsepower", "displacement", "cylinders", "acceleration"])
-cols = list(Auto_log.columns)
-cols.remove("mpg")
-formula = ' + '.join(cols)
-model = smf.ols(f'mpg ~ {formula}', data=Auto_log)
-results = model.fit()
-results.summary()
-anova_lm(results)
-log_transformations = results
-models.append({"name": "log_transformations", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
-
-# %%
-anova_lm( log_transformations, simple_interactions)
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-cols = list(Auto_log.columns)
-cols.remove("mpg")
-formula = ' + '.join(cols)
-formula += " + " + "log_horsepower: log_weight"
-formula += " + " + "log_horsepower: oilshock" 
-formula += " + " + "log_weight: oilshock"
-formula += " + " + "log_horsepower: oilshock: log_weight"
-model = smf.ols(f'mpg ~ {formula}', data=Auto_log)
-results = model.fit()
-results.summary()
-anova_lm(results)
-log_transformations_interactions = results
-models.append({"name": "log_transformations_interactions", "model" : results.model.formula, "R-squared adjusted" : results.rsquared_adj})
-
-# %%
-anova_lm(log_transformations, log_transformations_interactions)
-
-# %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
-
-# %%
-display("We can conclude that the model with the most explainability of " + str(squared_transformations.rsquared_adj) + " is the model " +  squared_transformations.model.formula)
-
-# %%
-display("However, the simplest model without interactions is : " + log_transformations.model.formula + " with explainability of " + str(log_transformations.rsquared_adj)  + ".")
-
-# %%
-display("If interactions need to be captured, the simplest model is : " + simple_interactions.model.formula + " with explainability of " + str(simple_interactions.rsquared_adj))
-
-# %%
-display("None of the models can fully get rid of the heteroskedasticity visible in the residuuals plot versus fitted values, though.")
+# %% [markdown]
+# - Since we've standardized the variables, we cannot run log or square root transformations on the negative valued columns.
 
 # %%
 pd.DataFrame(models)

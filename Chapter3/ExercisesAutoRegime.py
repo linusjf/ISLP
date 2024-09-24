@@ -123,12 +123,11 @@ display("Mileage increased, number of cylinders decreased, displacement decrease
 # #### Standardize numeric variables in the model
 
 # %%
-# standardizing dataframes
 Auto_preos = Auto_preos.apply(standardize)
-Auto_postos = Auto_postos.apply(standardize)
-Auto_preos.head()
-Auto_postos.head()
 Auto_preos.describe()
+
+# %%
+Auto_postos = Auto_postos.apply(standardize)
 Auto_postos.describe()
 
 # %% [markdown]
