@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-find . -maxdepth 2 -type f -name "*.py" -exec jupytext --to 'ipynb' --update "{}" \;
+find . -maxdepth 2 -type f -name "*.py" -exec python -m jupytext --to 'ipynb' --update "{}" \;

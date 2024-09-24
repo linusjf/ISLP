@@ -10,7 +10,7 @@ source islpenv/bin/activate
 
 ## Install packages in virtual environment
 
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 ## Register virtual environment to Jupyter
 
@@ -22,12 +22,16 @@ python -m ipykernel install --user --name=islpenv
 
 ## Run Jupyter lab
 
-jupyter lab
+python -m jupyter lab
 
 ## Deactivate virtual environment
 
 deactivate
 
-### Additional packages installed to help with EDA
+## Additional packages installed to help with EDA
 
 <https://www.nb-data.com/p/python-packages-for-automated-eda>
+
+## References
+
+1. <https://www.bitecode.dev/p/relieving-your-python-packaging-pain>
