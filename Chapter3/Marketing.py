@@ -12,20 +12,17 @@
 #     name: islpenv
 # ---
 
-# %%
-from IPython.core.interactiveshell import InteractiveShell
-InteractiveShell.ast_node_interactivity = "all"
-
-## Import up sound alert dependencies
-from IPython.display import Audio, display
-
-def allDone():
-  url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
-  display(Audio(url=url, autoplay=True))
-
+# %% [markdown]
+# # Marketing Exercise
 
 # %% [markdown]
-# Import standard libraries
+# ## Import notebook functions
+
+# %%
+from notebookfuncs import *
+
+# %% [markdown]
+# ## Import standard libraries
 
 # %%
 import numpy as np
@@ -33,13 +30,13 @@ import pandas as pd
 from matplotlib.pyplot import subplots
 
 # %% [markdown]
-# New imports
+# ## New imports
 
 # %%
 import statsmodels.api as sm
 
 # %% [markdown]
-# Import statsmodel.objects
+# ## Import statsmodel.objects
 
 # %%
 from statsmodels.stats.outliers_influence import variance_inflation_factor as VIF
@@ -47,7 +44,7 @@ from statsmodels.stats.outliers_influence import summary_table
 from statsmodels.stats.anova import anova_lm
 
 # %% [markdown]
-# Import ISLP objects
+# ## Import ISLP objects
 
 # %%
 import ISLP

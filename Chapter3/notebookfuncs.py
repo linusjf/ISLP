@@ -1,0 +1,24 @@
+# ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3 (ipykernel)
+#     language: python
+#     name: python3
+# ---
+
+# %%
+from IPython.core.interactiveshell import InteractiveShell
+InteractiveShell.ast_node_interactivity = "all"
+
+## Import up sound alert dependencies
+from IPython.display import Audio, display
+
+def allDone():
+  url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
+  display(Audio(url=url, autoplay=True))
