@@ -186,3 +186,5 @@ In such cases, consider:
 - Retaining or dropping the variable based on theoretical importance and model performance.
 
 Remember, p-values are not the only consideration. Evaluate the variable's effect size, theoretical relevance, and impact on model performance when making a decision.
+
+<https://hex.tech/blog/detecting-and-remedying-multicollinearity/>
