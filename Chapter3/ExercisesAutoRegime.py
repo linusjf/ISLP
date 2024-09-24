@@ -164,29 +164,41 @@ vifdf
 # %%
 identify_highest_VIF_feature(vifdf)
 
-# %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement - weight ", Auto_preos)
-vifdf
-
-# %%
-identify_highest_VIF_feature(vifdf)
-
-# %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement - weight - cylinders ", Auto_preos)
-vifdf
-
-# %%
-identify_highest_VIF_feature(vifdf)
-
 # %% [markdown]
-# #### Linear Regression for mpg ~ horsepower + acceleration + year + origin_Europe + origin_Japan
+# #### Linear Regression for mpg ~ horsepower + acceleration + weight + cylinders + year + origin_Europe + origin_Japan
 
 # %%
 cols = list(Auto_preos.columns)
 cols.remove("mpg")
 cols.remove("displacement")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg",formula,Auto_preos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %% [markdown]
+# #### Linear Regression after dropping acceleration in pre-oil shock. The model now is mpg ~ horsepower + weight + cylinder + year + origin_Europe + origin_Japan
+
+# %%
+cols.remove("acceleration")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg",formula,Auto_preos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
 cols.remove("cylinders")
-cols.remove("weight")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg",formula,Auto_preos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+
+# %%
+cols.remove("horsepower")
 formula = ' + '.join(cols)
 results = perform_analysis("mpg",formula,Auto_preos);
 
@@ -194,18 +206,7 @@ results = perform_analysis("mpg",formula,Auto_preos);
 identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
-# #### Linear Regression after dropping year in pre-oil shock. The model now is mpg ~ horsepower + acceleration + origin_Europe + origin_Japan
-
-# %%
-cols.remove("year")
-formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos);
-
-# %%
-identify_least_significant_feature(results, alpha=LOS_Alpha)
-
-# %% [markdown]
-# #### Residual plot for model that drops year for pre-oil shock
+# #### Residual plot for model that drops horsepower for pre-oil shock
 
 # %%
 display_residuals_plot(results)
