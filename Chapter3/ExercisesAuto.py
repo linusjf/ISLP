@@ -157,8 +157,8 @@ ax.axline((ax.get_xlim()[0], results.params.iloc[0]), slope=results.params.iloc[
 # ### (c) Produce some of diagnostic plots of the least squares regression fit as described in the lab.
 # ### Comment on any problems you see with the fit.
 
-# %%
-#### Plot of fitted values versus residuals.
+# %% [markdown]
+# #### Plot of fitted values versus residuals.
 
 # %%
 _, ax = subplots(figsize=(8,8))
@@ -227,10 +227,10 @@ ax.plot(high_leverage, max_leverage, "ro");
 # #### Outlier identification using Standardized Residuals versus Fitted Values plot
 
 # %%
-_, ax = subplots(figsize=(8,8))
-ax.scatter(results.fittedvalues, results.resid_pearson)
-ax.set_xlabel("Fitted values for mpg")
-ax.set_ylabel("Standardized residuals")
+_, ax = subplots(figsize=(8,8));
+ax.scatter(results.fittedvalues, results.resid_pearson);
+ax.set_xlabel("Fitted values for mpg");
+ax.set_ylabel("Standardized residuals");
 ax.axhline(0, c='k', ls='--');
 outliers_indexes = np.where((results.resid_pearson > 3.0) | (results.resid_pearson < -3.0))[0]
 for idx in range(len(outliers_indexes)):

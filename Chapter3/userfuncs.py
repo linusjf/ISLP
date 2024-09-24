@@ -65,7 +65,7 @@ def calculate_VIFs(formula, df):
     vif['VIF'] = [VIF(X.values, i) for i in range(1, X.shape[1])]
     vif['Feature'] = X.columns[1:]
     vif = vif.set_index(["Feature"])
-    return vif
+    return vif;
 
 
 # Identify feature with highest VIF
@@ -86,7 +86,7 @@ def standardize(series):
     """Standardize"""
     if is_numeric_dtype(series):
         return stats.zscore(series)
-    return series
+    return series;
 
 
 # Function to produce linear regression analysis
@@ -96,4 +96,4 @@ def perform_analysis(response, formula, dataframe):
     results = model.fit()
     print(results.summary())
     print(anova_lm(results))
-    return results
+    return results;

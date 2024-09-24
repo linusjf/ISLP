@@ -78,7 +78,7 @@ from userfuncs import perform_analysis
 # #### Set level of significance (alpha)
 
 # %%
-LOS_Alpha = 0.01
+LOS_Alpha = 0.01;
 
 # %% [markdown]
 # ### Data Cleaning and exploratory data analysis
@@ -137,6 +137,8 @@ Auto_postos.describe()
 # %%
 Auto_preos = pd.get_dummies(Auto_preos, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
 Auto_preos.columns
+
+# %%
 Auto_postos = pd.get_dummies(Auto_postos, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
 Auto_postos.columns
 
@@ -187,7 +189,7 @@ cols.remove("displacement")
 cols.remove("cylinders")
 cols.remove("weight")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos)
+results = perform_analysis("mpg",formula,Auto_preos);
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -198,7 +200,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %%
 cols.remove("year")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos)
+results = perform_analysis("mpg",formula,Auto_preos);
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -219,7 +221,7 @@ display_residuals_plot(results)
 cols = list(Auto_postos.columns)
 cols.remove("mpg")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_postos)
+results = perform_analysis("mpg",formula,Auto_postos);
 
 # %% [markdown]
 # #### Residual plot for all variables model for post-oil shock

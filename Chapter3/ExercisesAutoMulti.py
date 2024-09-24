@@ -60,6 +60,18 @@ from ISLP import models
 from ISLP import load_data
 from ISLP.models import (ModelSpec as MS, summarize, poly)
 
+# %% [markdown]
+# #### Import user functions
+
+# %%
+from userfuncs import *
+
+# %% [markdown]
+# #### Set level of significance (alpha)
+
+# %%
+LOS_Alpha = 0.01;
+
 # %%
 Auto = load_data('Auto')
 Auto = Auto.sort_values(by=['year'], ascending=True)
@@ -95,6 +107,7 @@ Auto.corr()
 
 # %%
 Auto["origin"] = Auto["origin"].astype("category")
+Auto['origin'] = Auto['origin'].cat.rename_categories({1:'America', 2:'Europe', 3:'Japan'})
 Auto["year"] = Auto["year"].astype("category")
 Auto.describe()
 
@@ -129,11 +142,19 @@ Auto.boxplot(column="mpg", by=["oilshock", "origin"]);
 # %%
 Auto_os = Auto.drop(["year"], axis = 1)
 Auto_os.columns
+
+# %%
+# standardizing dataframes
+Auto_os["oilshock"] = Auto_os["oilshock"].astype("category")
+Auto_os = Auto_os.apply(standardize)
+Auto_os.describe()
+
+# %%
 Auto_os = pd.get_dummies(Auto_os, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
 Auto_os.columns
 
 # %%
-y = Auto_os["mpg"]
+y = Auto_os["mpg"];
 
 # %%
 cols = list(Auto_os.columns)

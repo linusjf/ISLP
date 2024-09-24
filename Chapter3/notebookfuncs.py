@@ -14,7 +14,7 @@
 
 # %%
 from IPython.core.interactiveshell import InteractiveShell
-InteractiveShell.ast_node_interactivity = "all"
+InteractiveShell.ast_node_interactivity = "last_expr_or_assign"
 
 ## Import up sound alert dependencies
 from IPython.display import Audio, display
