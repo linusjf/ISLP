@@ -45,7 +45,7 @@ def identify_least_significant_feature(results, alpha=0.05):
         print("We find the least significant variable in this model is " +
               variable + " with a p-value of " + str(highest_pvalue) +
               " and a coefficient of " + str(coeff))
-        print("Using the backward methodology, we drop " + variable +
+        print("Using the backward methodology, we suggest dropping " + variable +
               " from the new model")
     else:
         print("No variables are statistically insignificant.")

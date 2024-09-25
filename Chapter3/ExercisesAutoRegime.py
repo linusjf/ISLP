@@ -206,33 +206,144 @@ results = perform_analysis("mpg",formula,Auto_preos);
 identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %% [markdown]
-# #### Residual plot for model that drops horsepower for pre-oil shock
+# #### Residual plot for model for pre-oil shock
 
 # %%
 display_residuals_plot(results)
+
+# %%
+preoilshock_model = results;
 
 # %% [markdown]
 # ### Analysis for post Oil Shock
 
 # %% [markdown]
-# #### Linear Regression Analysis for post oil shock using all features
+# #### Test for multicollinearity using correlation matrix and variance inflation factors
+
+# %%
+Auto_postos.corr(numeric_only=True)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg", Auto_postos)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg - displacement", Auto_postos)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %% [markdown]
+# #### Linear Regression Analysis for post oil shock dropping feature displacement
 
 # %%
 cols = list(Auto_postos.columns)
 cols.remove("mpg")
+cols.remove("displacement")
 formula = ' + '.join(cols)
 results = perform_analysis("mpg",formula,Auto_postos);
 
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+cols.remove("acceleration")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg",formula,Auto_postos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
 # %% [markdown]
-# #### Residual plot for all variables model for post-oil shock
+# + However, origin_Japan is one of three levels with origin_Europe significant. So we do not drop it from the model.
+# + We can check what will happen with dropping the Intercept with it also insignificant especially since we have standardized the variables.
+
+# %%
+postoilshock_model_intercept = results
+formula = ' + '.join(cols)
+formula += " - 1"
+results = perform_analysis("mpg",formula,Auto_postos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %% [markdown]
+# + We drop both origin_Europe and origin_Japan from the model.
+
+# %%
+cols.remove("origin_Europe")
+cols.remove("origin_Japan")
+formula = ' + '.join(cols)
+formula += " - 1"
+results = perform_analysis("mpg",formula,Auto_postos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+cols.remove("cylinders")
+formula = ' + '.join(cols)
+formula += " - 1"
+results = perform_analysis("mpg",formula,Auto_postos);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+postoilshock_model = results;
+
+# %% [markdown]
+# #### Residual plot for model for post-oil shock
 
 # %%
 display_residuals_plot(results)
+
+# %% [markdown]
+# ### Pre-oilshock model
+
+# %%
+preoilshock_model.model.formula
+
+# %% [markdown]
+# ### Explanatory power of preoilshock model
+
+# %%
+preoilshock_model.rsquared_adj
+
+# %% [markdown]
+#  ### Post-oil shock model without intercept
+
+# %%
+postoilshock_model.model.formula
+
+# %% [markdown]
+# ### Explanatory power of postoilshock model
+
+# %%
+postoilshock_model.rsquared_adj
+
+# %% [markdown]
+# + Thus, we can conclude that prior to the oil shock of 1973, mileage was determined mostly by weight, year and origin.
+# + Post the oil shock of 1973, mileage was determined by horsepower, weight and year. Origin no longer played an important role as before.
+
+# %% [markdown]
+# ### Post oil shock model with intercept (Corollary)
+
+# %%
+postoilshock_model_intercept.model.formula
+
+# %% [markdown]
+# ### Explanatory power of postoilshock model with intercept
+
+# %%
+postoilshock_model_intercept.rsquared_adj
 
 # %% [markdown]
 # ## Finished
 
 # %%
 allDone()
-
-# %%
