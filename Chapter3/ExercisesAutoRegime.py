@@ -33,6 +33,7 @@ from notebookfuncs import *
 # %%
 import numpy as np
 import pandas as pd
+
 pd.set_option('display.max_rows', 1000)
 pd.set_option('display.max_columns', 1000)
 pd.set_option('display.width', 1000)
@@ -52,7 +53,6 @@ import statsmodels.api as sm
 
 # %%
 from statsmodels.stats.outliers_influence import summary_table
-
 
 # %% [markdown]
 # #### Import ISLP objects
@@ -78,7 +78,7 @@ from userfuncs import perform_analysis
 # #### Set level of significance (alpha)
 
 # %%
-LOS_Alpha = 0.01;
+LOS_Alpha = 0.01
 
 # %% [markdown]
 # ### Data Cleaning and exploratory data analysis
@@ -97,7 +97,11 @@ Auto.describe()
 
 # %%
 Auto["origin"] = Auto["origin"].astype("category")
-Auto['origin'] = Auto['origin'].cat.rename_categories({1:'America', 2:'Europe', 3:'Japan'})
+Auto['origin'] = Auto['origin'].cat.rename_categories({
+    1: 'America',
+    2: 'Europe',
+    3: 'Japan'
+})
 Auto.describe()
 
 # %% [markdown]
@@ -115,9 +119,14 @@ Auto_postos.shape
 Auto_postos.describe()
 
 # %%
-display("If you look at the two datasets as displayed above, it's evident that the oil shock had a major impact on the models produced since.")
-display(Auto_preos.mean(numeric_only=True), Auto_postos.mean(numeric_only=True))
-display("Mileage increased, number of cylinders decreased, displacement decreased, horsepower decreased, weight decreased and time to acceleration increased thus indicating that less powerful and less performant cars were produced in the immediate period after the oil shock of 1973.")
+display(
+    "If you look at the two datasets as displayed above, it's evident that the oil shock had a major impact on the models produced since."
+)
+display(Auto_preos.mean(numeric_only=True),
+        Auto_postos.mean(numeric_only=True))
+display(
+    "Mileage increased, number of cylinders decreased, displacement decreased, horsepower decreased, weight decreased and time to acceleration increased thus indicating that less powerful and less performant cars were produced in the immediate period after the oil shock of 1973."
+)
 
 # %% [markdown]
 # #### Standardize numeric variables in the model
@@ -134,11 +143,17 @@ Auto_postos.describe()
 # #### Encode categorical variables as dummy variables dropping the first to remove multicollinearity.
 
 # %%
-Auto_preos = pd.get_dummies(Auto_preos, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
+Auto_preos = pd.get_dummies(Auto_preos,
+                            columns=list(["origin"]),
+                            drop_first=True,
+                            dtype=np.uint8)
 Auto_preos.columns
 
 # %%
-Auto_postos = pd.get_dummies(Auto_postos, columns=list(["origin"]), drop_first = True, dtype = np.uint8)
+Auto_postos = pd.get_dummies(Auto_postos,
+                             columns=list(["origin"]),
+                             drop_first=True,
+                             dtype=np.uint8)
 Auto_postos.columns
 
 # %% [markdown]
@@ -151,14 +166,17 @@ Auto_postos.columns
 Auto_preos.corr(numeric_only=True)
 
 # %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg", Auto_preos)
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg",
+                       Auto_preos)
 vifdf
 
 # %%
 identify_highest_VIF_feature(vifdf)
 
 # %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement", Auto_preos)
+vifdf = calculate_VIFs(
+    "mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement",
+    Auto_preos)
 vifdf
 
 # %%
@@ -172,7 +190,7 @@ cols = list(Auto_preos.columns)
 cols.remove("mpg")
 cols.remove("displacement")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos);
+results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -183,7 +201,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %%
 cols.remove("acceleration")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos);
+results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -191,16 +209,15 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %%
 cols.remove("cylinders")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos);
+results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
 
-
 # %%
 cols.remove("horsepower")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_preos);
+results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -212,7 +229,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 display_residuals_plot(results)
 
 # %%
-preoilshock_model = results;
+preoilshock_model = results
 
 # %% [markdown]
 # ### Analysis for post Oil Shock
@@ -224,14 +241,17 @@ preoilshock_model = results;
 Auto_postos.corr(numeric_only=True)
 
 # %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg", Auto_postos)
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg",
+                       Auto_postos)
 vifdf
 
 # %%
 identify_highest_VIF_feature(vifdf)
 
 # %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg - displacement", Auto_postos)
+vifdf = calculate_VIFs(
+    "mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg - displacement",
+    Auto_postos)
 vifdf
 
 # %%
@@ -245,7 +265,7 @@ cols = list(Auto_postos.columns)
 cols.remove("mpg")
 cols.remove("displacement")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_postos);
+results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -253,7 +273,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %%
 cols.remove("acceleration")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg",formula,Auto_postos);
+results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -261,12 +281,13 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %% [markdown]
 # + However, origin_Japan is one of three levels with origin_Europe significant. So we do not drop it from the model.
 # + We can check what will happen with dropping the Intercept with it also insignificant especially since we have standardized the variables.
+# + <https://stats.stackexchange.com/questions/197923/difference-between-centered-and-uncentered-r2>
 
 # %%
 postoilshock_model_intercept = results
 formula = ' + '.join(cols)
 formula += " - 1"
-results = perform_analysis("mpg",formula,Auto_postos);
+results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -279,7 +300,7 @@ cols.remove("origin_Europe")
 cols.remove("origin_Japan")
 formula = ' + '.join(cols)
 formula += " - 1"
-results = perform_analysis("mpg",formula,Auto_postos);
+results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -288,13 +309,13 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 cols.remove("cylinders")
 formula = ' + '.join(cols)
 formula += " - 1"
-results = perform_analysis("mpg",formula,Auto_postos);
+results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
-postoilshock_model = results;
+postoilshock_model = results
 
 # %% [markdown]
 # #### Residual plot for model for post-oil shock
