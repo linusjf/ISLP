@@ -177,7 +177,7 @@ Auto_os = pd.get_dummies(Auto_os,
 Auto_os.columns
 
 # %%
-y = Auto_os["mpg"]
+y = Auto_os["mpg"];
 
 # %%
 cols = list(Auto_os.columns)
@@ -405,6 +405,104 @@ pd.DataFrame(models)
 Auto = load_data('Auto')
 Auto = Auto.sort_values(by=['year'], ascending=True)
 Auto.columns
+
+# %%
+Auto.max() - Auto.min()
+
+# %% [markdown]
+# - From the above, we can see that the ranges for displacement, horsepower and weight are quite large.
+# - Hence, we log or square root transform only these variables.
+
+# %% [markdown]
+# ### Now let's categorize the variables 
+
+# %%
+Auto["origin"] = Auto["origin"].astype("category")
+Auto['origin'] = Auto['origin'].cat.rename_categories({
+    1: 'America',
+    2: 'Europe',
+    3: 'Japan'
+})
+Auto["year"] = Auto["year"].astype("category")
+Auto["oilshock"] = Auto.apply(categorize_for_oil_shock, axis=1)
+
+# %% [markdown]
+# ## Log Transformed Model
+
+# %%
+Auto_log = Auto.copy(deep=True);
+
+# %%
+Auto_log["log_displacement"] = np.log(Auto_log["displacement"])
+Auto_log["log_horsepower"] = np.log(Auto_log["horsepower"])
+Auto_log["log_weight"] = np.log(Auto_log["weight"])
+Auto_log = Auto_log.drop(columns=["displacement", "weight", "horsepower", "year",]);
+Auto_log.columns
+
+# %%
+Auto_log.corr(numeric_only=True)
+
+# %%
+Auto_log = pd.get_dummies(Auto_log,
+                         columns=list(["origin"]),
+                         drop_first=True,
+                         dtype=np.uint8)
+Auto_log.columns
+
+# %%
+cols = list(Auto_log.columns)
+cols.remove("mpg")
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(cols),
+                       Auto_log)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+cols.remove("log_displacement")
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(cols),
+                       Auto_log)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+cols.remove("log_horsepower")
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(cols),
+                       Auto_log)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+formula = ' + '.join(cols)
+results = perform_analysis("mpg", formula,Auto_log);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+cols.remove("cylinders")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg", formula,Auto_log);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+models.append({
+    "name": "log_transformation",
+    "model": results.model.formula,
+    "R-squared adjusted": results.rsquared_adj
+})
+
+# %%
+pd.DataFrame(models)
 
 # %%
 allDone()
