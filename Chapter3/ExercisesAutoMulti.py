@@ -92,7 +92,7 @@ Auto.describe()
 # ### (a) Produce a scatterplot matrix which includes all of the variables in the data set.
 
 # %%
-pd.plotting.scatter_matrix(Auto, figsize=(14, 14))
+pd.plotting.scatter_matrix(Auto, figsize=(14, 14));
 
 # %% [markdown]
 # ### (b) Compute the matrix of correlations between the variables using the DataFrame.corr() method.
@@ -124,7 +124,7 @@ sns.relplot(Auto,
             hue="cylinders",
             style="cylinders",
             estimator='mean',
-            kind="line")
+            kind="line");
 
 # %% [markdown]
 # #### The weight of the 8-cylinder American made models show a decline from the highs of 1972. It can also be seen that American made cars are heavier than their European and Japanese counterparts especially in the most common models with 4 cylinders.
@@ -137,7 +137,7 @@ sns.relplot(Auto,
             hue="cylinders",
             style="cylinders",
             estimator='mean',
-            kind="line")
+            kind="line");
 
 # %% [markdown]
 # #### It can be seen that after the [oil shock of 1973](https://en.wikipedia.org/wiki/1973_oil_crisis) and the regulations and actions taken by the US government, the mileage for American made cars rose across all models. This was, however, matched by the European and Japanese models which were already lighter and more fuel efficient.
@@ -157,7 +157,7 @@ def categorize_for_oil_shock(row):
 Auto["oilshock"] = Auto.apply(categorize_for_oil_shock, axis=1)
 
 # %%
-Auto.boxplot(column="mpg", by=["oilshock", "origin"])
+Auto.boxplot(column="mpg", by=["oilshock", "origin"]);
 
 # %%
 Auto_os = Auto.drop(["year"], axis=1)
@@ -236,7 +236,7 @@ cols = list(Auto_os.columns)
 cols.remove("mpg")
 cols.remove("displacement")
 formula = ' + '.join(cols)
-results = perform_analysis("mpg", formula, Auto_os)
+results = perform_analysis("mpg", formula, Auto_os);
 
 # %%
 identify_least_significant_feature(results, alpha=LOS_Alpha)
@@ -326,8 +326,8 @@ formula += " + " + "origin_Europe: weight"
 formula += " + " + "origin_Japan: weight"
 formula += " + " + "oilshock: weight"
 formula += " + " + "oilshock: horsepower"
-results = perform_analysis("mpg", formula, Auto_os)
-origin_interactions = results
+results = perform_analysis("mpg", formula, Auto_os);
+origin_interactions = results;
 
 # %% [markdown]
 # + From the above analysis, we can see that there is no significant interaction between origin and weight.
@@ -340,8 +340,8 @@ formula += " + " + "origin_Europe: horsepower"
 formula += " + " + "origin_Japan: horsepower"
 formula += " + " + "oilshock: weight"
 formula += " + " + "oilshock: horsepower"
-results = perform_analysis("mpg", formula, Auto_os)
-origin_interactions = results
+results = perform_analysis("mpg", formula, Auto_os);
+origin_interactions = results;
 
 # %% [markdown]
 # + From the above analysis, it is evident that with the interaction between origin and horsepower, the interaction between oilshock and weight and horsepower is insignificant. We can drop these from the model as well.
@@ -351,7 +351,7 @@ formula = ' + '.join(cols)
 formula += " + " + "oilshock: horsepower"
 formula += " + " + "origin_Europe: horsepower"
 formula += " + " + "origin_Japan: horsepower"
-results = perform_analysis("mpg", formula, Auto_os)
+results = perform_analysis("mpg", formula, Auto_os);
 origin_interactions = results
 models.append({
     "name": "origin_interactions",
@@ -378,7 +378,7 @@ formula = formula[formula.rindex("~") + 1:]
 # Add higher order transformations for horsepower and weight
 formula += " + " + "I(horsepower**2)"
 formula += " + " + "I(weight**2)"
-results = perform_analysis("mpg", formula, Auto_os)
+results = perform_analysis("mpg", formula, Auto_os);
 squared_transformations = results
 models.append({
     "name": "squared_transformation",
@@ -392,11 +392,19 @@ display_residuals_plot(results)
 # %%
 anova_lm(simple_model, squared_transformations)
 
+# %%
+pd.DataFrame(models)
+
 # %% [markdown]
 # - Since we've standardized the variables, we cannot run log or square root transformations on the negative valued columns.
 
+# %% [markdown]
+# - We can reload the data and run the log and sqrt transformations on the original un-standardized data.
+
 # %%
-pd.DataFrame(models)
+Auto = load_data('Auto')
+Auto = Auto.sort_values(by=['year'], ascending=True)
+Auto.columns
 
 # %%
 allDone()

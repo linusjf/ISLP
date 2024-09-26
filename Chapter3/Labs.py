@@ -28,7 +28,6 @@ from notebookfuncs import *
 import numpy as np
 import pandas as pd
 from matplotlib.pyplot import subplots
-#import seaborn as sns
 
 # %% [markdown]
 # ## New imports
@@ -274,7 +273,7 @@ np.unique(Boston["indus"])
 dir(results1)
 
 # %% [markdown]
-# results.rsquared gives us the R<sup>2</sup> and np.sqrt(results.scale) gives us the RSE.
+# - results.rsquared gives us the R<sup>2</sup> and np.sqrt(results.scale) gives us the RSE.
 
 # %%
 print("RSE", np.sqrt(results1.scale))
