@@ -504,5 +504,88 @@ models.append({
 # %%
 pd.DataFrame(models)
 
+# %% [markdown]
+# ## Square Root Transformed Model
+
+# %%
+Auto_sqrt = Auto.copy(deep=True);
+
+# %%
+Auto_sqrt["sqrt_displacement"] = np.sqrt(Auto_sqrt["displacement"])
+Auto_sqrt["sqrt_horsepower"] = np.sqrt(Auto_sqrt["horsepower"])
+Auto_sqrt["sqrt_weight"] = np.sqrt(Auto_sqrt["weight"])
+Auto_sqrt = Auto_sqrt.drop(columns=["displacement", "weight", "horsepower", "year",]);
+Auto_sqrt.columns
+
+# %%
+Auto_sqrt.corr(numeric_only=True)
+
+# %%
+Auto_sqrt = pd.get_dummies(Auto_sqrt,
+                         columns=list(["origin"]),
+                         drop_first=True,
+                         dtype=np.uint8)
+Auto_sqrt.columns
+
+# %%
+cols = list(Auto_sqrt.columns)
+cols.remove("mpg")
+
+# %%
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(cols),
+                       Auto_sqrt)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+cols.remove("sqrt_displacement")
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(cols),
+                       Auto_sqrt)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+cols.remove("sqrt_horsepower")
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(cols),
+                       Auto_sqrt)
+vifdf
+
+# %%
+identify_highest_VIF_feature(vifdf)
+
+# %%
+formula = ' + '.join(cols)
+results = perform_analysis("mpg", formula,Auto_sqrt);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+cols.remove("cylinders")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg", formula,Auto_sqrt);
+
+# %%
+identify_least_significant_feature(results, alpha=LOS_Alpha)
+
+# %%
+cols.remove("acceleration")
+formula = ' + '.join(cols)
+results = perform_analysis("mpg", formula,Auto_sqrt);
+
+# %%
+models.append({
+    "name": "sqrt_transformation",
+    "model": results.model.formula,
+    "R-squared adjusted": results.rsquared_adj
+})
+
+# %%
+pd.DataFrame(models)
+
 # %%
 allDone()
