@@ -56,9 +56,14 @@ from ISLP import models
 from ISLP import load_data
 from ISLP.models import (ModelSpec as MS, summarize, poly)
 
+# %% [markdown]
+# ## Import User Funactions
+
+# %%
+from userfuncs import *
+
 # %%
 Carseats = load_data('Carseats')
-Carseats.columns
 Carseats.head()
 
 # %%
@@ -68,8 +73,42 @@ Carseats.shape
 Carseats = Carseats.dropna()
 Carseats.shape
 
+# %%
+Carseats.describe()
+
+# %%
+Carseats["US"] = Carseats["US"].astype("category")
+Carseats["Urban"] = Carseats["Urban"].astype("category")
+
 # %% [markdown]
 # ### (a) Fit a multiple regression model to predict Sales using Price, Urban, and US.
+
+# %%
+cols = list(Carseats.columns)
+cols.remove("Sales")
+formula = "Price + Urban + US"
+perform_analysis("Sales", formula, Carseats);
+
+# %% [markdown]
+# ### (b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
+
+# %% [markdown]
+# ### (c) Write out the model in equation form, being careful to handle the qualitative variables properly.
+
+# %% [markdown]
+# ### (d) For which of the predictors can you reject the null hypothesis H0 : βj = 0?
+
+# %% [markdown]
+# ### (e) On the basis of your response to the previous question, fit a smaller model that only uses the predictors for which there is evidence of association with the outcome.
+
+# %% [markdown]
+# ### (f) How well do the models in (a) and (e) fit the data?
+
+# %% [markdown]
+# ### (g) Using the model from (e), obtain 95 % confidence intervals for the coefficient(s).
+
+# %% [markdown]
+# ### (h) Is there evidence of outliers or high leverage observations in the model from (e)?
 
 # %%
 allDone()
