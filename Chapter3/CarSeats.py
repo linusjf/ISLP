@@ -22,45 +22,19 @@
 from notebookfuncs import *
 
 # %% [markdown]
-# ## Import standard libraries
-
-# %%
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import subplots
-import seaborn as sns
-import itertools
-
-# %% [markdown]
-# ## New imports
-
-# %%
-import statsmodels.api as sm
-
-# %% [markdown]
-# ## Import statsmodel.objects
-
-# %%
-from statsmodels.stats.outliers_influence import variance_inflation_factor as VIF
-from statsmodels.stats.outliers_influence import summary_table
-from statsmodels.stats.anova import anova_lm
-import statsmodels.formula.api as smf
-
-# %% [markdown]
 # ## Import ISLP objects
 
 # %%
-import ISLP
-from ISLP import models
 from ISLP import load_data
-from ISLP.models import (ModelSpec as MS, summarize, poly)
 
 # %% [markdown]
 # ## Import User Funactions
 
 # %%
 from userfuncs import *
+
+# %% [markdown]
+# ## Load dataset
 
 # %%
 Carseats = load_data('Carseats')
@@ -73,8 +47,14 @@ Carseats.shape
 Carseats = Carseats.dropna()
 Carseats.shape
 
+# %% [markdown]
+# ## Display dataset stats
+
 # %%
 Carseats.describe()
+
+# %% [markdown]
+# ## Set categorical types
 
 # %%
 Carseats["US"] = Carseats["US"].astype("category")
@@ -91,9 +71,9 @@ perform_analysis("Sales", formula, Carseats);
 # ### (b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
 
 # %% [markdown]
-# - The coefficient of -0.0219 for Urban (True) indicates that the Sales are lesser by 219 units for an urban store as compared to a rural one. However, the p-value of 0.936 indicates that this difference is not significant and can be discounted or discarded.
+# - The coefficient of -0.0219 for Urban (True) indicates that the Sales are lesser by 22 units for an urban store as compared to a rural one. However, the p-value of 0.936 indicates that this difference is not significant and can be discounted or discarded.
 # - The coefficent of 1.2006 for US (True) indicates that Sales are greater by 1201 units as compared to a non-US store.
-# - The coefficient of -0.0545 for Price indicates that Sales decreases by 545 units per unit increase in cost all other things remaining constant.
+# - The coefficient of -0.0545 for Price indicates that Sales decreases by 55 units per unit increase in cost all other things remaining constant.
 
 # %% [markdown]
 # ### (c) Write out the model in equation form, being careful to handle the qualitative variables properly.
@@ -158,8 +138,7 @@ display_studentized_residuals(results)
 display_leverage_plot(results)
 
 # %% [markdown]
-# - We can see from the above graph that we have a few leverage points that exceed the cutoff of 3 * average leverage value.
-# - These are plotted in red.
+# - We can see from the above graph that we have a few leverage points that exceed the cutoff of 3 * average leverage value. These are plotted in red.
 # - The ones in yellow exceed the less conservative estimate of 2 * average leverage value
 # - We could also use more conservative estimates for the cutoff of either 4 * average leverage value or 5 * average cutoff value
 
