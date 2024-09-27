@@ -84,8 +84,6 @@ Carseats["Urban"] = Carseats["Urban"].astype("category")
 # ### (a) Fit a multiple regression model to predict Sales using Price, Urban, and US.
 
 # %%
-cols = list(Carseats.columns)
-cols.remove("Sales")
 formula = "Price + Urban + US"
 perform_analysis("Sales", formula, Carseats);
 
@@ -93,19 +91,47 @@ perform_analysis("Sales", formula, Carseats);
 # ### (b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
 
 # %% [markdown]
+# - The coefficient of -0.0219 for Urban (True) indicates that the Sales are lesser by 219 units for an urban store as compared to a rural one. However, the p-value of 0.936 indicates that this difference is not significant and can be discounted or discarded.
+# - The coefficent of 1.2006 for US (True) indicates that Sales are greater by 1201 units as compared to a non-US store.
+# - The coefficient of -0.0545 for Price indicates that Sales decreases by 545 units per unit increase in cost all other things remaining constant.
+
+# %% [markdown]
 # ### (c) Write out the model in equation form, being careful to handle the qualitative variables properly.
+
+# %% [markdown]
+# - The equation can be written out as follows:
+# - Sales (000s) = -0.0219 * Urban + 1.2006 * US -0.0545 * Price + 13.0435
 
 # %% [markdown]
 # ### (d) For which of the predictors can you reject the null hypothesis H0 : βj = 0?
 
 # %% [markdown]
+# - The p-value for the Urban predictor is 0.936 which is much higher than our chosen level of significance 0.01. So we cannot reject the null Hypothesis in this case that its coefficient is zero.
+# - The p-values for US, Price and Intercept are zero. Hence, we reject the null hypothesis for them that their coefficients are zero.
+
+# %% [markdown]
 # ### (e) On the basis of your response to the previous question, fit a smaller model that only uses the predictors for which there is evidence of association with the outcome.
+
+# %%
+formula = "Price + US"
+perform_analysis("Sales", formula, Carseats);
 
 # %% [markdown]
 # ### (f) How well do the models in (a) and (e) fit the data?
 
 # %% [markdown]
+# + Model(a) has an explanatory value R<sup>2</sup> adjusted value of 0.234
+# + Model(e) has an explanatory value R<sup>2</sup> adjusted value of 0.235
+
+# %% [markdown]
 # ### (g) Using the model from (e), obtain 95 % confidence intervals for the coefficient(s).
+
+# %% [markdown]
+# From the summary analysis, it can be seen that the 95% confidence limits for the three terms are as follows:
+# + Intercept (11.790, 14.271)
+# + US[T.Yes] (0.692, 1.708)
+# + Price (-0.065, -0.044)
+# + None of them include zero in their range unlike that for Urban[T.Yes] in Model(a) which is another indicator that the coefficient is not significant.
 
 # %% [markdown]
 # ### (h) Is there evidence of outliers or high leverage observations in the model from (e)?
