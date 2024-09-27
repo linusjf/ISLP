@@ -47,6 +47,24 @@ def display_studentized_residuals(results):
     print("Outlier rows: ")
     print(Auto.iloc[outliers_indexes])
 
+def display_leverage_plot(results):
+  """Display leverage plot"""
+  # https://online.stat.psu.edu/stat501/lesson/11/11.2
+  infl = results.get_influence()
+  average_leverage_value = np.mean(infl.hat_matrix_diag)
+  high_leverage_cutoff = 2 * average_leverage_value
+  high_influence_cutoff = 3 * average_leverage_value
+  no_of_obs = results.nobs
+  _, ax = subplots(figsize=(8,8))
+  ax.scatter(np.arange(no_of_obs),infl.hat_matrix_diag)
+  ax.set_xlabel("Index")
+  ax.set_ylabel("Leverage")
+  high_leverage_indices = np.argwhere((infl.hat_matrix_diag > high_leverage_cutoff) & (infl.hat_matrix_diag < high_influence_cutoff))
+  high_leverage_values = infl.hat_matrix_diag[np.where((infl.hat_matrix_diag > high_leverage_cutoff) & (infl.hat_matrix_diag < high_influence_cutoff))]
+  ax.plot(high_leverage_indices, high_leverage_values, "yo")
+  high_influence_indices = np.argwhere(infl.hat_matrix_diag > high_influence_cutoff)
+  high_influence_values = infl.hat_matrix_diag[np.where(infl.hat_matrix_diag > high_influence_cutoff)]
+  ax.plot(high_influence_indices, high_influence_values, "ro");
 
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):
