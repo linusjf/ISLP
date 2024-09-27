@@ -33,6 +33,20 @@ def display_residuals_plot(results):
     ax.set_ylabel("Residuals")
     ax.axhline(0, c="k", ls="--")
 
+def display_studentized_residuals(results):
+  """Display studentized residuals"""
+  _, ax = subplots(figsize=(8,8));
+  ax.scatter(results.fittedvalues, results.resid_pearson);
+  ax.set_xlabel("Fitted values for mpg");
+  ax.set_ylabel("Standardized residuals");
+  ax.axhline(0, c='k', ls='--');
+  outliers_indexes = np.where((results.resid_pearson > 3.0) | (results.resid_pearson < -3.0))[0]
+  for idx in range(len(outliers_indexes)):
+    ax.plot(results.fittedvalues.iloc[outliers_indexes[idx]],
+            results.resid_pearson[outliers_indexes[idx]], "ro");
+    print("Outlier rows: ")
+    print(Auto.iloc[outliers_indexes])
+
 
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):

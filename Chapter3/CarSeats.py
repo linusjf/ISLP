@@ -114,7 +114,7 @@ perform_analysis("Sales", formula, Carseats);
 
 # %%
 formula = "Price + US"
-perform_analysis("Sales", formula, Carseats);
+results = perform_analysis("Sales", formula, Carseats);
 
 # %% [markdown]
 # ### (f) How well do the models in (a) and (e) fit the data?
@@ -135,6 +135,24 @@ perform_analysis("Sales", formula, Carseats);
 
 # %% [markdown]
 # ### (h) Is there evidence of outliers or high leverage observations in the model from (e)?
+
+# %% [markdown]
+# #### We can check for presence of outliers by plotting the residuals plot and seeing if there are any outliers.
+
+# %%
+display_residuals_plot(results)
+
+# %% [markdown]
+# - From the plot above, there doesn't appear to be any obvious outliers.
+
+# %% [markdown]
+# #### We can plot studentized residuals to see whether there are any visible there.
+
+# %%
+display_studentized_residuals(results)
+
+# %% [markdown]
+# - From the above plot, no observation lies outside the (-3,3) range. Hence, we can safely conclude that there are no evident outliers in the dataset.
 
 # %%
 allDone()
