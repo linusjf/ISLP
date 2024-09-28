@@ -191,6 +191,12 @@ ax.axhline(0, c='k', ls='--');
 # %%
 display_hatleverage_plot(results)
 
+# %%
+display_cooks_distance_plot(results);
+
+# %%
+display_DFFITS_plot(results);
+
 # %% [markdown]
 # ### Multiple linear regression
 

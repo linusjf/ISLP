@@ -22,6 +22,7 @@ from pandas.api.types import is_numeric_dtype
 from scipy import stats
 from statsmodels.stats.anova import anova_lm
 import statsmodels.formula.api as smf
+from statsmodels.graphics.regressionplots import influence_plot
 
 
 # Display residuals plot function
@@ -77,6 +78,29 @@ def display_hatleverage_plot(results):
   high_influence_indices = np.argwhere(infl.hat_matrix_diag > high_influence_cutoff)
   high_influence_values = infl.hat_matrix_diag[np.where(infl.hat_matrix_diag > high_influence_cutoff)]
   ax.plot(high_influence_indices, high_influence_values, "ro");
+  ax.axhline(high_leverage_cutoff, c="y", ls="--");
+  ax.axhline(high_influence_cutoff, c="r", ls="-");
+
+
+def display_cooks_distance_plot(results):
+  """Display cook's distance leverage plot
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return matplotlib.figure.Figurehttps://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure
+  [[https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure]]
+  """
+  fig = influence_plot(results)
+  return fig
+
+def display_DFFITS_plot(results):
+  """Display DFFITS leverage plot
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return matplotlib.figure.Figurehttps://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure
+  [[https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure]]
+  """
+  fig = influence_plot(results, criterion="DFFITS")
+  return fig
 
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):

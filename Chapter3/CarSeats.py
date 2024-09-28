@@ -147,4 +147,10 @@ display_hatleverage_plot(results)
 # - <https://online.stat.psu.edu/stat501/lesson/11/11.2>
 
 # %%
+display_cooks_distance_plot(results);
+
+# %%
+display_DFFITS_plot(results);
+
+# %%
 allDone()
