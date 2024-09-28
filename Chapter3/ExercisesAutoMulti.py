@@ -407,10 +407,13 @@ Auto = Auto.sort_values(by=['year'], ascending=True)
 Auto.columns
 
 # %%
-Auto.max() - Auto.min()
+print("Minimums:")
+print(Auto.min())
+print("Maximums:")
+print(Auto.max())
 
 # %% [markdown]
-# - From the above, we can see that the ranges for displacement, horsepower and weight are quite large.
+# - From the above, we can see that the values for displacement, horsepower and weight are quite large.
 # - Hence, we log or square root transform only these variables.
 
 # %% [markdown]
