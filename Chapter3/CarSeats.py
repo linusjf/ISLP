@@ -135,7 +135,7 @@ display_studentized_residuals(results)
 # - From the above plot, no observation lies outside the (-3,3) range. Hence, we can safely conclude that there are no evident outliers in the dataset.
 
 # %%
-display_leverage_plot(results)
+display_hatleverage_plot(results)
 
 # %% [markdown]
 # - We can see from the above graph that we have a few leverage points that exceed the cutoff of 3 * average leverage value. These are plotted in red.

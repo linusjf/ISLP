@@ -189,10 +189,7 @@ ax.axhline(0, c='k', ls='--');
 # ### Leverage statistics can be computed for any number of predictors using the hat_matrix_diag attribute of the value returned by the get_influence() method.
 
 # %%
-display_leverage_plot(results)
-
-# %% [markdown]
-# The np.argmax() function returns the index of the highest valued element of an array. Here, we determine which element has the highest leverage.
+display_hatleverage_plot(results)
 
 # %% [markdown]
 # ### Multiple linear regression

@@ -26,15 +26,23 @@ import statsmodels.formula.api as smf
 
 # Display residuals plot function
 def display_residuals_plot(results):
-    """Display residuals plot"""
-    _, ax = subplots(figsize=(8, 8))
-    ax.scatter(results.fittedvalues, results.resid)
-    ax.set_xlabel("Fitted values for " + results.model.endog_names)
-    ax.set_ylabel("Residuals")
-    ax.axhline(0, c="k", ls="--")
+  """Display residuals plot
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                  [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return None
+  """
+  _, ax = subplots(figsize=(8, 8))
+  ax.scatter(results.fittedvalues, results.resid)
+  ax.set_xlabel("Fitted values for " + results.model.endog_names)
+  ax.set_ylabel("Residuals")
+  ax.axhline(0, c="k", ls="--")
 
 def display_studentized_residuals(results):
-  """Display studentized residuals"""
+  """Display studentized residuals
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return None
+  """
   _, ax = subplots(figsize=(8,8));
   ax.scatter(results.fittedvalues, results.resid_pearson);
   ax.set_xlabel("Fitted values for mpg");
@@ -47,8 +55,12 @@ def display_studentized_residuals(results):
     print("Outlier rows: ")
     print(Auto.iloc[outliers_indexes])
 
-def display_leverage_plot(results):
-  """Display leverage plot"""
+def display_hatleverage_plot(results):
+  """Display hat leverage plot
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return None
+  """
   # https://online.stat.psu.edu/stat501/lesson/11/11.2
   infl = results.get_influence()
   average_leverage_value = np.mean(infl.hat_matrix_diag)
@@ -68,7 +80,12 @@ def display_leverage_plot(results):
 
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):
-    """Identify least significant feature"""
+    """Identify least significant feature
+    :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+    :param alpha - the level of significance chosen
+    :return None
+    """
     index = np.argmax(results.pvalues)
     highest_pvalue = results.pvalues.iloc[index]
     if highest_pvalue > alpha:
@@ -88,34 +105,46 @@ def identify_least_significant_feature(results, alpha=0.05):
 # Calculate [Variance Inflation Factors(VIFs) for features
 # in a model](https://www.statology.org/how-to-calculate-vif-in-python/)
 def calculate_VIFs(formula, df):
-    """Calculate VIFs"""
-    # find design matrix for linear regression model using
-    # formula and dataframe
+    """Calculate VIFs
+    :param formula - the regression formula
+    :param df - the pandas dataframe
+    :return the pandas datafame containing VIF information for each feature.
+    """
     _, X = dmatrices(formula, data=df, return_type='dataframe')
     # calculate VIF for each explanatory variable
     vif = pd.DataFrame()
     vif['VIF'] = [VIF(X.values, i) for i in range(1, X.shape[1])]
     vif['Feature'] = X.columns[1:]
     vif = vif.set_index(["Feature"])
-    return vif;
+    return vif
 
 
 # Identify feature with highest VIF
 def identify_highest_VIF_feature(vifdf, threshold=10):
-    """Identify highest VIF feature"""
+    """Identify highest VIF feature
+    :param vifdf - the pandas dataframe containing vif information
+    :param threshold - the threshold specified to identify multicollinearity in features using VIF
+    :return tuple with variable name and its VIF when threshold is breached
+            else None
+    """
     highest_vif = vifdf["VIF"].iloc[np.argmax(vifdf)]
     if highest_vif > threshold:
         variable = vifdf.index[np.argmax(vifdf["VIF"])]
         print("We find the highest VIF in this model is " + variable +
               " with a VIF of " + str(highest_vif))
         print("Hence, we drop " + variable + " from the model to be fitted.")
+        return variable, highest_vif
     else:
         print("No variables are significantly collinear.")
 
 
 # Function to standardize numeric columns
 def standardize(series):
-    """Standardize"""
+    """Standardize
+    :param series - series to be standardized
+    :return the standardized series if the series is a numeric datatype
+            else the original series
+    """
     if is_numeric_dtype(series):
         return stats.zscore(series)
     return series;
@@ -123,7 +152,13 @@ def standardize(series):
 
 # Function to produce linear regression analysis
 def perform_analysis(response, formula, dataframe):
-    """Perform analysis"""
+    """Perform analysis
+    :param response - the name of the response feature
+    :param formula - the regression formula after the ~ sign
+    :param dataframe - the pandas dataframe object
+    :return the statsmodels.regression.linear_model.RegressionResults object
+      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+    """
     model = smf.ols(f'{response} ~ {formula}', data=dataframe)
     results = model.fit()
     print(results.summary())
