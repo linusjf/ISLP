@@ -23,6 +23,7 @@ from scipy import stats
 from statsmodels.stats.anova import anova_lm
 import statsmodels.formula.api as smf
 from statsmodels.graphics.regressionplots import influence_plot
+import plotly.express as px
 
 
 # Display residuals plot function
@@ -56,7 +57,28 @@ def display_studentized_residuals(results):
     print("Outlier rows: ")
     print(Auto.iloc[outliers_indexes])
 
-def display_hatleverage_plot(results):
+def display_hat_leverage_studentized(results):
+  """Display hat leverage plot.
+  The size of the bubble or point is an indicator of the influence the point has on the regression.
+  It is simply a multiplication of the leverage value and the absolute value of the studentized residuals
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return None
+  """
+  student_residuals = results.resid_pearson
+  infl = results.get_influence()
+  hat_matrix_diag = infl.hat_matrix_diag
+  data_point_indexes = np.arange(0, len(student_residuals))
+  df = pd.DataFrame({"Student Residuals": student_residuals,
+                     "Leverage": hat_matrix_diag,
+                     "Data Point": data_point_indexes,
+                     "Influence" : np.abs(student_residuals) * hat_matrix_diag})
+  fig = px.scatter(df, x="Leverage", y = "Student Residuals",
+           size="Influence",
+                  title="Influence Plot", hover_name="Data Point")
+  fig.show()
+
+def display_hat_leverage_cutoffs(results):
   """Display hat leverage plot
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]

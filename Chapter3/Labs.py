@@ -189,7 +189,10 @@ ax.axhline(0, c='k', ls='--');
 # ### Leverage statistics can be computed for any number of predictors using the hat_matrix_diag attribute of the value returned by the get_influence() method.
 
 # %%
-display_hatleverage_plot(results)
+display_hat_leverage_cutoffs(results);
+
+# %%
+display_hat_leverage_studentized(results)
 
 # %%
 display_cooks_distance_plot(results);

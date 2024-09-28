@@ -135,7 +135,7 @@ display_studentized_residuals(results)
 # - From the above plot, no observation lies outside the (-3,3) range. Hence, we can safely conclude that there are no evident outliers in the dataset.
 
 # %%
-display_hatleverage_plot(results)
+display_hat_leverage_cutoffs(results)
 
 # %% [markdown]
 # - We can see from the above graph that we have a few leverage points that exceed the cutoff of 3 * average leverage value. These are plotted in red.
@@ -151,6 +151,12 @@ display_cooks_distance_plot(results);
 
 # %%
 display_DFFITS_plot(results);
+
+# %%
+display_hat_leverage_studentized(results)
+
+# %% [markdown]
+# - Looking at all three studentized plots for leverage, it can be concluded that even if there are a few outliers, none wield a significant influence on the regression since the points with high leverage values have low studentized residual values.
 
 # %%
 allDone()
