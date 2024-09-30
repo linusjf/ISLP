@@ -65,7 +65,7 @@ Carseats["Urban"] = Carseats["Urban"].astype("category")
 
 # %%
 formula = "Price + Urban + US"
-perform_analysis("Sales", formula, Carseats);
+perform_analysis("Sales", formula, Carseats)
 
 # %% [markdown]
 # ### (b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
@@ -94,7 +94,7 @@ perform_analysis("Sales", formula, Carseats);
 
 # %%
 formula = "Price + US"
-results = perform_analysis("Sales", formula, Carseats);
+results = perform_analysis("Sales", formula, Carseats)
 
 # %% [markdown]
 # ### (f) How well do the models in (a) and (e) fit the data?
@@ -147,10 +147,10 @@ display_hat_leverage_cutoffs(results)
 # - <https://online.stat.psu.edu/stat501/lesson/11/11.2>
 
 # %%
-display_cooks_distance_plot(results);
+display_cooks_distance_plot(results)
 
 # %%
-display_DFFITS_plot(results);
+display_DFFITS_plot(results)
 
 # %%
 display_hat_leverage_plot(results)
@@ -174,7 +174,7 @@ inf_df[inf_df["hat_diag"] > (4 * np.mean(inf_df["hat_diag"]))]
 # ### Using DFFITS cutoff, we have the following influential points
 
 # %%
-inf_df[inf_df["dffits"] > 1.0]
+inf_df[inf_df["dffits"] > 2 * sqrt(len(results.params) / results.nobs)]
 
 # %% [markdown]
 # ### Using Cooks Distance, we have the following influential points
@@ -186,19 +186,19 @@ inf_df[inf_df["cooks_d"] > 1.0]
 # ### Using DFBeta for intercept, we have the following influential points
 
 # %%
-inf_df[inf_df["dfb_Intercept"] > (2 / np.sqrt(results.nobs))]
+inf_df[inf_df["dfb_Intercept"] > (3 / np.sqrt(results.nobs))]
 
 # %% [markdown]
 # ### Using DFBeta for US, we have the following influential points
 
 # %%
-inf_df[inf_df["dfb_US[T.Yes]"] > (2 / np.sqrt(results.nobs))]
+inf_df[inf_df["dfb_US[T.Yes]"] > (3 / np.sqrt(results.nobs))]
 
 # %% [markdown]
 # ### Using DFBeta for Price, we have the following influential points
 
 # %%
-inf_df[inf_df["dfb_Price"] > (2 / np.sqrt(results.nobs))]
+inf_df[inf_df["dfb_Price"] > (3 / np.sqrt(results.nobs))]
 
 # %%
 allDone()
