@@ -192,7 +192,7 @@ ax.axhline(0, c='k', ls='--');
 display_hat_leverage_cutoffs(results);
 
 # %%
-display_hat_leverage_studentized(results)
+display_hat_leverage_plot(results)
 
 # %%
 display_cooks_distance_plot(results);

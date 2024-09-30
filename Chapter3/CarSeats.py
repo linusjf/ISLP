@@ -153,10 +153,13 @@ display_cooks_distance_plot(results);
 display_DFFITS_plot(results);
 
 # %%
-display_hat_leverage_studentized(results)
+display_hat_leverage_plot(results)
 
 # %% [markdown]
 # - Looking at all three studentized plots for leverage, it can be concluded that even if there are a few outliers, none wield a significant influence on the regression since the points with high leverage values have low studentized residual values.
+
+# %%
+get_influence_points(results)
 
 # %%
 allDone()

@@ -57,7 +57,7 @@ def display_studentized_residuals(results):
     print("Outlier rows: ")
     print(Auto.iloc[outliers_indexes])
 
-def display_hat_leverage_studentized(results):
+def display_hat_leverage_plot(results):
   """Display hat leverage plot.
   The size of the bubble or point is an indicator of the influence the point has on the regression.
   It is simply a multiplication of the leverage value and the absolute value of the studentized residuals
@@ -77,6 +77,42 @@ def display_hat_leverage_studentized(results):
            size="Influence",
                   title="Influence Plot", hover_name="Data Point")
   fig.show()
+
+def get_influence_points(results):
+  """Get high influential data points from a combination of hat_diagonal_matrix, DFFITS, Cook's distance and studentized residuals.
+  [[https://www.theopeneducator.com/doe/Regression/outlier-leverage-influential-points]]
+  :param results - the statsmodels.regression.linear_model.RegressionResults object
+                     [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
+  :return dataframe object that contains the high influential points as identified by the above three methods
+  """
+  infl = results.get_influence()
+  summary_frame = infl.summary_frame()
+  no_of_obs = results.nobs
+  hat_matrix_diag = infl.hat_matrix_diag
+  average_hat_leverage = np.mean(hat_matrix_diag)
+  hat_leverage_cutoff = 2 * average_hat_leverage
+  indexes = np.arange(0, no_of_obs)
+  high_hat_leverage_indices = np.argwhere(hat_matrix_diag > hat_leverage_cutoff)
+  studentized_residuals = results.resid_pearson
+  hat_influence = studentized_residuals * hat_matrix_diag
+  dffits = infl.dffits
+  #print(dffits)
+  dffits_influence_indices = np.argwhere(np.abs(dffits[0]) > 1.0)
+  cooks_distance = infl.cooks_distance
+  #print(cooks_distance)
+  no_of_parameters = len(results.params)
+  cooks_distance_pvalues = 1 - stats.f.pdf(cooks_distance, dfn=no_of_parameters, dfd=(no_of_obs - no_of_parameters))
+  cooks_distance_influence_indices = np.argwhere(cooks_distance_pvalues > 0.5)
+  print(summary_frame)
+  #df = pd.DataFrame({"Index": indexes,
+                 #    "Hat Matrix Diag": hat_matrix_diag,
+               #      "Studentized Residuals": studentized_residuals,
+               #     "DFFITS": dffits[0],
+                #    "Cooks Distance": cooks_distance,
+                #    "Cooks Distance p-values": cooks_distance_pvalues})
+  #return df
+
+
 
 def display_hat_leverage_cutoffs(results):
   """Display hat leverage plot
