@@ -89,20 +89,27 @@ def get_influence_points(results):
   summary_frame = infl.summary_frame()
   no_of_obs = results.nobs
   no_of_parameters = len(results.params)
+  print(f"n = {no_of_obs}, p = {no_of_parameters}")
   hat_matrix_diag = summary_frame["hat_diag"]
   average_hat_leverage = np.mean(hat_matrix_diag)
+  print(f"Average Hat Leverage: {average_hat_leverage}")
   hat_leverage_cutoff = 2 * average_hat_leverage
-  beta_cut_off = 2 / np.sqrt(no_of_obs)
-  indexes = summary_frame.index
+  print(f"Hat Leverage  Cutoff = 2 * Average Hat Leverage = {hat_leverage_cutoff}")
+  beta_cutoff = 2 / np.sqrt(no_of_obs)
+  dffits_cutoff = 1.0
+  cooks_d_cutoff = 1.0
+  print(f"DFBetas Cutoff = 2 / sqrt(n) = {beta_cutoff}")
+  print(f"DFFITS Cutoff = {dffits_cutoff}")
+  print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
   summary_frame["hat_influence"] = np.abs(summary_frame["student_resid"]) * summary_frame["hat_diag"]
-  summary_frame["cooks_d_pvalue"] = 1 - infl.cooks_distance[1]
+  summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
   dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
   query_dfb = ""
   for col in dfb_cols:
-    query_dfb += " abs(`" + col + "`) > " + str(beta_cut_off) + " or "
+    query_dfb += " abs(`" + col + "`) > " + str(beta_cutoff) + " or "
 
   summary_frame = summary_frame.query(query_dfb + "hat_diag > " + str(hat_leverage_cutoff) + " or "
-                                     + "abs(dffits) > 1.0" + " or " + " cooks_d_pvalue > 0.5")
+                                     + "abs(dffits) > " + str(dffits_cutoff) + " or " + " cooks_d > " + str(cooks_d_cutoff))
   summary_frame = summary_frame.drop(columns=["standard_resid","dffits_internal" ])
   return summary_frame
 

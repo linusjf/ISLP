@@ -159,7 +159,49 @@ display_hat_leverage_plot(results)
 # - Looking at all three studentized plots for leverage, it can be concluded that even if there are a few outliers, none wield a significant influence on the regression since the points with high leverage values have low studentized residual values.
 
 # %%
-get_influence_points(results)
+inf_df = get_influence_points(results)
+
+# %% [markdown]
+# ### For a more conservative cutoff values for hat_diag, we have the following infuence point(s):
+
+# %%
+inf_df[inf_df["hat_diag"] > (3 * np.mean(inf_df["hat_diag"]))]
+
+# %%
+inf_df[inf_df["hat_diag"] > (4 * np.mean(inf_df["hat_diag"]))]
+
+# %% [markdown]
+# ### Using DFFITS cutoff, we have the following influential points
+
+# %%
+inf_df[inf_df["dffits"] > 1.0]
+
+# %% [markdown]
+# ### Using Cooks Distance, we have the following influential points
+
+# %%
+inf_df[inf_df["cooks_d"] > 1.0]
+
+# %% [markdown]
+# ### Using DFBeta for intercept, we have the following influential points
+
+# %%
+inf_df[inf_df["dfb_Intercept"] > (2 / np.sqrt(results.nobs))]
+
+# %% [markdown]
+# ### Using DFBeta for US, we have the following influential points
+
+# %%
+inf_df[inf_df["dfb_US[T.Yes]"] > (2 / np.sqrt(results.nobs))]
+
+# %% [markdown]
+# ### Using DFBeta for Price, we have the following influential points
+
+# %%
+inf_df[inf_df["dfb_Price"] > (2 / np.sqrt(results.nobs))]
 
 # %%
 allDone()
+
+# %% [markdown]
+#
