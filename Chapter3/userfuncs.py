@@ -88,31 +88,23 @@ def get_influence_points(results):
   infl = results.get_influence()
   summary_frame = infl.summary_frame()
   no_of_obs = results.nobs
-  hat_matrix_diag = infl.hat_matrix_diag
+  no_of_parameters = len(results.params)
+  hat_matrix_diag = summary_frame["hat_diag"]
   average_hat_leverage = np.mean(hat_matrix_diag)
   hat_leverage_cutoff = 2 * average_hat_leverage
-  indexes = np.arange(0, no_of_obs)
-  high_hat_leverage_indices = np.argwhere(hat_matrix_diag > hat_leverage_cutoff)
-  studentized_residuals = results.resid_pearson
-  hat_influence = studentized_residuals * hat_matrix_diag
-  dffits = infl.dffits
-  #print(dffits)
-  dffits_influence_indices = np.argwhere(np.abs(dffits[0]) > 1.0)
-  cooks_distance = infl.cooks_distance
-  #print(cooks_distance)
-  no_of_parameters = len(results.params)
-  cooks_distance_pvalues = 1 - stats.f.pdf(cooks_distance, dfn=no_of_parameters, dfd=(no_of_obs - no_of_parameters))
-  cooks_distance_influence_indices = np.argwhere(cooks_distance_pvalues > 0.5)
-  print(summary_frame)
-  #df = pd.DataFrame({"Index": indexes,
-                 #    "Hat Matrix Diag": hat_matrix_diag,
-               #      "Studentized Residuals": studentized_residuals,
-               #     "DFFITS": dffits[0],
-                #    "Cooks Distance": cooks_distance,
-                #    "Cooks Distance p-values": cooks_distance_pvalues})
-  #return df
+  beta_cut_off = 2 / np.sqrt(no_of_obs)
+  indexes = summary_frame.index
+  summary_frame["hat_influence"] = np.abs(summary_frame["student_resid"]) * summary_frame["hat_diag"]
+  summary_frame["cooks_d_pvalue"] = 1 - infl.cooks_distance[1]
+  dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
+  query_dfb = ""
+  for col in dfb_cols:
+    query_dfb += " abs(`" + col + "`) > " + str(beta_cut_off) + " or "
 
-
+  summary_frame = summary_frame.query(query_dfb + "hat_diag > " + str(hat_leverage_cutoff) + " or "
+                                     + "abs(dffits) > 1.0" + " or " + " cooks_d_pvalue > 0.5")
+  summary_frame = summary_frame.drop(columns=["standard_resid","dffits_internal" ])
+  return summary_frame
 
 def display_hat_leverage_cutoffs(results):
   """Display hat leverage plot
