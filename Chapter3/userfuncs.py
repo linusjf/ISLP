@@ -28,136 +28,161 @@ import plotly.express as px
 
 # Display residuals plot function
 def display_residuals_plot(results):
-  """Display residuals plot
+    """Display residuals plot
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                   [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return None
   """
-  _, ax = subplots(figsize=(8, 8))
-  ax.scatter(results.fittedvalues, results.resid)
-  ax.set_xlabel("Fitted values for " + results.model.endog_names)
-  ax.set_ylabel("Residuals")
-  ax.axhline(0, c="k", ls="--")
+    _, ax = subplots(figsize=(8, 8))
+    ax.scatter(results.fittedvalues, results.resid)
+    ax.set_xlabel("Fitted values for " + results.model.endog_names)
+    ax.set_ylabel("Residuals")
+    ax.axhline(0, c="k", ls="--")
+
 
 def display_studentized_residuals(results):
-  """Display studentized residuals
+    """Display studentized residuals
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return None
   """
-  _, ax = subplots(figsize=(8,8));
-  ax.scatter(results.fittedvalues, results.resid_pearson);
-  ax.set_xlabel("Fitted values for mpg");
-  ax.set_ylabel("Standardized residuals");
-  ax.axhline(0, c='k', ls='--');
-  outliers_indexes = np.where((results.resid_pearson > 3.0) | (results.resid_pearson < -3.0))[0]
-  for idx in range(len(outliers_indexes)):
-    ax.plot(results.fittedvalues.iloc[outliers_indexes[idx]],
-            results.resid_pearson[outliers_indexes[idx]], "ro");
-    print("Outlier rows: ")
-    print(Auto.iloc[outliers_indexes])
+    _, ax = subplots(figsize=(8, 8))
+    ax.scatter(results.fittedvalues, results.resid_pearson)
+    ax.set_xlabel("Fitted values for mpg")
+    ax.set_ylabel("Standardized residuals")
+    ax.axhline(0, c='k', ls='--')
+    outliers_indexes = np.where((results.resid_pearson > 3.0)
+                                | (results.resid_pearson < -3.0))[0]
+    for idx in range(len(outliers_indexes)):
+        ax.plot(results.fittedvalues.iloc[outliers_indexes[idx]],
+                results.resid_pearson[outliers_indexes[idx]], "ro")
+        print("Outlier rows: ")
+        print(Auto.iloc[outliers_indexes])
+
 
 def display_hat_leverage_plot(results):
-  """Display hat leverage plot.
+    """Display hat leverage plot.
   The size of the bubble or point is an indicator of the influence the point has on the regression.
   It is simply a multiplication of the leverage value and the absolute value of the studentized residuals
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return None
   """
-  student_residuals = results.resid_pearson
-  infl = results.get_influence()
-  hat_matrix_diag = infl.hat_matrix_diag
-  data_point_indexes = np.arange(0, len(student_residuals))
-  df = pd.DataFrame({"Student Residuals": student_residuals,
-                     "Leverage": hat_matrix_diag,
-                     "Data Point": data_point_indexes,
-                     "Influence" : np.abs(student_residuals) * hat_matrix_diag})
-  fig = px.scatter(df, x="Leverage", y = "Student Residuals",
-           size="Influence",
-                  title="Influence Plot", hover_name="Data Point")
-  fig.show()
+    student_residuals = results.resid_pearson
+    infl = results.get_influence()
+    hat_matrix_diag = infl.hat_matrix_diag
+    data_point_indexes = np.arange(0, len(student_residuals))
+    df = pd.DataFrame({
+        "Student Residuals": student_residuals,
+        "Leverage": hat_matrix_diag,
+        "Data Point": data_point_indexes,
+        "Influence": np.abs(student_residuals) * hat_matrix_diag
+    })
+    fig = px.scatter(df,
+                     x="Leverage",
+                     y="Student Residuals",
+                     size="Influence",
+                     title="Influence Plot",
+                     hover_name="Data Point")
+    fig.show()
+
 
 def get_influence_points(results):
-  """Get high influential data points from a combination of hat_diagonal_matrix, DFFITS, Cook's distance and studentized residuals.
+    """Get high influential data points from a combination of hat_diagonal_matrix, DFFITS, Cook's distance and studentized residuals.
   [[https://www.theopeneducator.com/doe/Regression/outlier-leverage-influential-points]]
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return dataframe object that contains the high influential points as identified by the above three methods
   """
-  infl = results.get_influence()
-  summary_frame = infl.summary_frame()
-  no_of_obs = results.nobs
-  no_of_parameters = len(results.params)
-  print(f"n = {no_of_obs}, p = {no_of_parameters}")
-  hat_matrix_diag = summary_frame["hat_diag"]
-  average_hat_leverage = np.mean(hat_matrix_diag)
-  print(f"Average Hat Leverage: {average_hat_leverage}")
-  hat_leverage_cutoff = 2 * average_hat_leverage
-  print(f"Hat Leverage  Cutoff = 2 * Average Hat Leverage = {hat_leverage_cutoff}")
-  beta_cutoff = 2 / np.sqrt(no_of_obs)
-  dffits_cutoff = 1.0
-  cooks_d_cutoff = 1.0
-  print(f"DFBetas Cutoff = 2 / sqrt(n) = {beta_cutoff}")
-  print(f"DFFITS Cutoff = {dffits_cutoff}")
-  print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
-  summary_frame["hat_influence"] = np.abs(summary_frame["student_resid"]) * summary_frame["hat_diag"]
-  summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
-  dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
-  query_dfb = ""
-  for col in dfb_cols:
-    query_dfb += " abs(`" + col + "`) > " + str(beta_cutoff) + " or "
+    infl = results.get_influence()
+    summary_frame = infl.summary_frame()
+    no_of_obs = results.nobs
+    no_of_parameters = len(results.params)
+    print(f"n = {no_of_obs}, p = {no_of_parameters}")
+    hat_matrix_diag = summary_frame["hat_diag"]
+    average_hat_leverage = np.mean(hat_matrix_diag)
+    print(f"Average Hat Leverage: {average_hat_leverage}")
+    hat_leverage_cutoff = 2 * average_hat_leverage
+    print(
+        f"Hat Leverage  Cutoff = 2 * Average Hat Leverage = {hat_leverage_cutoff}"
+    )
+    beta_cutoff = 3 / np.sqrt(no_of_obs)
+    dffits_cutoff = 1.0
+    cooks_d_cutoff = 1.0
+    print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
+    print(f"DFFITS Cutoff = {dffits_cutoff}")
+    print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
+    summary_frame["hat_influence"] = np.abs(
+        summary_frame["student_resid"]) * summary_frame["hat_diag"]
+    summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
+    dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
+    query_dfb = ""
+    for col in dfb_cols:
+        query_dfb += " abs(`" + col + "`) > " + str(beta_cutoff) + " or "
 
-  summary_frame = summary_frame.query(query_dfb + "hat_diag > " + str(hat_leverage_cutoff) + " or "
-                                     + "abs(dffits) > " + str(dffits_cutoff) + " or " + " cooks_d > " + str(cooks_d_cutoff))
-  summary_frame = summary_frame.drop(columns=["standard_resid","dffits_internal" ])
-  return summary_frame
+    summary_frame = summary_frame.query(query_dfb + "hat_diag > " +
+                                        str(hat_leverage_cutoff) + " or " +
+                                        "abs(dffits) > " + str(dffits_cutoff) +
+                                        " or " + " cooks_d > " +
+                                        str(cooks_d_cutoff))
+    summary_frame = summary_frame.drop(
+        columns=["standard_resid", "dffits_internal"])
+    return summary_frame
+
 
 def display_hat_leverage_cutoffs(results):
-  """Display hat leverage plot
+    """Display hat leverage plot
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return None
   """
-  # https://online.stat.psu.edu/stat501/lesson/11/11.2
-  infl = results.get_influence()
-  average_leverage_value = np.mean(infl.hat_matrix_diag)
-  high_leverage_cutoff = 2 * average_leverage_value
-  high_influence_cutoff = 3 * average_leverage_value
-  no_of_obs = results.nobs
-  _, ax = subplots(figsize=(8,8))
-  ax.scatter(np.arange(no_of_obs),infl.hat_matrix_diag)
-  ax.set_xlabel("Index")
-  ax.set_ylabel("Leverage")
-  high_leverage_indices = np.argwhere((infl.hat_matrix_diag > high_leverage_cutoff) & (infl.hat_matrix_diag < high_influence_cutoff))
-  high_leverage_values = infl.hat_matrix_diag[np.where((infl.hat_matrix_diag > high_leverage_cutoff) & (infl.hat_matrix_diag < high_influence_cutoff))]
-  ax.plot(high_leverage_indices, high_leverage_values, "yo")
-  high_influence_indices = np.argwhere(infl.hat_matrix_diag > high_influence_cutoff)
-  high_influence_values = infl.hat_matrix_diag[np.where(infl.hat_matrix_diag > high_influence_cutoff)]
-  ax.plot(high_influence_indices, high_influence_values, "ro");
-  ax.axhline(high_leverage_cutoff, c="y", ls="--");
-  ax.axhline(high_influence_cutoff, c="r", ls="-");
+    # https://online.stat.psu.edu/stat501/lesson/11/11.2
+    infl = results.get_influence()
+    average_leverage_value = np.mean(infl.hat_matrix_diag)
+    high_leverage_cutoff = 2 * average_leverage_value
+    high_influence_cutoff = 3 * average_leverage_value
+    no_of_obs = results.nobs
+    _, ax = subplots(figsize=(8, 8))
+    ax.scatter(np.arange(no_of_obs), infl.hat_matrix_diag)
+    ax.set_xlabel("Index")
+    ax.set_ylabel("Leverage")
+    high_leverage_indices = np.argwhere(
+        (infl.hat_matrix_diag > high_leverage_cutoff)
+        & (infl.hat_matrix_diag < high_influence_cutoff))
+    high_leverage_values = infl.hat_matrix_diag[
+        np.where((infl.hat_matrix_diag > high_leverage_cutoff)
+                 & (infl.hat_matrix_diag < high_influence_cutoff))]
+    ax.plot(high_leverage_indices, high_leverage_values, "yo")
+    high_influence_indices = np.argwhere(
+        infl.hat_matrix_diag > high_influence_cutoff)
+    high_influence_values = infl.hat_matrix_diag[np.where(
+        infl.hat_matrix_diag > high_influence_cutoff)]
+    ax.plot(high_influence_indices, high_influence_values, "ro")
+    ax.axhline(high_leverage_cutoff, c="y", ls="--")
+    ax.axhline(high_influence_cutoff, c="r", ls="-")
 
 
 def display_cooks_distance_plot(results):
-  """Display cook's distance leverage plot
+    """Display cook's distance leverage plot
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return matplotlib.figure.Figurehttps://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure
   [[https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure]]
   """
-  fig = influence_plot(results)
-  return fig
+    fig = influence_plot(results)
+    return fig
+
 
 def display_DFFITS_plot(results):
-  """Display DFFITS leverage plot
+    """Display DFFITS leverage plot
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return matplotlib.figure.Figurehttps://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure
   [[https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure]]
   """
-  fig = influence_plot(results, criterion="DFFITS")
-  return fig
+    fig = influence_plot(results, criterion="DFFITS")
+    return fig
+
 
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):
@@ -175,8 +200,8 @@ def identify_least_significant_feature(results, alpha=0.05):
         print("We find the least significant variable in this model is " +
               variable + " with a p-value of " + str(highest_pvalue) +
               " and a coefficient of " + str(coeff))
-        print("Using the backward methodology, we suggest dropping " + variable +
-              " from the new model")
+        print("Using the backward methodology, we suggest dropping " +
+              variable + " from the new model")
     else:
         print("No variables are statistically insignificant.")
         print("The model " + results.model.formula +
@@ -228,7 +253,7 @@ def standardize(series):
     """
     if is_numeric_dtype(series):
         return stats.zscore(series)
-    return series;
+    return series
 
 
 # Function to produce linear regression analysis
@@ -244,4 +269,4 @@ def perform_analysis(response, formula, dataframe):
     results = model.fit()
     print(results.summary())
     print(anova_lm(results))
-    return results;
+    return results
