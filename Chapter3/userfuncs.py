@@ -107,10 +107,10 @@ def get_influence_points(results):
         f"Hat Leverage  Cutoff = 2 * Average Hat Leverage = {hat_leverage_cutoff}"
     )
     beta_cutoff = 3 / np.sqrt(no_of_obs)
-    dffits_cutoff = 1.0
+    dffits_cutoff = 2 * np.sqrt(no_of_parameters / no_of_obs)
     cooks_d_cutoff = 1.0
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
-    print(f"DFFITS Cutoff = {dffits_cutoff}")
+    print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]
@@ -149,9 +149,9 @@ def display_hat_leverage_cutoffs(results):
     high_leverage_indices = np.argwhere(
         (infl.hat_matrix_diag > high_leverage_cutoff)
         & (infl.hat_matrix_diag < high_influence_cutoff))
-    high_leverage_values = infl.hat_matrix_diag[
-        np.where((infl.hat_matrix_diag > high_leverage_cutoff)
-                 & (infl.hat_matrix_diag < high_influence_cutoff))]
+    high_leverage_values = infl.hat_matrix_diag[np.where(
+        (infl.hat_matrix_diag > high_leverage_cutoff)
+        & (infl.hat_matrix_diag < high_influence_cutoff))]
     ax.plot(high_leverage_indices, high_leverage_values, "yo")
     high_influence_indices = np.argwhere(
         infl.hat_matrix_diag > high_influence_cutoff)
