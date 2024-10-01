@@ -34,3 +34,11 @@
 # %% [markdown]
 # ## (d) For the regression of Y onto X without an intercept, the t-statistic for H0 : β = 0 takes the form β̂/SE(β̂), where β̂ is given by (3.38), and where 
 # SE(β̂) = 
+
+# %% [markdown]
+# $$
+# f(x) = \int_{-\infty}^{\infty} e^{-x^2} dx
+# $$
+#
+
+# %%
