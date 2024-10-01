@@ -91,6 +91,7 @@ def get_influence_points(results):
     """Get high influential data points from a combination of hat_diagonal_matrix, DFBetas, DFFITS, Cook's distance and studentized residuals.
   [[https://www.theopeneducator.com/doe/Regression/outlier-leverage-influential-points]]
   [[https://library.virginia.edu/data/articles/detecting-influential-points-in-regression-with-dfbetas]]
+  [[https://online.stat.psu.edu/stat501/lesson/11/11.5]]
   We use the following cutoffs:
   Hat Leverage Cutoff: 2 * Average Hat Leverage
   DFBetas Cutoff: 3 / √n
@@ -123,7 +124,7 @@ def get_influence_points(results):
     data_dictionary["dffits_cutoff"] = dffits_cutoff
     cooks_d_cutoff = 1.0
     data_dictionary["cooks_d_cutoff"] = cooks_d_cutoff
-    
+
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
     print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
@@ -145,7 +146,7 @@ def get_influence_points(results):
                                         " or " + " cooks_d > " +
                                         str(cooks_d_cutoff))
 
-    # Drop sstandardized residuals and DFFITS Internals from columns since we 
+    # Drop sstandardized residuals and DFFITS Internals from columns since we
     # choose to utilize studentized residuals and DFFITs externalized instead
     summary_frame = summary_frame.drop(
         columns=["standard_resid", "dffits_internal"])
@@ -292,5 +293,6 @@ def perform_analysis(response, formula, dataframe):
     print(results.summary())
     print(anova_lm(results))
     return results
+
 
 # %%
