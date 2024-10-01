@@ -28,6 +28,20 @@ python -m ipykernel install --user --name=islpenv
 
 ./genpdf
 
+## Install jupyterlab_templates extension
+jupyter labextension install jupyterlab_templates
+
+## Enable jupyterlab_templates extension
+jupyter server extension enable --py jupyterlab_templates
+
+## Set up a template directory
+## Create a directory where you will store your notebooks.
+## E.g., ~/.jupyter/templates
+## Create the following file (if it does not yet exist)
+## ~/.jupyter/jupyter_notebook_config.py
+## Add the following line to this file. This tells jupyterLab the full path to your template directory. This must be the full path, do not use the ~ shorthand
+`c.JupyterLabTemplates.templates_dir = ['/home/{username}/.jupyter/templates']`
+
 ## Run Jupyter lab
 
 python -m jupyter lab
