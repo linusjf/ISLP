@@ -159,7 +159,7 @@ display_hat_leverage_plot(results)
 # - Looking at all three studentized plots for leverage, it can be concluded that even if there are a few outliers, none wield a significant influence on the regression since the points with high leverage values have low studentized residual values.
 
 # %%
-inf_df = get_influence_points(results)
+inf_df, _ = get_influence_points(results)
 
 # %% [markdown]
 # ### For a more conservative cutoff values for hat_diag, we have the following infuence point(s):
@@ -174,7 +174,7 @@ inf_df[inf_df["hat_diag"] > (4 * np.mean(inf_df["hat_diag"]))]
 # ### Using DFFITS cutoff, we have the following influential points
 
 # %%
-inf_df[inf_df["dffits"] > 2 * sqrt(len(results.params) / results.nobs)]
+inf_df[inf_df["dffits"] > 2 * np.sqrt(len(results.params) / results.nobs)]
 
 # %% [markdown]
 # ### Using Cooks Distance, we have the following influential points

@@ -88,46 +88,69 @@ def display_hat_leverage_plot(results):
 
 
 def get_influence_points(results):
-    """Get high influential data points from a combination of hat_diagonal_matrix, DFFITS, Cook's distance and studentized residuals.
+    """Get high influential data points from a combination of hat_diagonal_matrix, DFBetas, DFFITS, Cook's distance and studentized residuals.
   [[https://www.theopeneducator.com/doe/Regression/outlier-leverage-influential-points]]
+  [[https://library.virginia.edu/data/articles/detecting-influential-points-in-regression-with-dfbetas]]
+  We use the following cutoffs:
+  Hat Leverage Cutoff: 2 * Average Hat Leverage
+  DFBetas Cutoff: 3 / √n
+  DFFITs Cutoff: 2 * √(p/n)
+  Cooks Distance Threshold: 1.0
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return dataframe object that contains the high influential points as identified by the above three methods
   """
+    data_dictionary = {}
     infl = results.get_influence()
     summary_frame = infl.summary_frame()
     no_of_obs = results.nobs
+    data_dictionary["n"] = no_of_obs
     no_of_parameters = len(results.params)
+    data_dictionary["p"] = no_of_parameters
     print(f"n = {no_of_obs}, p = {no_of_parameters}")
     hat_matrix_diag = summary_frame["hat_diag"]
     average_hat_leverage = np.mean(hat_matrix_diag)
+    data_dictionary["average_hat"] = average_hat_leverage
     print(f"Average Hat Leverage: {average_hat_leverage}")
     hat_leverage_cutoff = 2 * average_hat_leverage
+    data_dictionary["hat_leverage_cutoff"] = hat_leverage_cutoff
     print(
         f"Hat Leverage  Cutoff = 2 * Average Hat Leverage = {hat_leverage_cutoff}"
     )
     beta_cutoff = 3 / np.sqrt(no_of_obs)
+    data_dictionary["dfbetas_cutoff"] = beta_cutoff
     dffits_cutoff = 2 * np.sqrt(no_of_parameters / no_of_obs)
+    data_dictionary["dffits_cutoff"] = dffits_cutoff
     cooks_d_cutoff = 1.0
+    data_dictionary["cooks_d_cutoff"] = cooks_d_cutoff
+    
+    
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
     print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]
     summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
+    data_dictionary["cooks_d_pvalue_cutoff"] = 0.5
+
+    # Create query string for DFBetas Columns
     dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
     query_dfb = ""
     for col in dfb_cols:
         query_dfb += " abs(`" + col + "`) > " + str(beta_cutoff) + " or "
 
+    # Fire query for high influential points
     summary_frame = summary_frame.query(query_dfb + "hat_diag > " +
                                         str(hat_leverage_cutoff) + " or " +
                                         "abs(dffits) > " + str(dffits_cutoff) +
                                         " or " + " cooks_d > " +
                                         str(cooks_d_cutoff))
+
+    # Drop sstandardized residuals and DFFITS Internals from columns since we 
+    # choose to utilize studentized residuals and DFFITs externalized instead
     summary_frame = summary_frame.drop(
         columns=["standard_resid", "dffits_internal"])
-    return summary_frame
+    return summary_frame, data_dictionary
 
 
 def display_hat_leverage_cutoffs(results):
@@ -270,3 +293,5 @@ def perform_analysis(response, formula, dataframe):
     print(results.summary())
     print(anova_lm(results))
     return results
+
+# %%
