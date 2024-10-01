@@ -124,7 +124,6 @@ def get_influence_points(results):
     cooks_d_cutoff = 1.0
     data_dictionary["cooks_d_cutoff"] = cooks_d_cutoff
     
-    
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
     print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
