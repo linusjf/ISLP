@@ -61,26 +61,36 @@ Carseats["US"] = Carseats["US"].astype("category")
 Carseats["Urban"] = Carseats["Urban"].astype("category")
 
 # %% [markdown]
+# ## Standardize variables
+
+# %%
+Carseats["Sales"] = standardize(Carseats["Sales"])
+Carseats["Price"] = standardize(Carseats["Price"])
+
+# %% [markdown]
 # ### (a) Fit a multiple regression model to predict Sales using Price, Urban, and US.
 
 # %%
 formula = "Price + Urban + US"
-perform_analysis("Sales", formula, Carseats)
+perform_analysis("Sales", formula, Carseats);
 
 # %% [markdown]
 # ### (b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
 
 # %% [markdown]
-# - The coefficient of -0.0219 for Urban (True) indicates that the Sales are lesser by 22 units for an urban store as compared to a rural one. However, the p-value of 0.936 indicates that this difference is not significant and can be discounted or discarded.
-# - The coefficent of 1.2006 for US (True) indicates that Sales are greater by 1201 units as compared to a non-US store.
-# - The coefficient of -0.0545 for Price indicates that Sales decreases by 55 units per unit increase in cost all other things remaining constant.
+# - The coefficient of -0.0078 for Urban (True) indicates that -0.0078 of the SD of Sales can be explained by the level urban store as compared to a rural store. However, the p-value of 0.936 indicates that this difference is not significant and can be discounted or discarded.
+# - The coefficent of 0.4256 for US (True) indicates that 0.4256 of the typical deviation of Sales are explained by a US store as compared to a non-US store.
+# - The coefficient of -0.4566 for Price indicates that -0.4566 of the typical deviation of Sales is explained by one SD of change in the Price variable.
+# - We can also conclude that Price has the highest effect on Sales, the response variable, since the absolute value of its coefficient 0.4566 is the highest amongst all the coefficients.
+# - <https://blogs.sas.com/content/iml/2023/07/17/standardize-reg-coeff-class.html>
+# - <https://www.statlect.com/fundamentals-of-statistics/linear-regression-with-standardized-variables>
 
 # %% [markdown]
 # ### (c) Write out the model in equation form, being careful to handle the qualitative variables properly.
 
 # %% [markdown]
 # - The equation can be written out as follows:
-# - Sales (000s) = -0.0219 * Urban + 1.2006 * US -0.0545 * Price + 13.0435
+# - Sales  = -0.0078 * Urban  + 0.4256 * US -0.4566 * Price (Standardized) - 0.2691
 
 # %% [markdown]
 # ### (d) For which of the predictors can you reject the null hypothesis H0 : βj = 0?
@@ -94,7 +104,7 @@ perform_analysis("Sales", formula, Carseats)
 
 # %%
 formula = "Price + US"
-results = perform_analysis("Sales", formula, Carseats)
+results = perform_analysis("Sales", formula, Carseats);
 
 # %% [markdown]
 # ### (f) How well do the models in (a) and (e) fit the data?
@@ -108,9 +118,9 @@ results = perform_analysis("Sales", formula, Carseats)
 
 # %% [markdown]
 # From the summary analysis, it can be seen that the 95% confidence limits for the three terms are as follows:
-# + Intercept (11.790, 14.271)
-# + US[T.Yes] (0.692, 1.708)
-# + Price (-0.065, -0.044)
+# + Intercept (-0.419, -0.130)
+# + US[T.Yes] (0.245, 0.605)
+# + Price (-0.543, -0.371)
 # + None of them include zero in their range unlike that for Urban[T.Yes] in Model(a) which is another indicator that the coefficient is not significant.
 
 # %% [markdown]
@@ -160,6 +170,7 @@ display_hat_leverage_plot(results)
 
 # %%
 inf_df, _ = get_influence_points(results)
+inf_df
 
 # %% [markdown]
 # ### For a more conservative cutoff values for hat_diag, we have the following infuence point(s):
@@ -202,6 +213,3 @@ inf_df[inf_df["dfb_Price"] > (3 / np.sqrt(results.nobs))]
 
 # %%
 allDone()
-
-# %% [markdown]
-#
