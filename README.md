@@ -1,5 +1,9 @@
 # ISLP
 
+## Install LATEX for nbconvert
+
+<https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex>
+
 ## Create virtual environment
 
 python -m venv islpenv
@@ -19,6 +23,10 @@ python -m ipykernel install --user --name=islpenv
 ## Convert py files to ipynb
 
 ./genipynb
+
+## Convert ipynb files to pdf
+
+./genpdf
 
 ## Run Jupyter lab
 
