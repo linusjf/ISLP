@@ -57,3 +57,4 @@ deactivate
 ## References
 
 1. <https://www.bitecode.dev/p/relieving-your-python-packaging-pain>
+2. <https://towardsdatascience.com/keep-your-notebooks-consistent-with-jupyterlab-templates-69f72ee25de5>
