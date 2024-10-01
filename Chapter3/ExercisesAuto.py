@@ -277,4 +277,4 @@ plt.hist(results.resid, bins=10);
 # <https://github.com/linusjf/LearnR/tree/development/Stats462>
 
 # %%
-allDone()
+allDone();

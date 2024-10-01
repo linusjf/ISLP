@@ -318,4 +318,4 @@ print(vif)
 ("VIF Range:", np.min(vif), np.max(vif))
 
 # %%
-allDone()
+allDone();

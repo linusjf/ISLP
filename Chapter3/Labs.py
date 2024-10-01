@@ -439,4 +439,4 @@ summarize(model.fit())
 # - It can be seen that ShelvLoc is significant and a good shelving location is associated with high sales (relative to a bad location). Medium has a smaller coefficient than Good leading us to believe that it leads to higher sales than a bad location, but lesser than a good location.
 
 # %%
-allDone()
+allDone();
