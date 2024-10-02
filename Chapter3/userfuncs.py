@@ -99,6 +99,7 @@ def get_influence_points(results):
   Cooks Distance Threshold: 1.0
   Cooks p-value Cutoff: 0.05
   Studentized Residuals Cutoff: 3.0
+  Studentized Residuals p-value Cutoff: 0.01
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return dataframe object that contains the high influential points as identified by the above three methods
@@ -127,7 +128,9 @@ def get_influence_points(results):
     cooks_d_cutoff = 1.0
     cooks_d_pvalue_cutoff = 0.05
     studentized_residuals_cutoff = 3.0
+    studentized_residuals_pvalue_cutoff = 0.01
     data_dictionary["studentized_residuals_cutoff"] = studentized_residuals_cutoff
+    data_dictionary["studentized_residuals_pvalue_cutoff"] = studentized_residuals_pvalue_cutoff
     data_dictionary["cooks_d_cutoff"] = cooks_d_cutoff
     data_dictionary["cooks_d_pvalue_cutoff"] = cooks_d_pvalue_cutoff
 
@@ -136,9 +139,12 @@ def get_influence_points(results):
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
     print(f"Cooks Distance p-value Cutoff = {cooks_d_pvalue_cutoff}")
     print(f"Studentized Residuals Cutoff = {studentized_residuals_cutoff}")
+    print(f"Studentized Residuals p-value Cutoff ={studentized_residuals_pvalue_cutoff}")
+    summary_frame["student_resid_pvalue"] = stats.t.sf(summary_frame["student_resid"], df=no_of_obs - no_of_parameters - 1)
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]
     summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
+  
 
     # Create query string for DFBetas Columns
     dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
@@ -147,8 +153,10 @@ def get_influence_points(results):
         query_dfb += " abs(`" + col + "`) > " + str(beta_cutoff) + " or "
 
     # Construct query
+    # # Choose studentized residuals p-values that are less than p-value  cutoff 
+    query = "(student_resid_pvalue < " + str(studentized_residuals_pvalue_cutoff) + " or "
     # Choose studentized residuals that are more than 3 SD away from mean of 0
-    query = "abs(student_resid) > " + str(studentized_residuals_cutoff) + " and ("
+    query += "abs(student_resid) > " + str(studentized_residuals_cutoff) + ") and ("
     # add DFBetas criteria
     query += query_dfb
     # add hat leverage criterion

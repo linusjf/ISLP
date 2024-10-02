@@ -240,13 +240,6 @@ inf_df[inf_df["dfb_intercept"] > (3 / np.sqrt(results.nobs))]
 # %%
 inf_df[inf_df["dfb_lstat"] > (3 / np.sqrt(results.nobs))]
 
-# %%
-df = results.outlier_test()
-df[np.abs(df["student_resid"]) > 3.0]
-
-# %%
-df[df["unadj_p"] < 0.01]
-
 # %% [markdown]
 # ### Multiple linear regression
 
