@@ -171,15 +171,13 @@ display_hat_leverage_plot(results)
 # %%
 inf_df, _ = get_influence_points(results)
 inf_df
+print(_)
 
 # %% [markdown]
 # ### For a more conservative cutoff values for hat_diag, we have the following infuence point(s):
 
 # %%
 inf_df[inf_df["hat_diag"] > (3 * np.mean(inf_df["hat_diag"]))]
-
-# %%
-inf_df[inf_df["hat_diag"] > (4 * np.mean(inf_df["hat_diag"]))]
 
 # %% [markdown]
 # ### Using DFFITS cutoff, we have the following influential points

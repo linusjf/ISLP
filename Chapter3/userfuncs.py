@@ -98,6 +98,7 @@ def get_influence_points(results):
   DFFITs Cutoff: 2 * √(p/n)
   Cooks Distance Threshold: 1.0
   Cooks p-value Cutoff: 0.05
+  Studentized Residuals Cutoff: 3.0
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return dataframe object that contains the high influential points as identified by the above three methods
@@ -124,13 +125,17 @@ def get_influence_points(results):
     dffits_cutoff = 2 * np.sqrt(no_of_parameters / no_of_obs)
     data_dictionary["dffits_cutoff"] = dffits_cutoff
     cooks_d_cutoff = 1.0
-    cooks_d_palue_cutoff = 0.05
+    cooks_d_pvalue_cutoff = 0.05
+    studentized_residuals_cutoff = 3.0
+    data_dictionary["studentized_residuals_cutoff"] = studentized_residuals_cutoff
     data_dictionary["cooks_d_cutoff"] = cooks_d_cutoff
     data_dictionary["cooks_d_pvalue_cutoff"] = cooks_d_pvalue_cutoff
 
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
     print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
+    print(f"Cooks Distance Pvalue Cutoff = {cooks_d_pvalue_cutoff}")
+    print(f"Studentized Residuals Cutoff = {studentized_residuals_cutoff}")
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]
     summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
@@ -141,16 +146,26 @@ def get_influence_points(results):
     for col in dfb_cols:
         query_dfb += " abs(`" + col + "`) > " + str(beta_cutoff) + " or "
 
-    # Fire query for high influential points
-    summary_frame = summary_frame.query(query_dfb + "hat_diag > " +
-                                        str(hat_leverage_cutoff) + " or " +
-                                        "abs(dffits) > " + str(dffits_cutoff) +
-                                        " or " + " cooks_d > " +
-                                        str(cooks_d_cutoff) + " or " +
-                                        "cooks_d_palue < " +
-                                        str(cooks_d_palue_cutoff))
+    # Construct query
+    # Choose studentized residuals that are more than 3 SD away from mean of 0
+    query = "abs(student_resid) > " + str(studentized_residuals_cutoff) + " and ("
+    # add DFBetas criteria
+    query += query_dfb
+    # add hat leverage criterion
+    query += "hat_diag > " + str(hat_leverage_cutoff) + " or "
+    # add DFFITS criterion
+    query += "abs(dffits) > " + str(dffits_cutoff) + " or "
+    # add Cooks distance criterion
+    query += " cooks_d > " + str(cooks_d_cutoff) + " or "
+    # add Cooks distance p-value criterion
+    query += "cooks_d_pvalue < " + str(cooks_d_pvalue_cutoff) 
+    # close and    
+    query += ")"
 
-    # Drop sstandardized residuals and DFFITS Internals from columns since we
+    # Fire query for high influential points
+    summary_frame = summary_frame.query(query)
+
+    # Drop standardized residuals and DFFITS Internals from columns since we
     # choose to utilize studentized residuals and DFFITs externalized instead
     summary_frame = summary_frame.drop(
         columns=["standard_resid", "dffits_internal"])

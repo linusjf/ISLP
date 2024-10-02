@@ -200,6 +200,46 @@ display_cooks_distance_plot(results);
 # %%
 display_DFFITS_plot(results);
 
+# %%
+inf_df,_ = get_influence_points(results);
+inf_df
+
+# %% [markdown]
+# ### For a more conservative cutoff values for hat_diag, we have the following infuence point(s):
+
+# %%
+inf_df[inf_df["hat_diag"] > (3 * np.mean(inf_df["hat_diag"]))]
+
+# %% [markdown]
+# ### Using DFFITS cutoff, we have the following influential points
+
+# %%
+inf_df[inf_df["dffits"] > 2 * np.sqrt(len(results.params) / results.nobs)]
+
+# %% [markdown]
+# ### Using Cooks Distance, we have the following influential points
+
+# %%
+inf_df[inf_df["cooks_d"] > 1.0]
+
+# %% [markdown]
+# ### Using Cooks Distance p-values, we have the following influential points
+
+# %%
+inf_df[inf_df["cooks_d_pvalue"] < 0.05]
+
+# %% [markdown]
+# ### Using DFBeta for intercept, we have the following influential points
+
+# %%
+inf_df[inf_df["dfb_intercept"] > (3 / np.sqrt(results.nobs))]
+
+# %% [markdown]
+# ### Using DFBeta for lstat, we have the following influential points
+
+# %%
+inf_df[inf_df["dfb_lstat"] > (3 / np.sqrt(results.nobs))]
+
 # %% [markdown]
 # ### Multiple linear regression
 
