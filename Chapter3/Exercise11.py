@@ -13,7 +13,7 @@
 # ---
 
 # %% [markdown]
-# # 11) In this problem we will investigate the t-statistic for the null hypothesis H0 : β = 0 in simple linear regression without an intercept. To begin, we generate a predictor x and a response y as follows.
+# # 11) In this problem we will investigate the t-statistic for the null hypothesis H0 : $\beta$ = 0 in simple linear regression without an intercept. To begin, we generate a predictor x and a response y as follows.
 
 # %% [markdown]
 # ```python
@@ -23,10 +23,10 @@
 # ```
 
 # %% [markdown]
-# ## (a) Perform a simple linear regression of y onto x, without an intercept. Report the coefficient estimate β̂, the standard error of this coefficient estimate, and the t-statistic and p-value associated with the null hypothesis H0 : β = 0. Comment on these results. (You can perform regression without an intercept using the keywords argument intercept=False to ModelSpec().)
+# ## (a) Perform a simple linear regression of y onto x, without an intercept. Report the coefficient estimate $\hat{\beta}$ the standard error of this coefficient estimate, and the t-statistic and p-value associated with the null hypothesis H0 : $\beta$ = 0. Comment on these results. (You can perform regression without an intercept using the keywords argument intercept=False to ModelSpec().)
 
 # %% [markdown]
-# ## (b) Now perform a simple linear regression of x onto y without an intercept, and report the coefficient estimate, its standard error, and the corresponding t-statistic and p-values associated with the null hypothesis H0 : β = 0. Comment on these results.
+# ## (b) Now perform a simple linear regression of x onto y without an intercept, and report the coefficient estimate, its standard error, and the corresponding t-statistic and p-values associated with the null hypothesis H0 : $\beta$ = 0. Comment on these results.
 
 # %% [markdown]
 # ## (c) What is the relationship between the results obtained in (a) and (b)?
@@ -52,4 +52,4 @@
 # ## (e) Using the results from (d), argue that the t-statistic for the regression of y onto x is the same as the t-statistic for the regression of x onto y. 
 
 # %% [markdown]
-# ## (f) In Python, show that when regression is performed with an intercept, the t-statistic for H0 : β1 = 0 is the same for the regression of y onto x as it is for the regression of x onto y.
+# ## (f) In Python, show that when regression is performed with an intercept, the t-statistic for H0 : $\beta$1 = 0 is the same for the regression of y onto x as it is for the regression of x onto y.
