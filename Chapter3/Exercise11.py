@@ -13,12 +13,13 @@
 # ---
 
 # %% [markdown]
-# # 11) In this problem we will investigate the t-statistic for the null hypothesis $H_{0} : \beta = 0$ in simple linear regression without an intercept. To begin, we generate a predictor x and a response y as follows.
-
-# %% [markdown]
+# ## In this problem we will investigate the t-statistic for the null hypothesis $H_{0} : \beta = 0$ in simple linear regression without an intercept. To begin, we generate a predictor x and a response y as follows.
+#
 # ```python
 # rng = np.random.default_rng (1)
+#
 # x = rng.normal(size =100)
+#
 # y = 2 * x + rng.normal(size =100)
 # ```
 
