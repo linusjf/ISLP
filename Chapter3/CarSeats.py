@@ -194,6 +194,12 @@ inf_df[inf_df["dffits"] > 2 * np.sqrt(len(results.params) / results.nobs)]
 inf_df[inf_df["cooks_d"] > 1.0]
 
 # %% [markdown]
+# ### Using Cooks Distance p-values, we have the following influential points
+
+# %%
+inf_df[inf_df["cooks_d_pvalue"] < 0.05]
+
+# %% [markdown]
 # ### Using DFBeta for intercept, we have the following influential points
 
 # %%

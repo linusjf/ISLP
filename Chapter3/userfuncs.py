@@ -97,6 +97,7 @@ def get_influence_points(results):
   DFBetas Cutoff: 3 / √n
   DFFITs Cutoff: 2 * √(p/n)
   Cooks Distance Threshold: 1.0
+  Cooks p-value Cutoff: 0.05
   :param results - the statsmodels.regression.linear_model.RegressionResults object
                      [[https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.html]]
   :return dataframe object that contains the high influential points as identified by the above three methods
@@ -123,7 +124,9 @@ def get_influence_points(results):
     dffits_cutoff = 2 * np.sqrt(no_of_parameters / no_of_obs)
     data_dictionary["dffits_cutoff"] = dffits_cutoff
     cooks_d_cutoff = 1.0
+    cooks_d_palue_cutoff = 0.05
     data_dictionary["cooks_d_cutoff"] = cooks_d_cutoff
+    data_dictionary["cooks_d_pvalue_cutoff"] = cooks_d_pvalue_cutoff
 
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
     print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
@@ -131,7 +134,6 @@ def get_influence_points(results):
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]
     summary_frame["cooks_d_pvalue"] = infl.cooks_distance[1]
-    data_dictionary["cooks_d_pvalue_cutoff"] = 0.5
 
     # Create query string for DFBetas Columns
     dfb_cols = [col for col in summary_frame if col.startswith('dfb_')]
@@ -144,7 +146,9 @@ def get_influence_points(results):
                                         str(hat_leverage_cutoff) + " or " +
                                         "abs(dffits) > " + str(dffits_cutoff) +
                                         " or " + " cooks_d > " +
-                                        str(cooks_d_cutoff))
+                                        str(cooks_d_cutoff) + " or " +
+                                        "cooks_d_palue < " +
+                                        str(cooks_d_palue_cutoff))
 
     # Drop sstandardized residuals and DFFITS Internals from columns since we
     # choose to utilize studentized residuals and DFFITs externalized instead
