@@ -139,7 +139,7 @@ def get_influence_points(results):
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
     print(f"Cooks Distance p-value Cutoff = {cooks_d_pvalue_cutoff}")
     print(f"Studentized Residuals Cutoff = {studentized_residuals_cutoff}")
-    print(f"Studentized Residuals p-value Cutoff ={studentized_residuals_pvalue_cutoff}")
+    print(f"Studentized Residuals p-value Cutoff = {studentized_residuals_pvalue_cutoff}")
     summary_frame["student_resid_pvalue"] = stats.t.sf(summary_frame["student_resid"], df=no_of_obs - no_of_parameters - 1)
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]
