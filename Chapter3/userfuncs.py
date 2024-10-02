@@ -134,7 +134,7 @@ def get_influence_points(results):
     print(f"DFBetas Cutoff = 3 / sqrt(n) = {beta_cutoff}")
     print(f"DFFITS Cutoff = 2 * sqrt(p/n) = {dffits_cutoff}")
     print(f"Cooks Distance Cutoff = {cooks_d_cutoff}")
-    print(f"Cooks Distance Pvalue Cutoff = {cooks_d_pvalue_cutoff}")
+    print(f"Cooks Distance p-value Cutoff = {cooks_d_pvalue_cutoff}")
     print(f"Studentized Residuals Cutoff = {studentized_residuals_cutoff}")
     summary_frame["hat_influence"] = np.abs(
         summary_frame["student_resid"]) * summary_frame["hat_diag"]

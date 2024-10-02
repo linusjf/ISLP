@@ -216,4 +216,9 @@ inf_df[inf_df["dfb_US[T.Yes]"] > (3 / np.sqrt(results.nobs))]
 inf_df[inf_df["dfb_Price"] > (3 / np.sqrt(results.nobs))]
 
 # %%
+student_resid_pvalue = stats.t.sf(results.resid_pearson, df=(results.nobs - len(results.params) -1)) 
+idxs = student_resid_pvalue < 0.05
+student_resid_pvalue[idxs]
+
+# %%
 allDone()
