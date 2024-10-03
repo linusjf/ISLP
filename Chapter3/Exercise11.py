@@ -62,7 +62,8 @@ def get_results_df(results):
                           "tstatistic": results.tvalues,
                           "p-value":results.pvalues,
                          "r-squared": results.rsquared,
-                         "pearson_coefficient": np.sqrt(results.rsquared)
+                         "pearson_coefficient": np.sqrt(results.rsquared),
+                            "rss": results.ssr
                            })
   return result_df
 
@@ -80,6 +81,10 @@ print(f"{results.params/results.bse}")
 # - The $\beta_{1}$ estimate is 1.976242 which is close to the actual value of 2.0 used while generating the data.
 # - The standard error is 0.116948 which is low
 # - The p-value of 6.231546$e^{-31}$ suggests a strong relationship between x and y of the form: $y = 1.976242 * x$
+
+# %%
+from statsmodels.graphics.regressionplots import plot_fit
+plot_fit(results, "x");
 
 # %% [markdown]
 # ## (b) Now perform a simple linear regression of x onto y without an intercept, and report the coefficient estimate, its standard error, and the corresponding t-statistic and p-values associated with the null hypothesis $H_{0} : \beta = 0$. Comment on these results.
@@ -100,6 +105,9 @@ print(f"{results.params/results.bse}")
 # - The p-value of 6.231546$e^{-31}$ signifies a strong relationship between x and y of the form $x = 0.375744 * y$
 # - The t-statistics and, hence, the p-values are identical in both regressions.
 # - We can also see that the $R^{2}$ and $\rho$ (Pearson coefficient) are identical in both regressions.
+
+# %%
+plot_fit(results, "y");
 
 # %%
 pearson_coefficient = result_df["pearson_coefficient"]
@@ -154,7 +162,7 @@ beta_1_y_on_x = 1.0 * std_y_perfect / std_x_perfect
 beta_1_y_on_x, beta_1_x_on_y
 
 # %% [markdown]
-# - Reference: <https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y>
+# - *Reference: <https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y>*
 
 # %% [markdown]
 # ## (d) For the regression of Y onto X without an intercept, the t-statistic for $H_{0} : \beta = 0$ takes the form $\hat{\beta} / SE(\hat{\beta})$, where $\hat{\beta}$ is given by (3.38), and where
