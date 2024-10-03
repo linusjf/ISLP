@@ -132,14 +132,14 @@ std_x_perfect,std_y_perfect
 formula = "y ~ x + 0"
 model = smf.ols(f'{formula}', df)
 results = model.fit()
-result_df = pd.DataFrame({"coefficient": results.params, "se": results.bse, "tstatistic": results.tvalues, "p-value":results.pvalues})
+result_df = get_results_df(results)
 result_df
 
 # %%
 formula = "x ~ y + 0"
 model = smf.ols(f'{formula}', df)
 results = model.fit()
-result_df = pd.DataFrame({"coefficient": results.params, "se": results.bse, "tstatistic": results.tvalues, "p-value":results.pvalues})
+result_df = get_results_df(results)
 result_df
 
 # %% [markdown]
