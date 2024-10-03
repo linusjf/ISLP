@@ -29,10 +29,12 @@
 # %%
 import numpy as np
 import pandas as pd
-rng = np.random.default_rng (1)
-x = rng.normal(size =100)
-y = 2 * x + rng.normal(size =100)
+N = 100
+rng = np.random.default_rng(1)
+x = rng.normal(size=N)
+y = 2 * x + rng.normal(size=N)
 df = pd.DataFrame({"x": x,"y":y})
+df.head()
 
 
 # %% [markdown]
@@ -46,10 +48,33 @@ results = model.fit()
 result_df = pd.DataFrame({"coefficient": results.params, "se": results.bse, "tstatistic": results.tvalues, "p-value":results.pvalues})
 result_df
 
+# %%
+print("Calculated t-statistic:")
+print(f"{results.params/results.bse}")
+
+# %% [markdown]
+# - The $\beta_{1}$ estimate is 1.976242 which is close to the actual value of 2.0 used while generating the data.
+# - The standard error is 0.116948 which is low
+# - The p-value of 6.231546$e^{-31}$ suggests a strong relationship between x and y of the form: $y = 1.976242 * x$
+
 # %% [markdown]
 # ## (b) Now perform a simple linear regression of x onto y without an intercept, and report the coefficient estimate, its standard error, and the corresponding t-statistic and p-values associated with the null hypothesis $H_{0} : \beta = 0$. Comment on these results.
 
 # %%
+formula = "x ~ y + 0"
+model = smf.ols(f'{formula}', df)
+results = model.fit()
+result_df = pd.DataFrame({"coefficient": results.params, "se": results.bse, "tstatistic": results.tvalues, "p-value":results.pvalues})
+result_df
+
+# %%
+print("Calculated t-statistic:")
+print(f"{results.params/results.bse}")
+
+# %% [markdown]
+# - The $\beta_{1}$ estimate, in this case, is 0.375744 which is not as close as one would expect to 0.5
+# - The p-value of 6.231546$e^{-31}$ signifies a strong relationship between x and y of the form $x = 0.375744 * y$
+# - The t-statistics and, hence, the p-values are identical in both regressions.
 
 # %% [markdown]
 # ## (c) What is the relationship between the results obtained in (a) and (b)?
