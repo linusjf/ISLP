@@ -36,11 +36,18 @@ from notebookfuncs import *
 import numpy as np
 import pandas as pd
 
-def generate_data(mean=0.0, sd=1.0):
+## [[https://stats.stackexchange.com/a/382059/270877]]
+def generate_data(mean=0.0, sd=1.0, inverse=False):
   N = 100
+  b = 2.0
   rng = np.random.default_rng(1)
   x = rng.normal(size=N)
-  y = 2 * x + rng.normal(loc=mean,scale=sd, size=N)
+  noise = rng.normal(loc=mean,scale=sd, size=N)
+  y = b * x + noise
+  if (inverse):
+    y = x;
+    x = (1/b) * y  -  (1/b ** 2) * noise
+
   df = pd.DataFrame({"x": x,"y":y})
   return df
 
@@ -194,6 +201,28 @@ plot_fit(results, "y");
 
 # %% [markdown]
 # ### This actually matches our intuition that the slopes of both lines converge and the coefficient is the same in both regressions. This is because the standardized x and y variables have standard deviation of 1 and hence the slope in either case is simply $\rho$.
+
+# %% [markdown]
+# ### If we try to mimimize the residuals using the formula $\frac {1} {b^2} * E(Y - bX)^2$
+
+# %% [markdown]
+# ### Using some data manipulation in  the ggenerate_data method, we can come close to the expected estimate of 0.5 in the X ~ Y + 0 regression.
+
+# %%
+df = generate_data(inverse=True);
+
+# %%
+formula = "x ~ y + 0"
+model = smf.ols(f'{formula}', df)
+results = model.fit()
+result_df = get_results_df(results)
+result_df
+
+# %% [markdown]
+# Note:- The standard deviation of the residuals is $\frac {1} {b}^{2}$ times thr SD of the residuals for Y ~ X + 0.
+
+# %%
+plot_fit(results, "y");
 
 # %% [markdown]
 # - *Reference: <https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y>*
