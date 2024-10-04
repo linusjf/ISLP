@@ -225,6 +225,39 @@ result_df
 plot_fit(results, "y");
 
 # %% [markdown]
+# ### We can check that the smaller the noise or residuals, the more likely that the regression of y on x and x on y are more or less reciprocals of each other in terms of the coefficient of the regressor.
+
+# %%
+from sklearn.linear_model import LinearRegression
+
+# Generate data
+np.random.seed(0)
+x = np.random.rand(100)
+denominator = 1.0
+noise = np.random.randn(100)
+
+while (True):
+
+  print(f"SD of noise: {np.std(noise)}")
+  y = 2 * x + noise
+  # Fit regressions
+  x_on_y = LinearRegression(fit_intercept=False).fit(y[:, np.newaxis], x)
+  y_on_x = LinearRegression(fit_intercept=False).fit(x[:, np.newaxis], y)
+
+  # Coefficient values
+  beta1 = y_on_x.coef_[0]
+  alpha1 = x_on_y.coef_[0]
+  print("beta1, alpha1")
+  print(beta1,alpha1)
+  # Verify inverse relationship
+  print("Are beta and alpha reciprocally close?")
+  print(np.isclose(beta1 * alpha1, 1))
+  if (np.isclose(beta1 * alpha1, 1)):
+    break
+  denominator *= 10
+  noise = noise / denominator
+
+# %% [markdown]
 # - *Reference: <https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y>*
 
 # %% [markdown]
