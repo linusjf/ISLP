@@ -269,8 +269,6 @@ while (True):
 # $$
 #
 
-# %%
-
 # %% [markdown]
 # ## (These formulas are slightly different from those given in Sections 3.1.1 and 3.1.2, since here we are performing regression without an intercept.) Show algebraically, and confirm numerically in Python, that the t-statistic can be written as
 
@@ -279,15 +277,57 @@ while (True):
 # \Large \frac {\left (n - 1 \right ) \sum_{i=1}^n x_{i}y_{i}} {\sqrt {\left (\sum_{i=1}^n x_{i}^2 \right ) \left (\sum_{i=1}^n y_{i}^2 \right ) - \left (\sum_{i^{'}=1}^{n}x_{i^{'}}y_{i^{'}} \right )^{2}}}
 # $$
 
+# %% [markdown]
+# ![Solution](Exercise11.jpg "Solution")
+
 # %%
+df = generate_data()
+formula = "y ~ x + 0"
+model = smf.ols(f'{formula}', df)
+results = model.fit()
+result_df = get_results_df(results)
+t = result_df["tstatistic"]
+
+# %% [markdown]
+# ### The calculated t-statistic from the formula above is:
+
+# %%
+x = df["x"]
+y = df["y"]
+numerator = np.sqrt(results.nobs - 1) * np.sum(x * y)
+denominator = np.sqrt(np.sum(x**2) * np.sum(y**2) - np.sum(x * y) ** 2)
+tstat = numerator / denominator
+
+# %%
+np.isclose(t, tstat)
 
 # %% [markdown]
 # ## (e) Using the results from (d), argue that the t-statistic for the regression of y onto x is the same as the t-statistic for the regression of x onto y.
 
-# %%
+# %% [markdown]
+# - This is evident when we swap y and x in the derived formula that the result is the same.
+# - This is also what we observed when we regressed y on x and x on y (without intercept)
+# - Hence, the T-statistic is the same in both cases
 
 # %% [markdown]
 # ## (f) In Python, show that when regression is performed with an intercept, the t-statistic for $H_{0} : \beta_{1} = 0$ is the same for the regression of y onto x as it is for the regression of x onto y.
+
+# %%
+formula = "y ~ x"
+model = smf.ols(f'{formula}', df)
+results = model.fit()
+result_df = get_results_df(results)
+tx = result_df["tstatistic"].iloc[1]
+
+# %%
+formula = "x ~ y"
+model = smf.ols(f'{formula}', df)
+results = model.fit()
+result_df = get_results_df(results)
+ty = result_df["tstatistic"].iloc[1]
+
+# %%
+np.isclose(tx,ty)
 
 # %%
 allDone();
