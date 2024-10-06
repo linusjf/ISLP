@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+find . -maxdepth 2 -type f -name "*.ipynb" -exec python -m nbqa black "{}" \;
