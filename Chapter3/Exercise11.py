@@ -238,6 +238,7 @@ result_df
 # - *Again, we see that since we're minimizing the distance between x and its fitted values in the first regression and y and its fitted values in the next, the estimatesof the first regression are close to the actual value but not so in its inverse.
 # This only works if the residuals are manipulated to have SD of $\frac {-1} {b^2}$ in the second.*
 # - *That's the most I can explain.*
+# - *There is an ettempt to explain the above in [this StackOverflow post](https://stats.stackexchange.com/a/466038/270877) but I'm not as comfortable or well-versed with linear algebra as yet to expound on it further.*
 
 # %% [markdown]
 # ### We can check that the smaller the noise or residuals, the more likely that the regression of y on x and x on y are more or less reciprocals of each other in terms of the coefficient of the regressor.
