@@ -206,7 +206,7 @@ plot_fit(results, "y");
 # ### If we try to mimimize the residuals using the formula $\frac {1} {b^2} * E(Y - bX)^2$
 
 # %% [markdown]
-# ### Using some data manipulation in  the ggenerate_data method, we can come close to the expected estimate of 0.5 in the X ~ Y + 0 regression.
+# ### Using some data manipulation in  the generate_data method, we can come close to the expected estimate of 0.5 in the X ~ Y + 0 regression.
 
 # %%
 df = generate_data(inverse=True);
@@ -223,6 +223,21 @@ result_df
 
 # %%
 plot_fit(results, "y");
+
+# %% [markdown]
+# ### If we again invert the regression, regression y on x, we have:
+
+# %%
+formula = "y ~ x + 0"
+model = smf.ols(f'{formula}', df)
+results = model.fit()
+result_df = get_results_df(results)
+result_df
+
+# %% [markdown]
+# - *Again, we see that since we're minimizing the distance between x and its fitted values in the first regression and y and its fitted values in the next, the estimatesof the first regression are close to the actual value but not so in its inverse.
+# This only works if the residuals are manipulated to have SD of $\frac {-1} {b^2}$ in the second.*
+# - *That's the most I can explain.*
 
 # %% [markdown]
 # ### We can check that the smaller the noise or residuals, the more likely that the regression of y on x and x on y are more or less reciprocals of each other in terms of the coefficient of the regressor.
