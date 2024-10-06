@@ -50,7 +50,7 @@ from statsmodels.stats.anova import anova_lm
 import ISLP
 from ISLP import models
 from ISLP import load_data
-from ISLP.models import (ModelSpec as MS, summarize, poly)
+from ISLP.models import ModelSpec as MS, summarize, poly
 
 # %% [markdown]
 # Inspecting objects and namespaces
@@ -184,9 +184,8 @@ summarize(results)
 results.summary()
 
 # %%
-design = MS(["TV","Radio"])
-new_df = pd.DataFrame({"TV": [100],
-                       "Radio":[20]})
+design = MS(["TV", "Radio"])
+new_df = pd.DataFrame({"TV": [100], "Radio": [20]})
 print(new_df)
 new_X = design.fit_transform(new_df)
 new_predictions = results.get_prediction(new_X)
@@ -211,31 +210,31 @@ new_predictions.conf_int(alpha=0.05, obs=True)
 # ### Is the relationship linear?
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(results.fittedvalues, results.resid)
 ax.set_xlabel("Fitted values")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+ax.axhline(0, c="k", ls="--")
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(Advertising["TV"], results.resid)
 ax.set_xlabel("TV")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+ax.axhline(0, c="k", ls="--")
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(Advertising["Radio"], results.resid)
 ax.set_xlabel("Radio")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # - There is evidence of non-linearity in the model from the residuals plotted against the fitted values. Looking at the residuals versus predictors plots, it appears that TV is a better candidate for quadratification.
 
 # %%
-X = MS([poly("TV", degree = 2, raw = True), "Radio"]).fit_transform(Advertising)
+X = MS([poly("TV", degree=2, raw=True), "Radio"]).fit_transform(Advertising)
 model = sm.OLS(y, X)
 results = model.fit()
 summarize(results)
@@ -244,11 +243,11 @@ summarize(results)
 results.summary()
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(results.fittedvalues, results.resid)
 ax.set_xlabel("Fitted values")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # While the fit has improved as seen from the R<sup>2</sup> increasing by 2 percentage points, there is still some non-linearity visible in the residuals plot against fitted values.
@@ -267,7 +266,9 @@ ax.axhline(0, c="k", ls="--");
 # Synergy implies an interaction effect. That's what we test out now.
 
 # %%
-X = MS([poly("TV", raw=True, degree=2), "Radio", ("TV", "Radio")]).fit_transform(Advertising)
+X = MS([poly("TV", raw=True, degree=2), "Radio", ("TV", "Radio")]).fit_transform(
+    Advertising
+)
 model = sm.OLS(y, X)
 results = model.fit()
 summarize(results)
@@ -282,11 +283,11 @@ results.summary()
 # ### Compute VIFs and List Comprehension
 
 # %%
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vals = [VIF(X, i) for i in range(1, X.shape[1])]
 print(vals)
 
 # %%
-vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+vif = pd.DataFrame({"vif": vals}, index=X.columns[1:])
 print(vif)
 ("VIF Range:", np.min(vif), np.max(vif))
 
@@ -300,7 +301,9 @@ Advertising["TV"] = Advertising["TV"] - Advertising["TV"].mean()
 Advertising["Radio"] = Advertising["Radio"] - Advertising["Radio"].mean()
 
 # %%
-X = MS([poly("TV", raw=True, degree=2), "Radio", ("TV", "Radio")]).fit_transform(Advertising)
+X = MS([poly("TV", raw=True, degree=2), "Radio", ("TV", "Radio")]).fit_transform(
+    Advertising
+)
 model = sm.OLS(y, X)
 results = model.fit()
 summarize(results)
@@ -309,13 +312,13 @@ summarize(results)
 results.summary()
 
 # %%
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vals = [VIF(X, i) for i in range(1, X.shape[1])]
 print(vals)
 
 # %%
-vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+vif = pd.DataFrame({"vif": vals}, index=X.columns[1:])
 print(vif)
 ("VIF Range:", np.min(vif), np.max(vif))
 
 # %%
-allDone();
+allDone()

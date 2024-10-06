@@ -47,7 +47,7 @@ from statsmodels.stats.anova import anova_lm
 
 # %%
 from ISLP import load_data
-from ISLP.models import (ModelSpec as MS, summarize, poly)
+from ISLP.models import ModelSpec as MS, summarize, poly
 
 # %% [markdown]
 # ## Import User Functions
@@ -62,7 +62,7 @@ from userfuncs import *
 dir()
 
 # %%
-A = np.array([3,5,11])
+A = np.array([3, 5, 11])
 dir(A)
 
 # %%
@@ -88,8 +88,7 @@ len(Boston.columns)
 # ### Use sm.OLS to fit a simple linear regression
 
 # %%
-X = pd.DataFrame({"intercept": np.ones(Boston.shape[0]),
-                                       "lstat": Boston["lstat"]})
+X = pd.DataFrame({"intercept": np.ones(Boston.shape[0]), "lstat": Boston["lstat"]})
 X.head()
 
 
@@ -99,7 +98,7 @@ X.head()
 # %%
 y = Boston["medv"]
 model = sm.OLS(y, X)
-results = model.fit();
+results = model.fit()
 
 # %% [markdown]
 # ### Summarize the results using the ISLP method summarize
@@ -138,7 +137,7 @@ results.params
 
 # %%
 design = MS(["lstat"])
-new_df = pd.DataFrame({"lstat": [5,10,15]})
+new_df = pd.DataFrame({"lstat": [5, 10, 15]})
 print(new_df)
 design = design.fit(new_df)
 newX = design.transform(new_df)
@@ -158,14 +157,19 @@ new_predictions.conf_int(alpha=0.05)
 # ### We can obtain prediction intervals for the values which are wider than the confidence intervals since they're for a specific instance of lstat by setting obs=True.
 
 # %%
-new_predictions.conf_int(obs=True,alpha=0.05)
+new_predictions.conf_int(obs=True, alpha=0.05)
 
 # %% [markdown]
 # ### Plot medv and lstat using DataFrame.plot.scatter() and add the regression line to the resulting plot.
 
 # %%
 ax = Boston.plot.scatter("lstat", "medv")
-ax.axline((ax.get_xlim()[0],results.params.iloc[0]), slope=results.params.iloc[1], color="r", linewidth=3);
+ax.axline(
+    (ax.get_xlim()[0], results.params.iloc[0]),
+    slope=results.params.iloc[1],
+    color="r",
+    linewidth=3,
+)
 
 # %% [markdown]
 # - There is some evidence of non-linearity in the relationship b/w lstat and medv.
@@ -176,11 +180,11 @@ ax.axline((ax.get_xlim()[0],results.params.iloc[0]), slope=results.params.iloc[1
 #
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(results.fittedvalues, results.resid)
 ax.set_xlabel("Fitted values")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c='k', ls='--');
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # + On the basis of the residual plot, there is some evidence of non-linearity.
@@ -189,19 +193,19 @@ ax.axhline(0, c='k', ls='--');
 # ### Leverage statistics can be computed for any number of predictors using the hat_matrix_diag attribute of the value returned by the get_influence() method.
 
 # %%
-display_hat_leverage_cutoffs(results);
+display_hat_leverage_cutoffs(results)
 
 # %%
 display_hat_leverage_plot(results)
 
 # %%
-display_cooks_distance_plot(results);
+display_cooks_distance_plot(results)
 
 # %%
-display_DFFITS_plot(results);
+display_DFFITS_plot(results)
 
 # %%
-inf_df,_ = get_influence_points(results);
+inf_df, _ = get_influence_points(results)
 inf_df
 
 # %% [markdown]
@@ -244,30 +248,30 @@ inf_df[inf_df["dfb_lstat"] > (3 / np.sqrt(results.nobs))]
 # ### Multiple linear regression
 
 # %%
-Boston.plot.scatter("age", "medv");
-X = MS(["lstat","age"]).fit_transform(Boston)
+Boston.plot.scatter("age", "medv")
+X = MS(["lstat", "age"]).fit_transform(Boston)
 model1 = sm.OLS(y, X)
 results1 = model1.fit()
-summarize(results1);
+summarize(results1)
 
 # %%
 Boston["logage"] = np.log(Boston["age"])
-Boston.plot.scatter("logage", "medv");
-X = MS(["lstat","logage"]).fit_transform(Boston)
+Boston.plot.scatter("logage", "medv")
+X = MS(["lstat", "logage"]).fit_transform(Boston)
 model1 = sm.OLS(y, X)
 resultslog = model1.fit()
 print(summarize(resultslog))
 
 # %%
 Boston["sqrtage"] = np.sqrt(Boston["age"])
-Boston.plot.scatter("sqrtage", "medv");
-X = MS(["lstat","sqrtage"]).fit_transform(Boston)
+Boston.plot.scatter("sqrtage", "medv")
+X = MS(["lstat", "sqrtage"]).fit_transform(Boston)
 model1 = sm.OLS(y, X)
 resultssqrt = model1.fit()
 summarize(resultssqrt)
 
 # %%
-Boston = Boston.drop(columns=["logage","sqrtage"])
+Boston = Boston.drop(columns=["logage", "sqrtage"])
 
 # %%
 terms = Boston.columns.drop("medv")
@@ -305,7 +309,7 @@ np.unique(Boston["indus"])
 # We can also observe the F-statistic for the regression.
 
 # %%
-(results1.fvalue,results1.f_pvalue)
+(results1.fvalue, results1.f_pvalue)
 
 # %% [markdown]
 # ### Multivariate Goodness of Fit
@@ -332,11 +336,11 @@ print("RSE", np.sqrt(results1.scale))
 # ### Compute VIFs and List Comprehension
 
 # %%
-vals = [VIF(X,i) for i in range(1, X.shape[1])]
+vals = [VIF(X, i) for i in range(1, X.shape[1])]
 print(vals)
 
 # %%
-vif  = pd.DataFrame({"vif": vals}, index = X.columns[1:])
+vif = pd.DataFrame({"vif": vals}, index=X.columns[1:])
 print(vif)
 ("VIF Range:", np.min(vif), np.max(vif))
 
@@ -365,7 +369,7 @@ summarize(results2)
 # - The poly() function specifies the first argument term to be added to the model matrix
 
 # %%
-X = MS([poly("lstat", degree = 2), "age"]).fit_transform(Boston)
+X = MS([poly("lstat", degree=2), "age"]).fit_transform(Boston)
 model3 = sm.OLS(y, X)
 results3 = model3.fit()
 summarize(results3)
@@ -389,7 +393,7 @@ print(results3.rsquared, " > ", results2.rsquared)
 # - <https://stats.stackexchange.com/questions/258307/raw-or-orthogonal-polynomial-regression>
 
 # %%
-X = MS([poly("lstat", degree = 2, raw = True), "age"]).fit_transform(Boston)
+X = MS([poly("lstat", degree=2, raw=True), "age"]).fit_transform(Boston)
 model3 = sm.OLS(y, X)
 results3 = model3.fit()
 summarize(results3)
@@ -421,17 +425,19 @@ anova_lm(results1, results3)
 # ### We can further plot the residuals of the regression against the fitted values to check of there still is a pattern discernible.
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(results3.fittedvalues, results3.resid)
 ax.set_xlabel("Fitted values")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c="k", ls="--");
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # ### We can also try and add the interaction term (lstat, age) to the regression and check the results.
 
 # %%
-X = MS([poly("lstat", degree = 2, raw = True), "age", ("lstat","age")]).fit_transform(Boston)
+X = MS([poly("lstat", degree=2, raw=True), "age", ("lstat", "age")]).fit_transform(
+    Boston
+)
 model4 = sm.OLS(y, X)
 results4 = model4.fit()
 summarize(results4)
@@ -470,7 +476,7 @@ Carseats.describe()
 # %%
 allvars = list(Carseats.columns.drop("Sales"))
 y = Carseats["Sales"]
-final = allvars + [("Income","Advertising"), ("Price", "Age")]
+final = allvars + [("Income", "Advertising"), ("Price", "Age")]
 X = MS(final).fit_transform(Carseats)
 model = sm.OLS(y, X)
 summarize(model.fit())
@@ -479,4 +485,4 @@ summarize(model.fit())
 # - It can be seen that ShelvLoc is significant and a good shelving location is associated with high sales (relative to a bad location). Medium has a smaller coefficient than Good leading us to believe that it leads to higher sales than a bad location, but lesser than a good location.
 
 # %%
-allDone();
+allDone()

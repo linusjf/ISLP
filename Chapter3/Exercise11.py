@@ -36,20 +36,22 @@ from notebookfuncs import *
 import numpy as np
 import pandas as pd
 
+
 ## [[https://stats.stackexchange.com/a/382059/270877]]
 def generate_data(mean=0.0, sd=1.0, inverse=False):
-  N = 100
-  b = 2.0
-  rng = np.random.default_rng(1)
-  x = rng.normal(size=N)
-  noise = rng.normal(loc=mean,scale=sd, size=N)
-  y = b * x + noise
-  if (inverse):
-    y = x;
-    x = (1/b) * y  -  (1/b ** 2) * noise
+    N = 100
+    b = 2.0
+    rng = np.random.default_rng(1)
+    x = rng.normal(size=N)
+    noise = rng.normal(loc=mean, scale=sd, size=N)
+    y = b * x + noise
+    if inverse:
+        y = x
+        x = (1 / b) * y - (1 / b**2) * noise
 
-  df = pd.DataFrame({"x": x,"y":y})
-  return df
+    df = pd.DataFrame({"x": x, "y": y})
+    return df
+
 
 df = generate_data()
 std_x = np.std(df["x"])
@@ -63,20 +65,25 @@ df.head()
 # %%
 import statsmodels.formula.api as smf
 
+
 def get_results_df(results):
-  result_df = pd.DataFrame({"coefficient": results.params,
-                          "se": results.bse,
-                          "tstatistic": results.tvalues,
-                          "p-value":results.pvalues,
-                         "r-squared": results.rsquared,
-                         "pearson_coefficient": np.sqrt(results.rsquared),
-                            "rss": results.ssr,
-                            "sd_residuals": np.sqrt(results.mse_resid)
-                           })
-  return result_df
+    result_df = pd.DataFrame(
+        {
+            "coefficient": results.params,
+            "se": results.bse,
+            "tstatistic": results.tvalues,
+            "p-value": results.pvalues,
+            "r-squared": results.rsquared,
+            "pearson_coefficient": np.sqrt(results.rsquared),
+            "rss": results.ssr,
+            "sd_residuals": np.sqrt(results.mse_resid),
+        }
+    )
+    return result_df
+
 
 formula = "y ~ x + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
@@ -92,14 +99,15 @@ print(f"{results.params/results.bse}")
 
 # %%
 from statsmodels.graphics.regressionplots import plot_fit
-plot_fit(results, "x");
+
+plot_fit(results, "x")
 
 # %% [markdown]
 # ## (b) Now perform a simple linear regression of x onto y without an intercept, and report the coefficient estimate, its standard error, and the corresponding t-statistic and p-values associated with the null hypothesis $H_{0} : \beta = 0$. Comment on these results.
 
 # %%
 formula = "x ~ y + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
@@ -115,7 +123,7 @@ print(f"{results.params/results.bse}")
 # - We can also see that the $R^{2}$ and $\rho$ (Pearson coefficient) are identical in both regressions.
 
 # %%
-plot_fit(results, "y");
+plot_fit(results, "y")
 
 # %%
 pearson_coefficient = result_df["pearson_coefficient"]
@@ -131,21 +139,21 @@ pearson_coefficient = result_df["pearson_coefficient"]
 # - We can check that with the regression below where we generate y with zero SD and regress y on x and then x on y.
 
 # %%
-df = generate_data(sd=0);
+df = generate_data(sd=0)
 std_x_perfect = np.std(df["x"])
 std_y_perfect = np.std(df["y"])
-std_x_perfect,std_y_perfect
+std_x_perfect, std_y_perfect
 
 # %%
 formula = "y ~ x + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
 
 # %%
 formula = "x ~ y + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
@@ -174,6 +182,7 @@ beta_1_y_on_x, beta_1_x_on_y
 
 # %%
 from scipy import stats
+
 df = generate_data()
 df["x"] = stats.zscore(df["x"])
 df["y"] = stats.zscore(df["y"])
@@ -181,23 +190,23 @@ df.head()
 
 # %%
 formula = "y ~ x + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
 
 # %%
-plot_fit(results, "x");
+plot_fit(results, "x")
 
 # %%
 formula = "x ~ y + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
 
 # %%
-plot_fit(results, "y");
+plot_fit(results, "y")
 
 # %% [markdown]
 # ### This actually matches our intuition that the slopes of both lines converge and the coefficient is the same in both regressions. This is because the standardized x and y variables have standard deviation of 1 and hence the slope in either case is simply $\rho$.
@@ -209,11 +218,11 @@ plot_fit(results, "y");
 # ### Using some data manipulation in  the generate_data method, we can come close to the expected estimate of 0.5 in the X ~ Y + 0 regression.
 
 # %%
-df = generate_data(inverse=True);
+df = generate_data(inverse=True)
 
 # %%
 formula = "x ~ y + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
@@ -222,14 +231,14 @@ result_df
 # Note:- The standard deviation of the residuals is $\frac {1} {b}^{2}$ times thr SD of the residuals for Y ~ X + 0.
 
 # %%
-plot_fit(results, "y");
+plot_fit(results, "y")
 
 # %% [markdown]
 # ### If we again invert the regression, regression y on x, we have:
 
 # %%
 formula = "y ~ x + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 result_df
@@ -252,26 +261,26 @@ x = np.random.rand(100)
 denominator = 1.0
 noise = np.random.randn(100)
 
-while (True):
+while True:
 
-  print(f"SD of noise: {np.std(noise)}")
-  y = 2 * x + noise
-  # Fit regressions
-  x_on_y = LinearRegression(fit_intercept=False).fit(y[:, np.newaxis], x)
-  y_on_x = LinearRegression(fit_intercept=False).fit(x[:, np.newaxis], y)
+    print(f"SD of noise: {np.std(noise)}")
+    y = 2 * x + noise
+    # Fit regressions
+    x_on_y = LinearRegression(fit_intercept=False).fit(y[:, np.newaxis], x)
+    y_on_x = LinearRegression(fit_intercept=False).fit(x[:, np.newaxis], y)
 
-  # Coefficient values
-  beta1 = y_on_x.coef_[0]
-  alpha1 = x_on_y.coef_[0]
-  print("beta1, alpha1")
-  print(beta1,alpha1)
-  # Verify inverse relationship
-  print("Are beta and alpha reciprocally close?")
-  print(np.isclose(beta1 * alpha1, 1))
-  if (np.isclose(beta1 * alpha1, 1)):
-    break
-  denominator *= 10
-  noise = noise / denominator
+    # Coefficient values
+    beta1 = y_on_x.coef_[0]
+    alpha1 = x_on_y.coef_[0]
+    print("beta1, alpha1")
+    print(beta1, alpha1)
+    # Verify inverse relationship
+    print("Are beta and alpha reciprocally close?")
+    print(np.isclose(beta1 * alpha1, 1))
+    if np.isclose(beta1 * alpha1, 1):
+        break
+    denominator *= 10
+    noise = noise / denominator
 
 # %% [markdown]
 # - *Reference: <https://stats.stackexchange.com/questions/22718/what-is-the-difference-between-linear-regression-on-y-with-x-and-x-with-y>*
@@ -299,7 +308,7 @@ while (True):
 # %%
 df = generate_data()
 formula = "y ~ x + 0"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 t = result_df["tstatistic"]
@@ -330,20 +339,20 @@ np.isclose(t, tstat)
 
 # %%
 formula = "y ~ x"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 tx = result_df["tstatistic"].iloc[1]
 
 # %%
 formula = "x ~ y"
-model = smf.ols(f'{formula}', df)
+model = smf.ols(f"{formula}", df)
 results = model.fit()
 result_df = get_results_df(results)
 ty = result_df["tstatistic"].iloc[1]
 
 # %%
-np.isclose(tx,ty)
+np.isclose(tx, ty)
 
 # %%
-allDone();
+allDone()

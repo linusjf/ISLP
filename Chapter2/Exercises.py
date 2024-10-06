@@ -14,14 +14,16 @@
 
 # %%
 from IPython.core.interactiveshell import InteractiveShell
+
 InteractiveShell.ast_node_interactivity = "all"
 
 ## Import up sound alert dependencies
 from IPython.display import Audio, display
 
+
 def allDone():
-  url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
-  display(Audio(url=url, autoplay=True))
+    url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
+    display(Audio(url=url, autoplay=True))
 
 
 # %%
@@ -53,40 +55,40 @@ College = College3
 College.describe()
 
 # %%
-pd.plotting.scatter_matrix(College[["Top10perc", "Apps", "Enroll"]]);
+pd.plotting.scatter_matrix(College[["Top10perc", "Apps", "Enroll"]])
 
 # %%
-fig, ax = subplots(figsize = (8,8))
-College.boxplot("Outstate", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Outstate", by="Private", ax=ax)
 
 # %%
 College["Top10perc"]
 
 # %%
-College["Elite"] = pd.cut(College["Top10perc"], [0,50, 100], labels=["No","Yes"])
+College["Elite"] = pd.cut(College["Top10perc"], [0, 50, 100], labels=["No", "Yes"])
 College["Elite"].value_counts()
 
 
 # %%
-fig, ax = subplots(figsize = (8, 8))
-College.boxplot("Outstate", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Outstate", by="Elite", ax=ax)
 
 # %%
-College.plot.hist();
+College.plot.hist()
 
 # %%
-fig , ax = subplots(figsize=(8,8))
-College.hist("Apps", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.hist("Apps", ax=ax)
 
 # %%
 numeric_columns = College.select_dtypes(include="number").columns.tolist()
 numeric_columns
 
 # %%
-fig, axs = subplots(4, 4, figsize = (16,16))
-for row in range(0,4):
-  for column in range(0,4):
-    College.hist(numeric_columns[row * 4 + column], ax = axs[row,column]);
+fig, axs = subplots(4, 4, figsize=(16, 16))
+for row in range(0, 4):
+    for column in range(0, 4):
+        College.hist(numeric_columns[row * 4 + column], ax=axs[row, column])
 # %% [markdown]
 # ### Count of private and public colleges
 
@@ -94,100 +96,106 @@ for row in range(0,4):
 College["Private"].value_counts()
 
 # %%
-College["AcceptanceRate"] = round(College["Accept"]/College["Apps"] * 100,2)
+College["AcceptanceRate"] = round(College["Accept"] / College["Apps"] * 100, 2)
 College["AcceptanceRate"]
 
 # %%
 ### Plot boxplot for acceptance rate by College Type : Elite or not
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("AcceptanceRate", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("AcceptanceRate", by="Elite", ax=ax)
 
 # %%
 ### Plot boxplot for acceptance rate for Private colleges or not
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("AcceptanceRate", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("AcceptanceRate", by="Private", ax=ax)
 
 # %%
-College["EnrollmentRate"] = round(College["Enroll"]/College["Accept"] * 100, 2)
+College["EnrollmentRate"] = round(College["Enroll"] / College["Accept"] * 100, 2)
 College["EnrollmentRate"]
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("EnrollmentRate", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("EnrollmentRate", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("EnrollmentRate", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("EnrollmentRate", by="Private", ax=ax)
 
 # %%
-College["StudentCosts"] = College["Outstate"] + College["Room.Board"] + College["Books"] + College["Personal"]
+College["StudentCosts"] = (
+    College["Outstate"] + College["Room.Board"] + College["Books"] + College["Personal"]
+)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("StudentCosts", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("StudentCosts", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("StudentCosts", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("StudentCosts", by="Private", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("PhD", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("PhD", by="Private", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("PhD", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("PhD", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("Terminal", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Terminal", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("Terminal", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Terminal", by="Private", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("S.F.Ratio", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("S.F.Ratio", by="Private", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("S.F.Ratio", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("S.F.Ratio", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("perc.alumni", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("perc.alumni", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("perc.alumni", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("perc.alumni", by="Private", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("Expend", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Expend", by="Private", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("Expend", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Expend", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("Grad.Rate", by = "Elite", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Grad.Rate", by="Elite", ax=ax)
 
 # %%
-fig, ax = subplots(figsize=(8,8))
-College.boxplot("Grad.Rate", by = "Private", ax = ax);
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Grad.Rate", by="Private", ax=ax)
 
 # %%
-mean_grad_rate = College.groupby("Elite", observed=True)[["AcceptanceRate","EnrollmentRate","Grad.Rate"]].mean()
+mean_grad_rate = College.groupby("Elite", observed=True)[
+    ["AcceptanceRate", "EnrollmentRate", "Grad.Rate"]
+].mean()
 mean_grad_rate
 
 # %%
-mean_grad_rate.plot(y = ["AcceptanceRate","EnrollmentRate","Grad.Rate"],kind="bar", rot=0);
+mean_grad_rate.plot(
+    y=["AcceptanceRate", "EnrollmentRate", "Grad.Rate"], kind="bar", rot=0
+)
 
 # %%
 Auto = pd.read_csv("Auto.csv", na_values={"?"})
@@ -202,7 +210,7 @@ np.unique(Auto["horsepower"])
 
 # %%
 Auto["timetoacceleration"] = Auto["acceleration"]
-Auto = Auto.drop("acceleration", axis = 1)
+Auto = Auto.drop("acceleration", axis=1)
 
 # %%
 Auto = Auto.dropna()
@@ -219,7 +227,9 @@ print(np.unique(Auto["year"]))
 print(np.unique(Auto["cylinders"]))
 
 # %%
-Auto["origin"] = Auto["origin"].cat.rename_categories({1: "American",2: "European",3:"Japanese"})
+Auto["origin"] = Auto["origin"].cat.rename_categories(
+    {1: "American", 2: "European", 3: "Japanese"}
+)
 np.unique(Auto["origin"])
 
 # %%
@@ -242,7 +252,7 @@ Auto_new
 # Using the full data set, investigate the predictors graphically, using scatter plots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings.
 
 # %%
-pd.plotting.scatter_matrix(Auto, figsize=(14,14));
+pd.plotting.scatter_matrix(Auto, figsize=(14, 14))
 
 # %% [markdown]
 # ### Findings:
@@ -267,10 +277,10 @@ mean_mpg_cylinders
 
 # %% [markdown]
 # We can also observe that fuel efficiency is affected by the make of the car. Japanese > European > American
-# The year also plays a significant role. Later model cars are more fuel efficient than the earlier models. Cars are also more fuel efficient with lesser number of cylinders. These can also be used as predictors to deduce the MPG. 
+# The year also plays a significant role. Later model cars are more fuel efficient than the earlier models. Cars are also more fuel efficient with lesser number of cylinders. These can also be used as predictors to deduce the MPG.
 
 # %%
-Boston = load_data('Boston')
+Boston = load_data("Boston")
 Boston.columns
 
 # %%
@@ -283,7 +293,7 @@ Boston.shape
 Boston.describe()
 
 # %%
-Boston_quant = Boston.drop("chas", axis = 1)
+Boston_quant = Boston.drop("chas", axis=1)
 
 # %%
 print(np.unique(Boston_quant["zn"]))
@@ -291,7 +301,15 @@ median_medv = Boston_quant.groupby(["zn"], observed=True)[["medv"]].median()
 median_medv
 
 # %%
-sns.catplot(data=Boston_quant, x="zn", y="medv", kind="bar", height = 10, aspect = 2, estimator = median);
+sns.catplot(
+    data=Boston_quant,
+    x="zn",
+    y="medv",
+    kind="bar",
+    height=10,
+    aspect=2,
+    estimator=median,
+)
 
 # %%
 print(np.unique(Boston_quant["rad"]))
@@ -299,11 +317,11 @@ mean_rad = Boston_quant.groupby(["rad"], observed=True)[["medv"]].mean()
 mean_rad
 
 # %%
-sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height = 10, aspect = 2);
+sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height=10, aspect=2)
 
 # %%
 sns.set_theme(style="ticks")
-g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["medv"]);
+g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["medv"])
 
 # %% [markdown]
 # Plotting the other quantitative columns against medv (Median value of owner-occupied homes), we can see that:
@@ -318,28 +336,28 @@ g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars
 Boston_quant["zn"].value_counts()
 
 # %%
-g = sns.pairplot(Boston_quant, height = 5, aspect = 2, diag_kind = "kde", y_vars=["crim"]);
+g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["crim"])
 
 # %%
-sns.catplot(data=Boston_quant, x="zn", y="crim", kind="bar", height = 6, aspect = 2);
+sns.catplot(data=Boston_quant, x="zn", y="crim", kind="bar", height=6, aspect=2)
 
 # %%
-sns.displot(data=Boston_quant, x="indus", y="crim",height = 4, aspect = 3);
+sns.displot(data=Boston_quant, x="indus", y="crim", height=4, aspect=3)
 
 # %%
-sns.displot(data=Boston_quant, x="age", y="crim",height = 4, aspect = 3);
+sns.displot(data=Boston_quant, x="age", y="crim", height=4, aspect=3)
 
 # %%
-sns.displot(data=Boston_quant, x="nox", y="crim",height = 4, aspect = 3);
+sns.displot(data=Boston_quant, x="nox", y="crim", height=4, aspect=3)
 
 # %%
-sns.displot(data=Boston_quant, x="dis", y="crim",height = 4, aspect = 3);
+sns.displot(data=Boston_quant, x="dis", y="crim", height=4, aspect=3)
 
 # %%
-sns.displot(data=Boston_quant, x="tax", y="crim",height = 4, aspect = 3);
+sns.displot(data=Boston_quant, x="tax", y="crim", height=4, aspect=3)
 
 # %%
-sns.displot(data=Boston_quant, x="ptratio", y="crim",height = 4, aspect = 3);
+sns.displot(data=Boston_quant, x="ptratio", y="crim", height=4, aspect=3)
 
 # %% [markdown]
 # We've already seen that there appears to be a relationship b/w crime rate and medv where a higher crime rate is associated with lower property prices.
@@ -349,18 +367,20 @@ sns.displot(data=Boston_quant, x="ptratio", y="crim",height = 4, aspect = 3);
 # 3. Suburbs with nox > 0.55 or so have an elevated crime rate. That could be because lower strata income people live in those areas, and they are more inclined to criminal activities.
 # 4. There also seems to be an increasing relationship b/w crime rate and percentage  of homes built prior to 1940. Once that percentage crosses 40%, there is an increasing number of suburbs that exhibit elevated crime rates.
 # 5. Suburbs within a distance to Boston employment centres that range from 1 to 4.5 show an elevated crime rate. This needs to be investigated further. Where are these employment centres located?
-# 6. There seems to be a higher incidence of crimes for areas with tax rate around 670. Why? 
-# 7. The crime rate does not seem to have a strong relationship with ptratio, but for around point 20.1 where the crime rate spikes compared to the other areas. 
+# 6. There seems to be a higher incidence of crimes for areas with tax rate around 670. Why?
+# 7. The crime rate does not seem to have a strong relationship with ptratio, but for around point 20.1 where the crime rate spikes compared to the other areas.
 # 8. Crime rate decreases as the median value of properties rise across suburbs as a whole.
 
 # %% [markdown]
 #  *Do any of the suburbs of Boston appear to have particularly high crime rates? Tax rates? Pupil-teacher ratios? Comment on the range of each predictor.*
 
 # %%
-Boston_crim = Boston_quant.sort_values(by="crim", axis = 0, ascending = False, inplace=False)
+Boston_crim = Boston_quant.sort_values(
+    by="crim", axis=0, ascending=False, inplace=False
+)
 top_crim = Boston_crim.head()
 print(top_crim)
-df = pd.DataFrame((Boston_quant.min(), Boston_quant.max()), index=["Min","Max"])
+df = pd.DataFrame((Boston_quant.min(), Boston_quant.max()), index=["Min", "Max"])
 df
 
 # %% [markdown]
@@ -401,16 +421,16 @@ eight_rooms
 
 # %% [markdown]
 # There are 13 suburbs that average more that 8 rooms per dwelling.
-#   
+#
 # The median value for these dwellings range from 21.9 to 50.0 which is the priciest.
-#   
+#
 # The crime rate in these suburbs is extremely low with the highest at around 3.5%.
-#   
+#
 # Industrialization of these suburbs is also low with 19.58 the maximum.
-#   
+#
 # The percentage of people from the lower income strata tops out at 7.44%
-#   
-# A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%. 
+#
+# A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%.
 
 # %%
-allDone();
+allDone()

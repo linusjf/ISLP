@@ -54,10 +54,10 @@ from statsmodels.stats.anova import anova_lm
 import ISLP
 from ISLP import models
 from ISLP import load_data
-from ISLP.models import (ModelSpec as MS, summarize, poly)
+from ISLP.models import ModelSpec as MS, summarize, poly
 
 # %%
-Auto = load_data('Auto')
+Auto = load_data("Auto")
 Auto.columns
 
 # %%
@@ -147,8 +147,13 @@ new_predictions.conf_int(alpha=0.05, obs=True)
 # ### Use the ax.axline() method or the abline() function defined in the lab to display the least squares regression line.
 
 # %%
-ax = Auto.plot.scatter("horsepower", "mpg");
-ax.axline((ax.get_xlim()[0], results.params.iloc[0]), slope=results.params.iloc[1], color="r", linewidth=3);
+ax = Auto.plot.scatter("horsepower", "mpg")
+ax.axline(
+    (ax.get_xlim()[0], results.params.iloc[0]),
+    slope=results.params.iloc[1],
+    color="r",
+    linewidth=3,
+)
 
 # %% [markdown]
 # + The least squares regression line is plotted above using ax.axline(). The plot displays some evidence of non-linearity in the relationship between horsepower and mpg.
@@ -161,21 +166,21 @@ ax.axline((ax.get_xlim()[0], results.params.iloc[0]), slope=results.params.iloc[
 # #### Plot of fitted values versus residuals.
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(results.fittedvalues, results.resid)
 ax.set_xlabel("Fitted values")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c='k', ls='--');
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # #### We can also plot the residuals vs predictor plot where horsepower is the predictor.
 
 # %%
-_, ax = subplots(figsize=(8,8))
+_, ax = subplots(figsize=(8, 8))
 ax.scatter(Auto["horsepower"], results.resid)
 ax.set_xlabel("Horsepower")
 ax.set_ylabel("Residuals")
-ax.axhline(0, c='k', ls='--');
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # #### Conclusions:
@@ -187,7 +192,7 @@ RSS = np.sum((y - results.fittedvalues) ** 2)
 RSS
 
 # %%
-RSE = np.sqrt(RSS/ (Auto.shape[0] - 2))
+RSE = np.sqrt(RSS / (Auto.shape[0] - 2))
 RSE
 
 # %% [markdown]
@@ -205,37 +210,42 @@ np.sqrt(results.scale)
 mpg_mean = Auto["mpg"].mean()
 
 # %%
-print("Percentage error in mpg estimation using model above is: " )
-np.round(RSE / mpg_mean * 100, decimals = 2)
+print("Percentage error in mpg estimation using model above is: ")
+np.round(RSE / mpg_mean * 100, decimals=2)
 
 # %% [markdown]
 # ### Leverage statistics
 
 # %%
 infl = results.get_influence()
-_, ax = subplots(figsize=(8,8))
-ax.scatter(np.arange(X.shape[0]),infl.hat_matrix_diag)
+_, ax = subplots(figsize=(8, 8))
+ax.scatter(np.arange(X.shape[0]), infl.hat_matrix_diag)
 ax.set_xlabel("Index")
 ax.set_ylabel("Leverage")
 high_leverage = np.argmax(infl.hat_matrix_diag)
 max_leverage = np.max(infl.hat_matrix_diag)
 print("Max leverage point:")
-print(high_leverage, np.round(max_leverage, decimals = 2) )
-ax.plot(high_leverage, max_leverage, "ro");
+print(high_leverage, np.round(max_leverage, decimals=2))
+ax.plot(high_leverage, max_leverage, "ro")
 
 # %% [markdown]
 # #### Outlier identification using Standardized Residuals versus Fitted Values plot
 
 # %%
-_, ax = subplots(figsize=(8,8));
-ax.scatter(results.fittedvalues, results.resid_pearson);
-ax.set_xlabel("Fitted values for mpg");
-ax.set_ylabel("Standardized residuals");
-ax.axhline(0, c='k', ls='--');
-outliers_indexes = np.where((results.resid_pearson > 3.0) | (results.resid_pearson < -3.0))[0]
+_, ax = subplots(figsize=(8, 8))
+ax.scatter(results.fittedvalues, results.resid_pearson)
+ax.set_xlabel("Fitted values for mpg")
+ax.set_ylabel("Standardized residuals")
+ax.axhline(0, c="k", ls="--")
+outliers_indexes = np.where(
+    (results.resid_pearson > 3.0) | (results.resid_pearson < -3.0)
+)[0]
 for idx in range(len(outliers_indexes)):
-  ax.plot(results.fittedvalues.iloc[outliers_indexes[idx]],
-          results.resid_pearson[outliers_indexes[idx]], "ro");
+    ax.plot(
+        results.fittedvalues.iloc[outliers_indexes[idx]],
+        results.resid_pearson[outliers_indexes[idx]],
+        "ro",
+    )
 print("Outlier rows: ")
 print(Auto.iloc[outliers_indexes])
 
@@ -251,22 +261,22 @@ print(Auto.iloc[outliers_indexes])
 # #### We can also plot residuals versus order.
 
 # %%
-_, ax = subplots(figsize=(14,8))
-ax.scatter(np.arange(X.shape[0]),results.resid)
+_, ax = subplots(figsize=(14, 8))
+ax.scatter(np.arange(X.shape[0]), results.resid)
 ax.set_xlabel("Observation Order")
-ax.set_ylabel("Residuals");
-ax.axhline(0, c='k', ls='--');
+ax.set_ylabel("Residuals")
+ax.axhline(0, c="k", ls="--")
 
 # %% [markdown]
 # Conclusions:
 # - While there seems to be little evidence of negative or positive correlation over time, there is evidence of underestimation from observations 300 onwards. There also seems to be a time trend in the data from observation 300 or so where the expectation of the model is that mpg will be lower, but the actual values are much higher. This indicates that fuel mileage improved much more than expected in the later models from observation 300 onwards. This indicates that column year should be added to the model.
 
 # %%
-sm.qqplot(results.resid,line="s");
+sm.qqplot(results.resid, line="s")
 
 # %%
 # Plot histogram of residuals
-plt.hist(results.resid, bins=10);
+plt.hist(results.resid, bins=10)
 
 # %% [markdown]
 # Conclusions:
@@ -277,4 +287,4 @@ plt.hist(results.resid, bins=10);
 # <https://github.com/linusjf/LearnR/tree/development/Stats462>
 
 # %%
-allDone();
+allDone()

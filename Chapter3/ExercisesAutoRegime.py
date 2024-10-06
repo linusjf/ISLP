@@ -34,9 +34,9 @@ from notebookfuncs import *
 import numpy as np
 import pandas as pd
 
-pd.set_option('display.max_rows', 1000)
-pd.set_option('display.max_columns', 1000)
-pd.set_option('display.width', 1000)
+pd.set_option("display.max_rows", 1000)
+pd.set_option("display.max_columns", 1000)
+pd.set_option("display.width", 1000)
 pd.set_option("display.max.colwidth", None)
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -61,7 +61,7 @@ from statsmodels.stats.outliers_influence import summary_table
 import ISLP
 from ISLP import models
 from ISLP import load_data
-from ISLP.models import (ModelSpec as MS, summarize, poly)
+from ISLP.models import ModelSpec as MS, summarize, poly
 
 # %% [markdown]
 # #### Import user functions
@@ -84,8 +84,8 @@ LOS_Alpha = 0.01
 # ### Data Cleaning and exploratory data analysis
 
 # %%
-Auto = load_data('Auto')
-Auto = Auto.sort_values(by=['year'], ascending=True)
+Auto = load_data("Auto")
+Auto = Auto.sort_values(by=["year"], ascending=True)
 Auto.head()
 Auto.columns
 Auto = Auto.dropna()
@@ -97,11 +97,9 @@ Auto.describe()
 
 # %%
 Auto["origin"] = Auto["origin"].astype("category")
-Auto['origin'] = Auto['origin'].cat.rename_categories({
-    1: 'America',
-    2: 'Europe',
-    3: 'Japan'
-})
+Auto["origin"] = Auto["origin"].cat.rename_categories(
+    {1: "America", 2: "Europe", 3: "Japan"}
+)
 Auto.describe()
 
 # %% [markdown]
@@ -122,8 +120,7 @@ Auto_postos.describe()
 display(
     "If you look at the two datasets as displayed above, it's evident that the oil shock had a major impact on the models produced since."
 )
-display(Auto_preos.mean(numeric_only=True),
-        Auto_postos.mean(numeric_only=True))
+display(Auto_preos.mean(numeric_only=True), Auto_postos.mean(numeric_only=True))
 display(
     "Mileage increased, number of cylinders decreased, displacement decreased, horsepower decreased, weight decreased and time to acceleration increased thus indicating that less powerful and less performant cars were produced in the immediate period after the oil shock of 1973."
 )
@@ -143,17 +140,15 @@ Auto_postos.describe()
 # #### Encode categorical variables as dummy variables dropping the first to remove multicollinearity.
 
 # %%
-Auto_preos = pd.get_dummies(Auto_preos,
-                            columns=list(["origin"]),
-                            drop_first=True,
-                            dtype=np.uint8)
+Auto_preos = pd.get_dummies(
+    Auto_preos, columns=list(["origin"]), drop_first=True, dtype=np.uint8
+)
 Auto_preos.columns
 
 # %%
-Auto_postos = pd.get_dummies(Auto_postos,
-                             columns=list(["origin"]),
-                             drop_first=True,
-                             dtype=np.uint8)
+Auto_postos = pd.get_dummies(
+    Auto_postos, columns=list(["origin"]), drop_first=True, dtype=np.uint8
+)
 Auto_postos.columns
 
 # %% [markdown]
@@ -166,8 +161,7 @@ Auto_postos.columns
 Auto_preos.corr(numeric_only=True)
 
 # %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg",
-                       Auto_preos)
+vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg", Auto_preos)
 vifdf
 
 # %%
@@ -175,8 +169,8 @@ identify_highest_VIF_feature(vifdf)
 
 # %%
 vifdf = calculate_VIFs(
-    "mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement",
-    Auto_preos)
+    "mpg ~ " + " + ".join(Auto_preos.columns) + " - mpg - displacement", Auto_preos
+)
 vifdf
 
 # %%
@@ -189,7 +183,7 @@ identify_highest_VIF_feature(vifdf)
 cols = list(Auto_preos.columns)
 cols.remove("mpg")
 cols.remove("displacement")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
@@ -200,7 +194,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
 cols.remove("acceleration")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
@@ -208,7 +202,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
 cols.remove("cylinders")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
@@ -216,7 +210,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
 cols.remove("horsepower")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 results = perform_analysis("mpg", formula, Auto_preos)
 
 # %%
@@ -241,8 +235,9 @@ preoilshock_model = results
 Auto_postos.corr(numeric_only=True)
 
 # %%
-vifdf = calculate_VIFs("mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg",
-                       Auto_postos)
+vifdf = calculate_VIFs(
+    "mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg", Auto_postos
+)
 vifdf
 
 # %%
@@ -250,8 +245,8 @@ identify_highest_VIF_feature(vifdf)
 
 # %%
 vifdf = calculate_VIFs(
-    "mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg - displacement",
-    Auto_postos)
+    "mpg ~ " + " + ".join(Auto_postos.columns) + " - mpg - displacement", Auto_postos
+)
 vifdf
 
 # %%
@@ -264,7 +259,7 @@ identify_highest_VIF_feature(vifdf)
 cols = list(Auto_postos.columns)
 cols.remove("mpg")
 cols.remove("displacement")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
@@ -272,7 +267,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
 cols.remove("acceleration")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 results = perform_analysis("mpg", formula, Auto_postos)
 
 # %%
@@ -285,7 +280,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
 postoilshock_model_intercept = results
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 formula += " - 1"
 results = perform_analysis("mpg", formula, Auto_postos)
 
@@ -298,7 +293,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 # %%
 cols.remove("origin_Europe")
 cols.remove("origin_Japan")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 formula += " - 1"
 results = perform_analysis("mpg", formula, Auto_postos)
 
@@ -307,7 +302,7 @@ identify_least_significant_feature(results, alpha=LOS_Alpha)
 
 # %%
 cols.remove("cylinders")
-formula = ' + '.join(cols)
+formula = " + ".join(cols)
 formula += " - 1"
 results = perform_analysis("mpg", formula, Auto_postos)
 
@@ -367,4 +362,4 @@ postoilshock_model_intercept.rsquared_adj
 # ## Finished
 
 # %%
-allDone();
+allDone()

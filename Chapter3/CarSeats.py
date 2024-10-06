@@ -37,7 +37,7 @@ from userfuncs import *
 # ## Load dataset
 
 # %%
-Carseats = load_data('Carseats')
+Carseats = load_data("Carseats")
 Carseats.head()
 
 # %%
@@ -72,7 +72,7 @@ Carseats["Price"] = standardize(Carseats["Price"])
 
 # %%
 formula = "Price + Urban + US"
-perform_analysis("Sales", formula, Carseats);
+perform_analysis("Sales", formula, Carseats)
 
 # %% [markdown]
 # ### (b) Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!
@@ -104,7 +104,7 @@ perform_analysis("Sales", formula, Carseats);
 
 # %%
 formula = "Price + US"
-results = perform_analysis("Sales", formula, Carseats);
+results = perform_analysis("Sales", formula, Carseats)
 
 # %% [markdown]
 # ### (f) How well do the models in (a) and (e) fit the data?
@@ -216,4 +216,4 @@ inf_df[inf_df["dfb_US[T.Yes]"] > (3 / np.sqrt(results.nobs))]
 inf_df[inf_df["dfb_Price"] > (3 / np.sqrt(results.nobs))]
 
 # %%
-allDone();
+allDone()
