@@ -218,7 +218,7 @@ plot_fit(results, "y")
 # ### Using some data manipulation in  the generate_data method, we can come close to the expected estimate of 0.5 in the X ~ Y + 0 regression.
 
 # %%
-df = generate_data(inverse=True)
+df = generate_data(inverse=True);
 
 # %%
 formula = "x ~ y + 0"
@@ -248,6 +248,13 @@ result_df
 # This only works if the residuals are manipulated to have SD of $\frac {-1} {b^2}$ in the second.*
 # - *That's the most I can explain.*
 # - *There is an ettempt to explain the above in [this StackOverflow post](https://stats.stackexchange.com/a/466038/270877) but I'm not as comfortable or well-versed with linear algebra as yet to expound on it further.*
+
+# %%
+formula = "x ~ y + 0"
+model = smf.ols(f"{formula}", df)
+results = model.fit()
+result_df = get_results_df(results)
+result_df
 
 # %% [markdown]
 # ### We can check that the smaller the noise or residuals, the more likely that the regression of y on x and x on y are more or less reciprocals of each other in terms of the coefficient of the regressor.
@@ -355,4 +362,4 @@ ty = result_df["tstatistic"].iloc[1]
 np.isclose(tx, ty)
 
 # %%
-allDone()
+allDone();
