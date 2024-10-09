@@ -18,10 +18,13 @@ from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "last_expr_or_assign"
 
 ## Import up sound alert dependencies
-from IPython.display import Audio, display
+from IPython.display import Audio, display, Markdown, Math
 
 
 def allDone():
     """allDone method that plays the bell sound."""
     url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
     display(Audio(url=url, autoplay=True))
+
+def printmd(string):
+    display(Markdown(string))
