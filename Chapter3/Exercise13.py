@@ -96,41 +96,122 @@ def get_results_df(results):
             "tstatistic": results.tvalues,
             "p-value": results.pvalues,
             "r-squared": results.rsquared,
+            "r-squared-adjusted": results.rsquared_adj,
             "pearson_coefficient": np.sqrt(results.rsquared),
             "rss": results.ssr,
-            "sd_residuals": np.sqrt(results.mse_resid),
+            "sd_residuals": np.sqrt(results.mse_resid)
         }
     )
     return result_df
 
-formula = "y ~ x"
-model = smf.ols(f"{formula}", df)
-results = model.fit()
-result_df = get_results_df(results)
+def regress_y_on_x(df):
+  formula = "y ~ x"
+  model = smf.ols(f"{formula}", df)
+  results = model.fit()
+  result_df = get_results_df(results)
+  return results, result_df
+
+orig_res, result_df = regress_y_on_x(df)
+result_df
 
 # %%
 printmd(r"The $\: \hat{\beta_0}$ = " + str(results.params.iloc[0]) + r" and $\hat{\beta_1}$ = " + str(results.params.iloc[1]) + r" compare quite favourably to the population parameters $\beta_0$ = " +  str(beta_0) + r" and $\beta_1$ = " + str(beta_1) +".")
+
 
 # %% [markdown]
 # ### (f) Display the least squares line on the scatterplot obtained in (d). Draw the population regression line on the plot, in a different color. Use the legend() method of the axes to create an appropriate legend.
 
 # %%
-ax = sns.regplot(x="x",y="y",data=df,label="estimate", color="blue");
-y_original = -1 + 0.5 * x
-sns.regplot(x=x, y=y_original, scatter=False,label="population",color="red",ax=ax);
-ax.legend();
+def draw_regplot(df):
+  ax = sns.regplot(x="x",y="y",data=df,label="estimate", color="blue");
+  x = df["x"]
+  y_original = -1 + 0.5 * x
+  sns.regplot(x=x, y=y_original, scatter=False,label="population",color="red",ax=ax);
+  ax.legend();
+
+draw_regplot(df)
 
 # %% [markdown]
 # ### (g) Now fit a polynomial regression model that predicts $y$ using $x$ and $x^2$. Is there evidence that the quadratic term improves the model fit? Explain your answer.
+
+# %%
+simple_results = result_df
+formula = "y ~ x + I(x**2)"
+model = smf.ols(f"{formula}", df)
+results = model.fit()
+result_df = get_results_df(results)
+
+# %%
+np.isclose(simple_results["r-squared"].iloc[0], result_df["r-squared"].iloc[0])
+
+# %%
+np.isclose(simple_results["r-squared-adjusted"].iloc[0], result_df["r-squared-adjusted"].iloc[0])
+
+# %%
+ci = results.conf_int(alpha=0.05) 
+ci[(ci[0] < 0) & (ci[1] > 0)]
+
+# %% [markdown]
+# - The $R^2$ does not change significantly with the polynomial regression. So there is no evidence that the quadratic term improves the model fit.
+# - The $R^2 adjusted$ does increase but the coefficient for the polynomial term is not significant.
+# - Additionally, the confidence interval for the polynomial term spans both -ve and +ve axes i.e., zero lies in the range of the confidence interval.
 
 # %% [markdown]
 # ### (h) Repeat (a)–(f) after modifying the data generation process in such a way that there is less noise in the data. The model (3.39) should remain the same. You can do this by decreasing the variance of the normal distribution used to generate the error term $\epsilon$ in (b). Describe your results.
 
 # %% [markdown]
+# #### We decrease the standard deviation of the error terms or noise to 0.05 from 0.25.
+
+# %%
+eps = generate_data(mean=0.0, sd = 0.05, N = 100);
+
+# %%
+y = -1 + 0.5 * x + eps;
+df = pd.DataFrame({"x": x, "y": y});
+
+# %%
+less_noisier_results, result_df = regress_y_on_x(df)
+
+# %%
+draw_regplot(df)
+
+# %% [markdown]
 # ### (i) Repeat (a)–(f) after modifying the data generation process in such a way that there is more noise in the data. The model (3.39) should remain the same. You can do this by increasing the variance of the normal distribution used to generate the error term $\epsilon$ in (b). Describe your results.
 
 # %% [markdown]
+# #### We increase the standard deviation of the error terms or noise to 1 from 0.25.
+
+# %%
+eps = generate_data(mean=0.0, sd = 1, N = 100);
+
+# %%
+y = -1 + 0.5 * x + eps;
+
+# %%
+df = pd.DataFrame({"x": x, "y": y});
+
+# %%
+noisier_results, result_df = regress_y_on_x(df)
+
+# %%
+draw_regplot(df)
+
+# %% [markdown]
 # ### (j) What are the confidence intervals for $\beta_0$ and $\beta_1$ based on the original data set, the noisier data set, and the less noisy data set? Comment on your results.
+
+# %%
+print("Original dataset")
+print(orig_res.conf_int(alpha=0.05))
+print()
+print("Less noisy dataset")
+print(less_noisier_results.conf_int(alpha=0.05))
+print()
+print("More noisy dataset")
+print(noisier_results.conf_int(alpha=0.05))
+
+# %% [markdown]
+# - We can conclude that the noisier the dataset, the more likely that the confidence intervals are wider so that the population parameters actually reside witin its range.
+# - This is because the SD of the parameters are wider when the data is noisier.
 
 # %%
 allDone();
