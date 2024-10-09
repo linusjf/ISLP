@@ -22,7 +22,7 @@
 from notebookfuncs import *
 
 # %%
-from IPython.display import Markdown, display, Math
+from IPython.display import Markdown, display, Math, Latex
 
 def printmd(string):
     display(Markdown(string))
@@ -85,8 +85,40 @@ sns.scatterplot(data=df, x="x", y="y");
 # %% [markdown]
 # ### (e) Fit a least squares linear model to predict y using x. Comment on the model obtained. How do $\hat{\beta_0}$ and $\hat{\beta_1}$ compare to $\beta_0$ and $\beta_1$ ?
 
+# %%
+import statsmodels.formula.api as smf
+
+def get_results_df(results):
+    result_df = pd.DataFrame(
+        {
+          "coefficients": results.params,
+            "se": results.bse,
+            "tstatistic": results.tvalues,
+            "p-value": results.pvalues,
+            "r-squared": results.rsquared,
+            "pearson_coefficient": np.sqrt(results.rsquared),
+            "rss": results.ssr,
+            "sd_residuals": np.sqrt(results.mse_resid),
+        }
+    )
+    return result_df
+
+formula = "y ~ x"
+model = smf.ols(f"{formula}", df)
+results = model.fit()
+result_df = get_results_df(results)
+
+# %%
+printmd(r"The $\: \hat{\beta_0}$ = " + str(results.params.iloc[0]) + r" and $\hat{\beta_1}$ = " + str(results.params.iloc[1]) + r" compare quite favourably to the population parameters $\beta_0$ = " +  str(beta_0) + r" and $\beta_1$ = " + str(beta_1) +".")
+
 # %% [markdown]
 # ### (f) Display the least squares line on the scatterplot obtained in (d). Draw the population regression line on the plot, in a different color. Use the legend() method of the axes to create an appropriate legend.
+
+# %%
+ax = sns.regplot(x="x",y="y",data=df,label="estimate", color="blue");
+y_original = -1 + 0.5 * x
+sns.regplot(x=x, y=y_original, scatter=False,label="population",color="red",ax=ax);
+ax.legend();
 
 # %% [markdown]
 # ### (g) Now fit a polynomial regression model that predicts $y$ using $x$ and $x^2$. Is there evidence that the quadratic term improves the model fit? Explain your answer.
