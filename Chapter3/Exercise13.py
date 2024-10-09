@@ -92,7 +92,7 @@ def get_results_df(results):
     result_df = pd.DataFrame(
         {
           "coefficients": results.params,
-            "se": results.bse,
+            "coefficients-se": results.bse,
             "tstatistic": results.tvalues,
             "p-value": results.pvalues,
             "r-squared": results.rsquared,
@@ -115,7 +115,7 @@ orig_res, result_df = regress_y_on_x(df)
 result_df
 
 # %%
-printmd(r"The $\: \hat{\beta_0}$ = " + str(results.params.iloc[0]) + r" and $\hat{\beta_1}$ = " + str(results.params.iloc[1]) + r" compare quite favourably to the population parameters $\beta_0$ = " +  str(beta_0) + r" and $\beta_1$ = " + str(beta_1) +".")
+printmd(r"The $\: \hat{\beta_0}$ = " + str(orig_res.params.iloc[0]) + r" and $\hat{\beta_1}$ = " + str(orig_res.params.iloc[1]) + r" compare quite favourably to the population parameters $\beta_0$ = " +  str(beta_0) + r" and $\beta_1$ = " + str(beta_1) +".")
 
 
 # %% [markdown]
@@ -171,9 +171,13 @@ df = pd.DataFrame({"x": x, "y": y});
 
 # %%
 less_noisier_results, result_df = regress_y_on_x(df)
+result_df
 
 # %%
 draw_regplot(df)
+
+# %% [markdown]
+# - We conclude that the less noiser the data, the closer the fit of the regression to the population parameters.
 
 # %% [markdown]
 # ### (i) Repeat (a)–(f) after modifying the data generation process in such a way that there is more noise in the data. The model (3.39) should remain the same. You can do this by increasing the variance of the normal distribution used to generate the error term $\epsilon$ in (b). Describe your results.
@@ -192,9 +196,13 @@ df = pd.DataFrame({"x": x, "y": y});
 
 # %%
 noisier_results, result_df = regress_y_on_x(df)
+result_df
 
 # %%
 draw_regplot(df)
+
+# %% [markdown]
+# - We conclude that the noisier the data, the more the drift of the fit from the population paramaters especially when it comes to estimating the slope of the fitted line.
 
 # %% [markdown]
 # ### (j) What are the confidence intervals for $\beta_0$ and $\beta_1$ based on the original data set, the noisier data set, and the less noisy data set? Comment on your results.
@@ -209,9 +217,21 @@ print()
 print("More noisy dataset")
 print(noisier_results.conf_int(alpha=0.05))
 
+# %%
+print("Standard errors of coefficients")
+print()
+print("Original dataset")
+print(orig_res.bse)
+print()
+print("Less noisy dataset")
+print(less_noisier_results.bse)
+print()
+print("More noisy dataset")
+print(noisier_results.bse)
+
 # %% [markdown]
 # - We can conclude that the noisier the dataset, the more likely that the confidence intervals are wider so that the population parameters actually reside witin its range.
-# - This is because the SD of the parameters are wider when the data is noisier.
+# - This is because the Standard errors of the parameters are wider when the data is noisier.
 
 # %%
 allDone();
