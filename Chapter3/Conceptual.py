@@ -45,10 +45,21 @@ from notebookfuncs import *
 # %% [markdown]
 # ## 2. Carefully explain the differences between the KNN classifier and KNN regression methods.
 
-# %%
+# %% [markdown]
+# ### KNN Classifier
+# The KNN Classifier deals in probabilities and selects the likeliest or most frequent estimator of the category (qualitative variable) from the nearest k neighbours. It selects the category with the highest probability from all the k-nearest neighbours of the data point chosen. The co-domain is a discrete space.
+#
+# ### KNN Regression
+# The KNN Regression, on the other hand, usually selects the average of the k nearest neighbours of the data point. You could also use the median or weighted average value of the k nearest neighbours. The co-domain is a continuous space.
+#
+# References:
+# <https://stats.stackexchange.com/questions/364351/regression-knn-model-vs-classification-knn-model>
+# <https://stackoverflow.com/questions/64990030/difference-between-classification-and-regression-in-k-nearest-neighbor>
 
 # %% [markdown]
 # ## 3. Suppose we have a data set with five predictors, $X_1 = GPA, X_2 = IQ, X_3 = Level $ (1 for College and 0 for High School), $X_4 = Interaction$ between GPA and IQ, and $X_5 = Interaction$ between GPA and Level. The response is starting salary after graduation (in thousands of dollars). Suppose we use least squares to fit the model, and get $\beta_0 = 50, \beta_1 = 20, \beta_2 = 0.07, \beta_3 = 35, \beta_4 = 0.01, \beta_5 = −10$.
+
+# %%
 
 # %% [markdown]
 # ### (a) Which answer is correct, and why?
