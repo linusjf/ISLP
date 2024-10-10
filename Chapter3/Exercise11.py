@@ -19,7 +19,7 @@
 # ## Import notebook funcs
 
 # %%
-from notebookfuncs import *
+from notebookfuncfrom notebookfuncs import *s import *
 
 # %% [markdown]
 # ## In this problem we will investigate the t-statistic for the null hypothesis $H_{0} : \beta = 0$ in simple linear regression without an intercept. To begin, we generate a predictor x and a response y as follows.
