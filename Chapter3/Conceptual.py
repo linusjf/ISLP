@@ -25,7 +25,27 @@ from notebookfuncs import *
 # ## 1. Describe the null hypotheses to which the p-values given in Table 3.4 correspond. Explain what conclusions you can draw based on these p-values. Your explanation should be phrased in terms of sales, TV, radio, and newspaper, rather than in terms of the coefficients of the linear model.
 
 # %% [markdown]
+# | | Coefficient | Standard Error | t-statistic | p-value |
+# |:--| :-----: | :---: | :---: | :--: |
+# |Intercept | 2.939 | 0.3119 | 9.12 | < 0.0001 |
+# |TV | 0.046 | 0.0014 | 32.81 | < 0.0001 |
+# | Radio | 0.189 | 0.0086 | 21.89 | < 0.0001 |
+# | Newspaper | -0.001 | 0.0059 | -0.18 | 0.8599 |
+
+# %% [markdown]
+# - The null hypotheses to which the given p-values correspond are:
+# - $H_0 : \beta_{Intercept} = \beta_{TV} = \beta_{Radio} = \beta_{Newspaper} = 0$
+# - The p-values for Intercept, TV and Radio are significant i.e., less that 0.01.
+# - Hence, we can reject the null hypotheses that $\beta_{Intercept}$, $\beta_{TV}$ and $\beta_{Radio}$ are zero i.e., the intercept and coefficient values for TV and Radio are significant in the multilinear regression model.
+# - The model thus becomes $Sales = 2.939 + 0.0046 * TV + 0.189 * Radio$
+# - The Intercept value implies that in the absence of any advertsing spend on TV and Radio, the sales would on average be $2.939 * 1000 = 2939$ units.
+# - The coefficient of 0.046 on TV suggests that for every $1000 spent on TV advertising, the sales units increase by 0.0046 * 1000 = 46 units. Radio spend remaining constant.
+# - Similarly, for every additional 1000 dollars spent on radio, the sales units increase by 0.189 * 1000 = 189 units keeping TV spending constant.
+
+# %% [markdown]
 # ## 2. Carefully explain the differences between the KNN classifier and KNN regression methods.
+
+# %%
 
 # %% [markdown]
 # ## 3. Suppose we have a data set with five predictors, $X_1 = GPA, X_2 = IQ, X_3 = Level $ (1 for College and 0 for High School), $X_4 = Interaction$ between GPA and IQ, and $X_5 = Interaction$ between GPA and Level. The response is starting salary after graduation (in thousands of dollars). Suppose we use least squares to fit the model, and get $\beta_0 = 50, \beta_1 = 20, \beta_2 = 0.07, \beta_3 = 35, \beta_4 = 0.01, \beta_5 = −10$.
