@@ -95,6 +95,7 @@ from notebookfuncs import *
 #
 # 1. Average neighboring values (simple average)
 # 2. Weighted average (distance-weighted average)
+# 3. Median of neighboring values (median)
 #
 # ###### *Hyperparameters:*
 #
@@ -139,11 +140,11 @@ from notebookfuncs import *
 #
 # where:
 #
-# - $ y$: predicted class label
-# - $ K$: number of nearest neighbors
-# - $ y_i$: class label of $i_{th}$ nearest neighbor
-# - $ c$: class label
-# - $ I()$: indicator function (1 if true, 0 otherwise)
+# - $y$: predicted class label
+# - $K$: number of nearest neighbors
+# - $y_i$: class label of $i_{th}$ nearest neighbor
+# - $c$: class label
+# - $I()$: indicator function (1 if true, 0 otherwise)
 #
 # #### *Weighted Voting*
 #
@@ -153,7 +154,7 @@ from notebookfuncs import *
 #
 # where:
 #
-# - $ w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
+# - $w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
 #
 # ### *KNN Regression*
 #
@@ -165,9 +166,9 @@ from notebookfuncs import *
 #
 # where:
 #
-# - $ y$: predicted value
-# - $ K$: number of nearest neighbors
-# - $ y_i$: value of ith nearest neighbor
+# - $y$: predicted value
+# - $K$: number of nearest neighbors
+# - $y_i$: value of ith nearest neighbor
 #
 # #### *Weighted Average*
 #
@@ -177,13 +178,13 @@ from notebookfuncs import *
 #
 # where:
 #
-# - $ w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
+# - $w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
 #
 # ### *Distance Metrics*
 #
-# - **Euclidean distance**: $ \sqrt{\sum_{i=1}^n {(x_i - y_i)}^2} $
+# - **Euclidean distance**: $\sqrt{\sum_{i=1}^n {(x_i - y_i)}^2}$
 # - **Minkowski distance**: $\sqrt[p]{\sum_{i=1}^n {|xi - yi|}^p}$
-# - **Hamming distance**: $ \sum_{i=1}^n I(x_i \: \neq \: y_i) $
+# - **Hamming distance**: $\sum_{i=1}^n I(x_i \: \neq \: y_i)$
 #
 # ### *KNN Algorithm*
 #
@@ -239,15 +240,15 @@ from notebookfuncs import *
 # %% [markdown]
 # ## 5. Consider the fitted values that result from performing linear regression without an intercept. In this setting, the $i_{th}$ fitted value takes the form 
 #
-# $ \ \hat{y_i} = x_i * \hat{\beta} $ 
+# $\hat{y_i} = x_i * \hat{\beta}$ 
 #
 # where
 #
-# $\ \hat{\beta} = \  \ (\sum_{i=1}^n x_i y_i) / \ (\sum_{i^{'}=1}^{n} x_{i^{'}}^2 )$
+# $\hat{\beta} = (\sum_{i=1}^n x_i y_i) / (\sum_{i^{'}=1}^{n} x_{i^{'}}^2 )$
 #
 # ### Show that we can write
 #
-# $\ \hat{y_i} = \sum_{i^{'}=1}^n a_{i^{'}} y_{i^{'}}$
+# $\hat{y_i} = \sum_{i^{'}=1}^n a_{i^{'}} y_{i^{'}}$
 #
 # ### What is $a_{i^{'}}$?
 #
