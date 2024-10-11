@@ -52,9 +52,7 @@ from notebookfuncs import *
 # ### KNN Regression
 # The KNN Regression, on the other hand, usually selects the average of the k nearest neighbours of the data point. You could also use the median or weighted average value of the k nearest neighbours. The co-domain is a continuous space.
 #
-# References:
-# 1. <https://stats.stackexchange.com/questions/364351/regression-knn-model-vs-classification-knn-model>
-# 2. <https://stackoverflow.com/questions/64990030/difference-between-classification-and-regression-in-k-nearest-neighbor>
+#
 
 # %% [markdown]
 # #### *Similarities:*
@@ -131,55 +129,61 @@ from notebookfuncs import *
 # - Stock price prediction
 
 # %% [markdown]
-# Here are the equations and explanations for KNN Classification and Regression:
+# ## Here are the equations and explanations for KNN Classification and Regression:
 #
 # ### *KNN Classification*
 #
 # #### *Majority Voting*
 #
-# $\Huge y = argmax \: \sum_{i=1}^K I(y_i = c)$
+# $${  y = argmax \: \sum_{i=1}^K I(y_i = c)}$$
 #
 # where:
 #
-# - $\Huge y$: predicted class label
-# - $\Huge K$: number of nearest neighbors
-# - $\Huge y_i$: class label of $i_{th}$ nearest neighbor
-# - $\Huge c$: class label
-# - $\Huge I()$: indicator function (1 if true, 0 otherwise)
+# - $ y$: predicted class label
+# - $ K$: number of nearest neighbors
+# - $ y_i$: class label of $i_{th}$ nearest neighbor
+# - $ c$: class label
+# - $ I()$: indicator function (1 if true, 0 otherwise)
 #
 # #### *Weighted Voting*
 #
-# $\Huge y = argmax \: \sum_{i=1}^K w_i I(y_i = c)$
+# $$
+# y = argmax \: \sum_{i=1}^K w_i I(y_i = c)
+# $$
 #
 # where:
 #
-# - $\Huge w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
+# - $ w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
 #
 # ### *KNN Regression*
 #
 # #### *Simple Average*
 #
-# $\Huge y = (1/K) \sum_{i=1}^K y_i$
+# $$
+# y = (1/K) \sum_{i=1}^K y_i
+# $$
 #
 # where:
 #
-# - $\Huge y$: predicted value
-# - $\Huge K$: number of nearest neighbors
-# - $\Huge y_i$: value of ith nearest neighbor
+# - $ y$: predicted value
+# - $ K$: number of nearest neighbors
+# - $ y_i$: value of ith nearest neighbor
 #
 # #### *Weighted Average*
 #
-# $\Huge y = (\sum_{i=1}^K w_i y_i) / (\sum_{i=1}^ K w_i)$
+# $$
+# y = (\sum_{i=1}^K w_i y_i) / (\sum_{i=1}^ K w_i)
+# $$
 #
 # where:
 #
-# - $\Huge w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
+# - $ w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
 #
 # ### *Distance Metrics*
 #
-# - **Euclidean distance**: $\Huge \sqrt{\sum_{i=1}^n {(x_i - y_i)}^2}$
-# - **Minkowski distance**: $\Huge (\sum_{i=1}^n {|xi - yi|}^p)^{\normalsize ({1}/{p})}$
-# - **Hamming distance**: $\Huge \sum_{i=1}^n I(xi ≠ yi)$
+# - **Euclidean distance**: $ \sqrt{\sum_{i=1}^n {(x_i - y_i)}^2} $
+# - **Minkowski distance**: $\sqrt[p]{\sum_{i=1}^n {|xi - yi|}^p}$
+# - **Hamming distance**: $ \sum_{i=1}^n I(x_i \: \neq \: y_i) $
 #
 # ### *KNN Algorithm*
 #
@@ -188,6 +192,10 @@ from notebookfuncs import *
 # 3. Select K nearest neighbors.
 # 4. Predict class label (classification) or value (regression).
 #
+# References:
+# 1. <https://stats.stackexchange.com/questions/364351/regression-knn-model-vs-classification-knn-model>
+# 2. <https://stackoverflow.com/questions/64990030/difference-between-classification-and-regression-in-k-nearest-neighbor>
+# 3. MetaAI
 
 # %% [markdown]
 # ## 3. Suppose we have a data set with five predictors, $X_1 = GPA, X_2 = IQ, X_3 = Level $ (1 for College and 0 for High School), $X_4 = Interaction$ between GPA and IQ, and $X_5 = Interaction$ between GPA and Level. The response is starting salary after graduation (in thousands of dollars). Suppose we use least squares to fit the model, and get $\beta_0 = 50, \beta_1 = 20, \beta_2 = 0.07, \beta_3 = 35, \beta_4 = 0.01, \beta_5 = −10$.
@@ -231,15 +239,15 @@ from notebookfuncs import *
 # %% [markdown]
 # ## 5. Consider the fitted values that result from performing linear regression without an intercept. In this setting, the $i_{th}$ fitted value takes the form 
 #
-# $ \huge \hat{y_i} = x_i * \hat{\beta} $ 
+# $ \ \hat{y_i} = x_i * \hat{\beta} $ 
 #
 # where
 #
-# $\huge \hat{\beta} = \huge  \huge (\sum_{i=1}^n x_i y_i) / \huge (\sum_{i^{'}=1}^{n} x_{i^{'}}^2 )$
+# $\ \hat{\beta} = \  \ (\sum_{i=1}^n x_i y_i) / \ (\sum_{i^{'}=1}^{n} x_{i^{'}}^2 )$
 #
 # ### Show that we can write
 #
-# $\huge \hat{y_i} = \sum_{i^{'}=1}^n a_{i^{'}} y_{i^{'}}$
+# $\ \hat{y_i} = \sum_{i^{'}=1}^n a_{i^{'}} y_{i^{'}}$
 #
 # ### What is $a_{i^{'}}$?
 #

@@ -170,3 +170,6 @@ cython_debug/
 
 # ignore ipynb files
 *.ipynb
+
+# Latex files
+*.tex
