@@ -216,11 +216,41 @@ from notebookfuncs import *
 # %% [markdown]
 # #### iv. For a fixed value of IQ and GPA, college graduates earn more, on average, than high school graduates provided that the GPA is high enough.
 
+# %%
+from sympy import symbols, solve
+gpa, iq, level , gpa_iq, gpa_level  = symbols("gpa iq level gpa.iq gpa.level")
+equation = 50  + 20 * gpa + 0.07 * iq + 35 * level + 0.01 * gpa_iq - 10 * gpa_level
+
+# %%
+eqn_highschool = equation.subs([(level,0), (gpa_level, 0 )])
+
+# %%
+eqn_college = equation.subs([(level,1), (gpa_level, gpa)])
+
+# %%
+diff = (eqn_college - eqn_highschool) > 0
+
+# %%
+solve(diff)
+
+# %% [markdown]
+# From the data above:
+# - We can conclude that college graduates earn more than high school graduates for gpa values less than 3.5.
+# - For gpa values greater than or equal to 3.5, high school graduates earn more than college graduates on average which is equivalent to point (iii), provided the gpa is high enough.
+
 # %% [markdown]
 # ### (b) Predict the salary of a college graduate with IQ of 110 and a GPA of 4.0.
 
+# %%
+equation.subs([(gpa, 4.0), (iq,110), (level, 1), (gpa_iq, 110*4.0), (gpa_level, 4.0 * 1)]) * 1000
+
 # %% [markdown]
 # ### (c) True or false: Since the coefficient for the GPA/IQ interaction term is very small, there is very little evidence of an interaction effect. Justify your answer.
+
+# %% [markdown]
+# - The significance of an effect irrespective of whether it's an interaction or not depends of the p-value of its coefficient and not on the coeffcient value.
+# - Unless you've standardized the variables, the scale of each variable may differ from each other hugely and even a small coefficient can have a significant effect on the response if the variable values are quite large.
+# - You might also wish to look up [Lasso and Ridge regression models](https://medium.com/@byanalytixlabs/what-are-lasso-and-ridge-techniques-05c7f6630f6b) to discover two different types of regressions where coefficients are either shrunk close to zero or omitted from the model to enhance interpretability.
 
 # %% [markdown]
 # ## 4. I collect a set of data (n = 100 observations) containing a single predictor and a quantitative response. I then fit a linear regression model to the data, as well as a separate cubic regression, i.e. $Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \beta_3 X^3 + \epsilon$.
