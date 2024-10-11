@@ -53,13 +53,144 @@ from notebookfuncs import *
 # The KNN Regression, on the other hand, usually selects the average of the k nearest neighbours of the data point. You could also use the median or weighted average value of the k nearest neighbours. The co-domain is a continuous space.
 #
 # References:
-# <https://stats.stackexchange.com/questions/364351/regression-knn-model-vs-classification-knn-model>
-# <https://stackoverflow.com/questions/64990030/difference-between-classification-and-regression-in-k-nearest-neighbor>
+# 1. <https://stats.stackexchange.com/questions/364351/regression-knn-model-vs-classification-knn-model>
+# 2. <https://stackoverflow.com/questions/64990030/difference-between-classification-and-regression-in-k-nearest-neighbor>
+
+# %% [markdown]
+# #### *Similarities:*
+#
+# 1. Both use proximity-based approach
+# 2. Depend on feature similarity
+# 3. Use K-nearest neighbors to make predictions
+# 4. No explicit model training
+#
+# #### *Differences:*
+#
+# ##### *Classification:*
+#
+# 1. Predicts class labels (categorical)
+# 2. Output: Class label (e.g., 0/1, yes/no)
+# 3. Distance metric: Typically Euclidean, Hamming, or Minkowski
+# 4. Decision boundary: Non-linear, based on KNN
+# 5. Evaluation metrics: Accuracy, Precision, Recall, F1-score
+#
+# ##### *Regression:*
+#
+# 1. Predicts continuous values (numerical)
+# 2. Output: Continuous value (e.g., price, temperature)
+# 3. Distance metric: Typically Euclidean or Minkowski
+# 4. Decision boundary: Non-linear, based on KNN
+# 5. Evaluation metrics: MSE, MAE, R-squared, RMSE
+#
+# ##### *Key differences:*
+#
+# 1. Output type (categorical vs. numerical)
+# 2. Distance metric suitability
+# 3. Evaluation metrics
+#
+# ##### *KNN Classification:*
+#
+# 1. Majority voting (most common class label)
+# 2. Weighted voting (distance-weighted class labels)
+#
+# ##### *KNN Regression:*
+#
+# 1. Average neighboring values (simple average)
+# 2. Weighted average (distance-weighted average)
+#
+# ###### *Hyperparameters:*
+#
+# 1. K (number of nearest neighbors)
+# 2. Distance metric
+# 3. Weighting scheme (uniform or distance-based)
+#
+# ###### *Advantages:*
+#
+# 1. Simple implementation
+# 2. No explicit model training
+# 3. Handles non-linear relationships
+#
+# ##### *Disadvantages:*
+#
+# 1. Computationally expensive
+# 2. Sensitive to noise and outliers
+# 3. Choice of K and distance metric
+#
+# ##### *Real-world applications:*
+#
+# ###### Classification:
+#
+# - Image classification
+# - Text categorization
+# - Spam detection
+#
+# ###### Regression:
+#
+# - Predicting house prices
+# - Energy consumption forecasting
+# - Stock price prediction
+
+# %% [markdown]
+# Here are the equations and explanations for KNN Classification and Regression:
+#
+# ### *KNN Classification*
+#
+# #### *Majority Voting*
+#
+# $\Huge y = argmax \: \sum_{i=1}^K I(y_i = c)$
+#
+# where:
+#
+# - $\Huge y$: predicted class label
+# - $\Huge K$: number of nearest neighbors
+# - $\Huge y_i$: class label of $i_{th}$ nearest neighbor
+# - $\Huge c$: class label
+# - $\Huge I()$: indicator function (1 if true, 0 otherwise)
+#
+# #### *Weighted Voting*
+#
+# $\Huge y = argmax \: \sum_{i=1}^K w_i I(y_i = c)$
+#
+# where:
+#
+# - $\Huge w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
+#
+# ### *KNN Regression*
+#
+# #### *Simple Average*
+#
+# $\Huge y = (1/K) \sum_{i=1}^K y_i$
+#
+# where:
+#
+# - $\Huge y$: predicted value
+# - $\Huge K$: number of nearest neighbors
+# - $\Huge y_i$: value of ith nearest neighbor
+#
+# #### *Weighted Average*
+#
+# $\Huge y = (\sum_{i=1}^K w_i y_i) / (\sum_{i=1}^ K w_i)$
+#
+# where:
+#
+# - $\Huge w_i$: weight assigned to ith nearest neighbor (typically 1/distance)
+#
+# ### *Distance Metrics*
+#
+# - **Euclidean distance**: $\Huge \sqrt{\sum_{i=1}^n {(x_i - y_i)}^2}$
+# - **Minkowski distance**: $\Huge (\sum_{i=1}^n {|xi - yi|}^p)^{\normalsize ({1}/{p})}$
+# - **Hamming distance**: $\Huge \sum_{i=1}^n I(xi ≠ yi)$
+#
+# ### *KNN Algorithm*
+#
+# 1. Choose K and distance metric.
+# 2. Calculate distances between query point and training points.
+# 3. Select K nearest neighbors.
+# 4. Predict class label (classification) or value (regression).
+#
 
 # %% [markdown]
 # ## 3. Suppose we have a data set with five predictors, $X_1 = GPA, X_2 = IQ, X_3 = Level $ (1 for College and 0 for High School), $X_4 = Interaction$ between GPA and IQ, and $X_5 = Interaction$ between GPA and Level. The response is starting salary after graduation (in thousands of dollars). Suppose we use least squares to fit the model, and get $\beta_0 = 50, \beta_1 = 20, \beta_2 = 0.07, \beta_3 = 35, \beta_4 = 0.01, \beta_5 = −10$.
-
-# %%
 
 # %% [markdown]
 # ### (a) Which answer is correct, and why?
