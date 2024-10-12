@@ -136,7 +136,7 @@ from notebookfuncs import *
 #
 # #### *Majority Voting*
 #
-# $${  y = argmax \: \sum_{i=1}^K I(y_i = c)}$$
+# $$ \large {  y = argmax \: \sum_{i=1}^K I(y_i = c)} $$
 #
 # where:
 #
@@ -148,9 +148,7 @@ from notebookfuncs import *
 #
 # #### *Weighted Voting*
 #
-# $$
-# y = argmax \: \sum_{i=1}^K w_i I(y_i = c)
-# $$
+# $$\large {y = argmax \: \sum_{i=1}^K w_i I(y_i = c)}$$
 #
 # where:
 #
@@ -160,9 +158,7 @@ from notebookfuncs import *
 #
 # #### *Simple Average*
 #
-# $$
-# y = (1/K) \sum_{i=1}^K y_i
-# $$
+# $$\large y = (1/K) \sum_{i=1}^K y_i$$
 #
 # where:
 #
@@ -172,9 +168,7 @@ from notebookfuncs import *
 #
 # #### *Weighted Average*
 #
-# $$
-# y = (\sum_{i=1}^K w_i y_i) / (\sum_{i=1}^ K w_i)
-# $$
+# $$\large y = \left (\sum_{i=1}^K w_i y_i \right ) / \left (\sum_{i=1}^ K w_i \right)$$
 #
 # where:
 #
@@ -182,9 +176,9 @@ from notebookfuncs import *
 #
 # ### *Distance Metrics*
 #
-# - **Euclidean distance**: $\sqrt{\sum_{i=1}^n {(x_i - y_i)}^2}$
-# - **Minkowski distance**: $\sqrt[p]{\sum_{i=1}^n {|xi - yi|}^p}$
-# - **Hamming distance**: $\sum_{i=1}^n I(x_i \: \neq \: y_i)$
+# - **Euclidean distance**: $\large \sqrt{\sum_{i=1}^n {(x_i - y_i)}^2}$
+# - **Minkowski distance**: $\large \sqrt[p]{\sum_{i=1}^n {|xi - yi|}^p}$
+# - **Hamming distance**: $\large \sum_{i=1}^n I(x_i \: \neq \: y_i)$
 #
 # ### *KNN Algorithm*
 #
@@ -259,10 +253,16 @@ equation.subs([(gpa, 4.0), (iq,110), (level, 1), (gpa_iq, 110*4.0), (gpa_level, 
 # ### (a) Suppose that the true relationship between X and Y is linear, i.e. $Y = \beta_0 + \beta_1 X + \epsilon$. Consider the training residual sum of squares (RSS) for the linear regression, and also the training RSS for the cubic regression. Would we expect one to be lower than the other, would we expect them to be the same, or is there not enough information to tell? Justify your answer.
 
 # %% [markdown]
+# Given that the true relationship is linear, it is quite likely that the training RSS for the cubic regression tends to overfit the data and thus the training RSS for the cubic regression is lower than the one for the linear regression.
+
+# %% [markdown]
 # ### (b) Answer (a) using test rather than training RSS.
 
 # %% [markdown]
-# ### (c) Suppose that the true relationship between X and Y is not linear, but we don’t know how far it is from linear. Consider the training RSS fo cubic regression. Would we expect one to be lower than the linear regression, and also the training RSS for the cubic regression. Would we expect one to be lower than the other, would we expect them to be the same, or is there not enough information to tell? Justify your answer.
+# When we are using test RSS as against the training RSS, the overfitted model i.e., the cubic regression will display more variance for data it has not been exposed to or trained on especially since the true relationship i.e., the population relationship is linear. 
+
+# %% [markdown]
+# ### (c) Suppose that the true relationship between X and Y is not linear, but we don’t know how far it is from linear. Consider the training RSS for cubic regression. Would we expect one to be lower than the linear regression, and also the training RSS for the cubic regression. Would we expect one to be lower than the other, would we expect them to be the same, or is there not enough information to tell? Justify your answer.
 
 # %% [markdown]
 # ### (d) Answer (c) using test rather than training RSS.
@@ -270,15 +270,15 @@ equation.subs([(gpa, 4.0), (iq,110), (level, 1), (gpa_iq, 110*4.0), (gpa_level, 
 # %% [markdown]
 # ## 5. Consider the fitted values that result from performing linear regression without an intercept. In this setting, the $i_{th}$ fitted value takes the form 
 #
-# $\hat{y_i} = x_i * \hat{\beta}$ 
+# $\large \hat{y_i} = x_i * \hat{\beta}$ 
 #
 # where
 #
-# $\hat{\beta} = (\sum_{i=1}^n x_i y_i) / (\sum_{i^{'}=1}^{n} x_{i^{'}}^2 )$
+# $\large \hat{\beta} = \large (\sum_{i=1}^n x_i y_i \large) / \large(\sum_{i^{'}=1}^{n} x_{i^{'}}^2 \large)$
 #
 # ### Show that we can write
 #
-# $\hat{y_i} = \sum_{i^{'}=1}^n a_{i^{'}} y_{i^{'}}$
+# $\large \hat{y_i} = \sum_{i^{'}=1}^n a_{i^{'}} y_{i^{'}}$
 #
 # ### What is $a_{i^{'}}$?
 #
