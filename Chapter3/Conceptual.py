@@ -430,11 +430,176 @@ print("Test RSS:", np.sum((y_test - y_pred_test_poly) ** 2))
 # For this linear true model:
 #
 # 1. Linear regression provides a simple, accurate, and generalizable model.
-# 2. Cubic regression overfits and performs poorly on unseen data.
+# 2. Cubic regression overfits and does not perform as well on unseen data.
 
 # %% [markdown]
 # - We can conclude that the Test RSS for cubic regression overfits the training data and does not perform as well on unseen data from the population when the true model is linear.
 # - The Test RSS for the cubic regression exceeds that of the linear regression.
+
+# %% [markdown]
+# ### However, since we cannot see this clearly for a single regression model, let's run a simulation of 100 iterations of the regressions and check our results.
+
+# %%
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.model_selection import train_test_split
+import statsmodels.api as sm
+
+# Simulation parameters
+n_runs = 100
+n_samples = 100
+test_size = 0.2
+x_range = (-10, 10)
+
+# Initialize arrays to store results
+train_rss_linear = np.zeros(n_runs)
+test_rss_linear = np.zeros(n_runs)
+train_rss_cubic = np.zeros(n_runs)
+test_rss_cubic = np.zeros(n_runs)
+p_value_linear = np.zeros(n_runs)
+p_value_const = np.zeros(n_runs)
+p_value_cubic_const = np.zeros(n_runs)
+p_value_linear_cubic = np.zeros(n_runs)
+p_value_quadratic = np.zeros(n_runs)
+p_value_cubic = np.zeros(n_runs)
+r2_adj_linear = np.zeros(n_runs)
+r2_adj_cubic = np.zeros(n_runs)
+
+for i in range(n_runs):
+    # Generate linear data
+    x = np.random.uniform(x_range[0], x_range[1], n_samples)
+    y = 2*x + 1 + np.random.normal(0, 1, n_samples)
+
+    # Split data into training and testing sets
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
+
+    # Linear Regression
+    x_train_sm = sm.add_constant(x_train.reshape(-1, 1))
+    model_linear = sm.OLS(y_train, x_train_sm).fit()
+    y_pred_train_lr = model_linear.predict(x_train_sm)
+    y_pred_test_lr = model_linear.predict(sm.add_constant(x_test.reshape(-1, 1)))
+
+    # Cubic Regression
+    poly = PolynomialFeatures(degree=3,include_bias= False)
+    x_poly_train = poly.fit_transform(x_train.reshape(-1, 1))
+    x_poly_test = poly.transform(x_test.reshape(-1, 1))
+    x_poly_train_sm = sm.add_constant(x_poly_train)
+    model_cubic = sm.OLS(y_train, x_poly_train_sm).fit()
+    y_pred_train_poly = model_cubic.predict(x_poly_train_sm)
+    y_pred_test_poly = model_cubic.predict(sm.add_constant(x_poly_test))
+
+    # Store results
+    train_rss_linear[i] = np.sum((y_train - y_pred_train_lr) ** 2)
+    test_rss_linear[i] = np.sum((y_test - y_pred_test_lr) ** 2)
+    train_rss_cubic[i] = np.sum((y_train - y_pred_train_poly) ** 2)
+    test_rss_cubic[i] = np.sum((y_test - y_pred_test_poly) ** 2)
+    p_value_linear[i] = model_linear.pvalues[1]
+    p_value_const[i] = model_linear.pvalues[0]
+    p_value_cubic_const = model_cubic.pvalues[0]
+    p_value_linear_cubic[i] = model_cubic.pvalues[1]
+    p_value_quadratic[i] = model_cubic.pvalues[2]
+    p_value_cubic[i] = model_cubic.pvalues[3]
+    r2_adj_linear[i] = model_linear.rsquared_adj
+    r2_adj_cubic[i] = model_cubic.rsquared_adj
+
+# Print results
+print("Mean Train RSS (Linear):", np.mean(train_rss_linear))
+print("Mean Test RSS (Linear):", np.mean(test_rss_linear))
+print("Mean Train RSS (Cubic):", np.mean(train_rss_cubic))
+print("Mean Test RSS (Cubic):", np.mean(test_rss_cubic))
+print("Mean p-value (Constant Term - Linear):", np.mean(p_value_const))
+print("Mean p-value (Linear Term):", np.mean(p_value_linear))
+print("Mean p-value (Constant Term - Cubic):", np.mean(p_value_cubic_const))
+print("Mean p-value (Linear Term - Cubic):", np.mean(p_value_linear_cubic))
+print("Mean p-value (Quadratic Term):", np.mean(p_value_quadratic))
+print("Mean p-value (Cubic Term):", np.mean(p_value_cubic))
+print("Mean R^2 Adjusted (Linear):", np.mean(r2_adj_linear))
+print("Mean R^2 Adjusted (Cubic):", np.mean(r2_adj_cubic))
+
+
+# %% [markdown]
+# ### This still isn't conclusive enough. So we run multiple simulations of different linear models.
+
+# %%
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.model_selection import train_test_split
+import statsmodels.api as sm
+
+# Simulation parameters
+n_runs = 100
+n_samples = 100
+test_size = 0.2
+x_range = (-10, 10)
+
+# Initialize arrays to store results
+train_rss_linear = np.zeros(n_runs)
+test_rss_linear = np.zeros(n_runs)
+train_rss_cubic = np.zeros(n_runs)
+test_rss_cubic = np.zeros(n_runs)
+p_value_linear = np.zeros(n_runs)
+p_value_const = np.zeros(n_runs)
+p_value_cubic_const = np.zeros(n_runs)
+p_value_linear_cubic = np.zeros(n_runs)
+p_value_quadratic = np.zeros(n_runs)
+p_value_cubic = np.zeros(n_runs)
+r2_adj_linear = np.zeros(n_runs)
+r2_adj_cubic = np.zeros(n_runs)
+
+for i in range(n_runs):
+    # Generate linear data with different coefficients in each iteration
+    coeff_linear = np.random.uniform(1, 5)
+    coeff_const = np.random.uniform(-5, 5)
+    x = np.random.uniform(x_range[0], x_range[1], n_samples)
+    y = coeff_linear * x + coeff_const + np.random.normal(0, 1, n_samples)
+
+    # Split data into training and testing sets
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
+
+    # Linear Regression
+    x_train_sm = sm.add_constant(x_train.reshape(-1, 1))
+    model_linear = sm.OLS(y_train, x_train_sm).fit()
+    y_pred_train_lr = model_linear.predict(x_train_sm)
+    y_pred_test_lr = model_linear.predict(sm.add_constant(x_test.reshape(-1, 1)))
+
+    # Cubic Regression
+    poly = PolynomialFeatures(degree=3,include_bias=False)
+    x_poly_train = poly.fit_transform(x_train.reshape(-1, 1))
+    x_poly_test = poly.transform(x_test.reshape(-1, 1))
+    x_poly_train_sm = sm.add_constant(x_poly_train)
+    model_cubic = sm.OLS(y_train, x_poly_train_sm).fit()
+    y_pred_train_poly = model_cubic.predict(x_poly_train_sm)
+    y_pred_test_poly = model_cubic.predict(sm.add_constant(x_poly_test))
+
+    # Store results
+    train_rss_linear[i] = np.sum((y_train - y_pred_train_lr) ** 2)
+    test_rss_linear[i] = np.sum((y_test - y_pred_test_lr) ** 2)
+    train_rss_cubic[i] = np.sum((y_train - y_pred_train_poly) ** 2)
+    test_rss_cubic[i] = np.sum((y_test - y_pred_test_poly) ** 2)
+    p_value_linear[i] = model_linear.pvalues[1]
+    p_value_const[i] = model_linear.pvalues[0]
+    p_value_cubic_const = model_cubic.pvalues[0]
+    p_value_linear_cubic[i] = model_cubic.pvalues[1]
+    p_value_quadratic[i] = model_cubic.pvalues[2]
+    p_value_cubic[i] = model_cubic.pvalues[3]
+    r2_adj_linear[i] = model_linear.rsquared_adj
+    r2_adj_cubic[i] = model_cubic.rsquared_adj
+
+# Print results
+print("Mean Train RSS (Linear):", np.mean(train_rss_linear))
+print("Mean Test RSS (Linear):", np.mean(test_rss_linear))
+print("Mean Train RSS (Cubic):", np.mean(train_rss_cubic))
+print("Mean Test RSS (Cubic):", np.mean(test_rss_cubic))
+print("Mean p-value (Constant Term - Linear):", np.mean(p_value_const))
+print("Mean p-value (Linear Term):", np.mean(p_value_linear))
+print("Mean p-value (Constant Term - Cubic):", np.mean(p_value_cubic_const))
+print("Mean p-value (Linear Term - Cubic):", np.mean(p_value_linear_cubic))
+print("Mean p-value (Quadratic Term):", np.mean(p_value_quadratic))
+print("Mean p-value (Cubic Term):", np.mean(p_value_cubic))
+print("Mean R^2 Adjusted (Linear):", np.mean(r2_adj_linear))
+print("Mean R^2 Adjusted (Cubic):", np.mean(r2_adj_cubic))
 
 # %% [markdown]
 # ### (c) Suppose that the true relationship between X and Y is not linear, but we don’t know how far it is from linear. Consider the training RSS for cubic regression. Would we expect one to be lower than the linear regression, and also the training RSS for the cubic regression. Would we expect one to be lower than the other, would we expect them to be the same, or is there not enough information to tell? Justify your answer.
