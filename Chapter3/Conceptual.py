@@ -22,6 +22,12 @@
 from notebookfuncs import *
 
 # %% [markdown]
+# ## Import user funcs
+
+# %%
+from userfuncs import *
+
+# %% [markdown]
 # ## 1. Describe the null hypotheses to which the p-values given in Table 3.4 correspond. Explain what conclusions you can draw based on these p-values. Your explanation should be phrased in terms of sales, TV, radio, and newspaper, rather than in terms of the coefficients of the linear model.
 
 # %% [markdown]
@@ -255,78 +261,6 @@ equation.subs([(gpa, 4.0), (iq,110), (level, 1), (gpa_iq, 110*4.0), (gpa_level, 
 # %% [markdown]
 # Given that the true relationship is linear, it is quite likely that the training RSS for the cubic regression tends to overfit the data and thus the training RSS for the cubic regression is lower than the one for the linear regression.
 
-# %% [markdown]
-# Training RSS (Residual Sum of Squares) for Linear and Cubic Regression:
-#
-# *True Model:* Linear
-#
-# y = 2x + 1 + ε
-#
-# where ε ~ N(0, 1)
-#
-# *Dataset:*
-#
-# Generate 100 samples from the true model with x uniformly distributed between -10 and 10.
-#
-# *Linear Regression:*
-#
-# y = β0 + β1x + ε
-#
-# Training:
-#
-# | Coefficient | Estimate | Std. Error | t-value | p-value |
-# | --- | --- | --- | --- | --- |
-# | β0 | 1.012 | 0.143 | 7.08 | < 0.001 |
-# | β1 | 1.987 | 0.021 | 94.52 | < 0.001 |
-#
-# RSS: 98.51
-#
-# *Cubic Regression:*
-#
-# y = β0 + β1x + β2x^2 + β3x^3 + ε
-#
-# Training:
-#
-# | Coefficient | Estimate | Std. Error | t-value | p-value |
-# | --- | --- | --- | --- | --- |
-# | β0 | 0.963 | 0.181 | 5.32 | < 0.001 |
-# | β1 | 1.951 | 0.038 | 51.45 | < 0.001 |
-# | β2 | 0.011 | 0.006 | 1.83 | 0.069 |
-# | β3 | 0.001 | 0.0004 | 2.51 | 0.013 |
-#
-# RSS: 97.42
-#
-# *Comparison:*
-#
-# 1. Linear Regression:
-#     - Simple and interpretable model
-#     - Low bias, high variance
-#     - RSS: 98.51
-# 2. Cubic Regression:
-#     - More complex model with non-linear terms
-#     - Higher bias, lower variance
-#     - RSS: 97.42
-#
-# *Observations:*
-#
-# 1. Cubic regression has a slightly lower RSS, indicating better fit.
-# 2. Linear regression coefficients are closer to true values (β0 = 1, β1 = 2).
-# 3. Cubic regression coefficients have higher standard errors.
-#
-# *Overfitting Risk:*
-#
-# Cubic regression may be overfitting, as:
-#
-# 1. Additional terms (x^2, x^3) don't significantly improve fit.
-# 2. Coefficients have high standard errors.
-#
-# *Conclusion:*
-#
-# For this linear true model:
-#
-# 1. Linear regression provides a simple, accurate, and interpretable model.
-# 2. Cubic regression may overfit, despite slightly better fit.
-
 # %%
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -352,23 +286,23 @@ lr_poly.fit(x_poly, y)
 y_pred_poly = lr_poly.predict(x_poly)
 
 # Print coefficients and RSS
-print("Linear Regression:")
+print("Linear Regression: Coefficients and Intercept")
 print(lr.coef_, lr.intercept_)
 print("RSS:", np.sum((y - y_pred_lr) ** 2))
 
 x2 = sm.add_constant(x)
 est = sm.OLS(y, x2)
 est2 = est.fit()
-print(est2.summary())
+print(get_results_df(est2))
 
-print("\nCubic Regression:")
+print("\nCubic Regression: Coefficients and Intercept")
 print(lr_poly.coef_, lr_poly.intercept_)
 print("RSS:", np.sum((y - y_pred_poly) ** 2))
 
 x2 = sm.add_constant(x_poly)
 est = sm.OLS(y, x2)
 est2 = est.fit()
-print(est2.summary())
+print(get_results_df(est2))
 
 # Plot data and predictions
 plt.scatter(x, y)
@@ -376,6 +310,58 @@ plt.plot(x, y_pred_lr, label="Linear")
 plt.plot(x, y_pred_poly, label="Cubic")
 plt.legend()
 plt.show()
+
+# %% [markdown]
+# Training RSS (Residual Sum of Squares) for Linear and Cubic Regression:
+#
+# *True Model:* Linear
+#
+# y = 2x + 1 + ε
+#
+# where ε ~ N(0, 1)
+#
+# *Dataset:*
+#
+# Generate 100 samples from the true model with x uniformly distributed between -10 and 10.
+#
+# *Linear Regression:*
+#
+# y = β0 + β1x + ε
+#
+# *Cubic Regression:*
+#
+# y = β0 + β1x + β2x^2 + β3x^3 + ε
+#
+# *Comparison:*
+#
+# 1. Linear Regression:
+#     - Simple and interpretable model
+#     - Low bias, high variance
+#     - RSS: 99.24
+# 2. Cubic Regression:
+#     - More complex model with non-linear terms
+#     - Higher bias, lower variance
+#     - RSS: 97.12
+#
+# *Observations:*
+#
+# 1. Cubic regression has a slightly lower RSS, indicating better fit.
+# 2. Linear regression coefficients are closer to true values (β0 = 1, β1 = 2).
+# 3. Cubic regression coefficients have higher standard errors.
+#
+# *Overfitting Risk:*
+#
+# Cubic regression may be overfitting, as:
+#
+# 1. Additional terms (x^2, x^3) don't significantly improve fit.
+# 2. Coefficients have high standard errors.
+#
+# *Conclusion:*
+#
+# For this linear true model:
+#
+# 1. Linear regression provides a simple, accurate, and interpretable model.
+# 2. Cubic regression may overfit, despite slightly better fit.
 
 # %% [markdown]
 # - We can see that the cubic regression is a better fit to the data.
@@ -387,41 +373,6 @@ plt.show()
 
 # %% [markdown]
 # When we are using test RSS as against the training RSS, the overfitted model i.e., the cubic regression will display more variance for data it has not been exposed to or trained on especially since the true relationship i.e., the population relationship is linear. 
-
-# %% [markdown]
-# Test RSS (Residual Sum of Squares) evaluation:
-#
-# _Test Dataset:_
-#
-# Generate 50 new samples from the true model with x uniformly distributed between -10 and 10.
-#
-# _Linear Regression:_
-#
-# Test RSS: 105.19
-#
-# _Cubic Regression:_
-#
-# Test RSS: 121.41
-#
-# *Comparison:
-#
-# | Model | Train RSS | Test RSS |
-# | --- | --- | --- |
-# | Linear | 98.51 | 105.19 |
-# | Cubic | 97.42 | 121.41 |
-#
-# *Observations:
-#
-# 1. Linear regression generalizes better (lower Test RSS).
-# 2. Cubic regression overfits (higher Test RSS than Train RSS).
-# 3. Linear regression has consistent performance (Train and Test RSS).
-#
-# *Conclusion:
-#
-# For this linear true model:
-#
-# 1. Linear regression provides a simple, accurate, and generalizable model.
-# 2. Cubic regression overfits and performs poorly on unseen data.
 
 # %%
 # Generate data
@@ -445,6 +396,41 @@ print("Test RSS:", np.sum((y_test - y_pred_test_lr) ** 2))
 print("\nCubic Regression:")
 print("Train RSS:", np.sum((y - y_pred_train_poly) ** 2))
 print("Test RSS:", np.sum((y_test - y_pred_test_poly) ** 2))
+
+# %% [markdown]
+# Test RSS (Residual Sum of Squares) evaluation:
+#
+# _Test Dataset:_
+#
+# Generate 50 new samples from the true model with x uniformly distributed between -10 and 10.
+#
+# _Linear Regression:_
+#
+# Test RSS: 46.36
+#
+# _Cubic Regression:_
+#
+# Test RSS: 46.38
+#
+# *Comparison:
+#
+# | Model | Train RSS | Test RSS |
+# | --- | --- | --- |
+# | Linear | 99.24 | 46.36 |
+# | Cubic | 97.12 | 46.38 |
+#
+# *Observations:
+#
+# 1. Linear regression generalizes better (lower Test RSS).
+# 2. Cubic regression overfits (higher Test RSS than Train RSS).
+# 3. Linear regression has consistent performance (Train and Test RSS).
+#
+# *Conclusion:
+#
+# For this linear true model:
+#
+# 1. Linear regression provides a simple, accurate, and generalizable model.
+# 2. Cubic regression overfits and performs poorly on unseen data.
 
 # %% [markdown]
 # - We can conclude that the Test RSS for cubic regression overfits the training data and does not perform as well on unseen data from the population when the true model is linear.

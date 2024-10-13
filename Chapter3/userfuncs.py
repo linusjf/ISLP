@@ -349,5 +349,22 @@ def perform_analysis(response, formula, dataframe):
     print(anova_lm(results))
     return results
 
+# Function to get results of regression in a data frame compactly
+def get_results_df(results):
+    result_df = pd.DataFrame(
+        {
+            "coefficient": results.params,
+            "se": results.bse,
+            "tstatistic": results.tvalues,
+            "p-value": results.pvalues,
+            "r-squared": results.rsquared,
+            "pearson_coefficient": np.sqrt(results.rsquared),
+            "rss": results.ssr,
+            "sd_residuals": np.sqrt(results.mse_resid),
+        }
+    )
+    return result_df
+
+
 
 # %%

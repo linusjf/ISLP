@@ -19,7 +19,13 @@
 # ## Import notebook funcs
 
 # %%
-from notebookfuncfrom notebookfuncs import *s import *
+from notebookfuncs import *
+
+# %% [markdown]
+# ## Import user funcs
+
+# %%
+from userfuncs import *
 
 # %% [markdown]
 # ## In this problem we will investigate the t-statistic for the null hypothesis $H_{0} : \beta = 0$ in simple linear regression without an intercept. To begin, we generate a predictor x and a response y as follows.
@@ -63,25 +69,6 @@ df.head()
 # ## (a) Perform a simple linear regression of y onto x, without an intercept. Report the coefficient estimate $\hat{\beta}$, the standard error of this coefficient estimate, and the t-statistic and p-value associated with the null hypothesis $H_{0} : \beta = 0$. Comment on these results. (You can perform regression without an intercept using the keywords argument intercept=False to ModelSpec().)
 
 # %%
-import statsmodels.formula.api as smf
-
-
-def get_results_df(results):
-    result_df = pd.DataFrame(
-        {
-            "coefficient": results.params,
-            "se": results.bse,
-            "tstatistic": results.tvalues,
-            "p-value": results.pvalues,
-            "r-squared": results.rsquared,
-            "pearson_coefficient": np.sqrt(results.rsquared),
-            "rss": results.ssr,
-            "sd_residuals": np.sqrt(results.mse_resid),
-        }
-    )
-    return result_df
-
-
 formula = "y ~ x + 0"
 model = smf.ols(f"{formula}", df)
 results = model.fit()
@@ -99,7 +86,6 @@ print(f"{results.params/results.bse}")
 
 # %%
 from statsmodels.graphics.regressionplots import plot_fit
-
 plot_fit(results, "x")
 
 # %% [markdown]
