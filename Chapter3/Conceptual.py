@@ -538,7 +538,7 @@ def simulate_regression(y_equation, n_runs = 100,n_samples = 100,test_size = 0.2
   return pd.DataFrame(data=dict, index=[0])
 
 
-n_samples = 100
+n_samples = 1000
 simulate_regression(simple_linear_equation())
 
 
