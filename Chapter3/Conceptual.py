@@ -38,6 +38,7 @@ from sklearn.preprocessing import PolynomialFeatures
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+import pandas as pd
 
 # %% [markdown]
 # ## 1. Describe the null hypotheses to which the p-values given in Table 3.4 correspond. Explain what conclusions you can draw based on these p-values. Your explanation should be phrased in terms of sales, TV, radio, and newspaper, rather than in terms of the coefficients of the linear model.
@@ -447,27 +448,27 @@ print("Test RSS:", np.sum((y_test - y_pred_test_poly) ** 2))
 # ### However, since we cannot see this clearly for a single regression model, let's run a simulation of 100 iterations of the regressions and check our results.
 
 # %%
-def simple_linear_equation(n_samples):
-  def f(x):
+def simple_linear_equation():
+  def f(x, n_samples):
     y = 2*x + 1 + np.random.normal(0, 1, n_samples)
     return y
 
   return f
     
 def simulate_regression(y_equation, n_runs = 100,n_samples = 100,test_size = 0.2,x_range = (-10, 10)):
-   """
-    Simulate regression analysis for a given equation.
+  """
+  Simulate regression analysis for a given equation.
 
-    Parameters:
-    y_equation (function): Equation for y in terms of x.
-    n_runs (int): Number of simulation runs.
-    n_samples (int): Number of samples per run.
-    test_size (float): Proportion of samples for testing.
-    x_range (tuple): Range of x values.
+  Parameters:
+  y_equation (function): Equation for y in terms of x.
+  n_runs (int): Number of simulation runs.
+  n_samples (int): Number of samples per run.
+  test_size (float): Proportion of samples for testing.
+  x_range (tuple): Range of x values.
 
-    Returns:
-    simulation_results (dict): Dictionary containing simulation results.
-    """
+  Returns:
+  simulation_results (pandas dataframe): Dataframe containing simulation results.
+  """
 
   # Initialize arrays to store results
   train_rss_linear = np.zeros(n_runs)
@@ -485,7 +486,7 @@ def simulate_regression(y_equation, n_runs = 100,n_samples = 100,test_size = 0.2
 
   for i in range(n_runs):
     x = np.random.uniform(x_range[0], x_range[1], n_samples)
-    y = y_equation(x)
+    y = y_equation(x, n_samples)
 
     # Split data into training and testing sets
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)
@@ -519,31 +520,34 @@ def simulate_regression(y_equation, n_runs = 100,n_samples = 100,test_size = 0.2
     r2_adj_linear[i] = model_linear.rsquared_adj
     r2_adj_cubic[i] = model_cubic.rsquared_adj
 
-  # Print results
-  print("Mean Train RSS (Linear):", np.mean(train_rss_linear))
-  print("Mean Test RSS (Linear):", np.mean(test_rss_linear))
-  print("Mean Train RSS (Cubic):", np.mean(train_rss_cubic))
-  print("Mean Test RSS (Cubic):", np.mean(test_rss_cubic))
-  print("Mean p-value (Constant Term - Linear):", np.mean(p_value_const))
-  print("Mean p-value (Linear Term):", np.mean(p_value_linear))
-  print("Mean p-value (Constant Term - Cubic):", np.mean(p_value_cubic_const))
-  print("Mean p-value (Linear Term - Cubic):", np.mean(p_value_linear_cubic))
-  print("Mean p-value (Quadratic Term):", np.mean(p_value_quadratic))
-  print("Mean p-value (Cubic Term):", np.mean(p_value_cubic))
-  print("Mean R^2 Adjusted (Linear):", np.mean(r2_adj_linear))
-  print("Mean R^2 Adjusted (Cubic):", np.mean(r2_adj_cubic))
+  # results 
+  dict = {
+  "Mean Train RSS (Linear)": np.mean(train_rss_linear),
+  "Mean Test RSS (Linear)": np.mean(test_rss_linear),
+  "Mean Train RSS (Cubic)": np.mean(train_rss_cubic),
+  "Mean Test RSS (Cubic)": np.mean(test_rss_cubic),
+  "Mean p-value (Constant Term - Linear)": np.mean(p_value_const),
+  "Mean p-value (Linear Term)": np.mean(p_value_linear),
+  "Mean p-value (Constant Term - Cubic)": np.mean(p_value_cubic_const),
+  "Mean p-value (Linear Term - Cubic)": np.mean(p_value_linear_cubic),
+  "Mean p-value (Quadratic Term)": np.mean(p_value_quadratic),
+  "Mean p-value (Cubic Term)": np.mean(p_value_cubic),
+  "Mean R^2 Adjusted (Linear)": np.mean(r2_adj_linear),
+  "Mean R^2 Adjusted (Cubic)": np.mean(r2_adj_cubic)
+  }
+  return pd.DataFrame(data=dict, index=[0])
 
 
 n_samples = 100
-simulate_regression(simple_linear_equation(n_samples))
+simulate_regression(simple_linear_equation())
 
 
 # %% [markdown]
 # ### This still isn't conclusive enough. So we run multiple simulations of different linear models.
 
 # %%
-def linear_equation(n_samples):
-  def f(x):
+def linear_equation():
+  def f(x, n_samples):
     # Generate linear data with different coefficients in each iteration
     coeff_linear = np.random.uniform(1, 5)
     coeff_const = np.random.uniform(-5, 5)
@@ -552,7 +556,7 @@ def linear_equation(n_samples):
 
   return f
 
-simulate_regression(linear_equation(n_samples))
+simulate_regression(linear_equation())
 
 
 # %% [markdown]
@@ -565,8 +569,8 @@ simulate_regression(linear_equation(n_samples))
 # ### For Slightly non-linear equation
 
 # %%
-def slightly_non_linear_equation(n_samples):
-  def f(x):
+def slightly_non_linear_equation():
+  def f(x, n_samples):
     # Generate slightly non-linear data
     coeff_linear = np.random.uniform(1, 5)
     coeff_const = np.random.uniform(-5, 5)
@@ -576,15 +580,15 @@ def slightly_non_linear_equation(n_samples):
 
   return f
 
-simulate_regression(slightly_non_linear_equation(n_samples))
+simulate_regression(slightly_non_linear_equation())
 
 
 # %% [markdown]
 # ### Mostly non-linear equation
 
 # %%
-def mostly_non_linear_equation(n_samples):
-  def f(x):
+def mostly_non_linear_equation():
+  def f(x, n_samples):
     # Generate very non-linear data
     coeff_linear = np.random.uniform(1, 5)
     coeff_const = np.random.uniform(-5, 5)
@@ -595,7 +599,7 @@ def mostly_non_linear_equation(n_samples):
 
   return f
 
-simulate_regression(mostly_non_linear_equation(n_samples))
+simulate_regression(mostly_non_linear_equation())
 
 
 # %% [markdown]
