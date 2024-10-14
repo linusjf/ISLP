@@ -455,6 +455,19 @@ def simple_linear_equation(n_samples):
   return f
     
 def simulate_regression(y_equation, n_runs = 100,n_samples = 100,test_size = 0.2,x_range = (-10, 10)):
+   """
+    Simulate regression analysis for a given equation.
+
+    Parameters:
+    y_equation (function): Equation for y in terms of x.
+    n_runs (int): Number of simulation runs.
+    n_samples (int): Number of samples per run.
+    test_size (float): Proportion of samples for testing.
+    x_range (tuple): Range of x values.
+
+    Returns:
+    simulation_results (dict): Dictionary containing simulation results.
+    """
 
   # Initialize arrays to store results
   train_rss_linear = np.zeros(n_runs)
