@@ -599,6 +599,10 @@ simulate_regression(mostly_non_linear_equation(n_samples))
 
 
 # %% [markdown]
+# - From the above, we can conclude that whether the original true model is slightly non-linear or heavily non-linear, the cubic regression's RSS for both training and test datasets are lower than the linear model's.
+# - Whether the coeffcients of the cubic model's fit are significant or not depends on the form of the original equation and whether that term exists in the true model or whether the cubic regression's terms are able to approximate that fit despite not matching the original equation exactly. Here, the cubic term with power of three is able to approximate the osciallation of the sine transformation of the input variable.
+
+# %% [markdown]
 # ## 5. Consider the fitted values that result from performing linear regression without an intercept. In this setting, the $i_{th}$ fitted value takes the form 
 #
 # $\large \hat{y_i} = x_i * \hat{\beta}$ 
