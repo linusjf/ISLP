@@ -42,7 +42,6 @@ from userfuncs import *
 import numpy as np
 import pandas as pd
 
-
 ## [[https://stats.stackexchange.com/a/382059/270877]]
 def generate_data(mean=0.0, sd=1.0, inverse=False):
     N = 100

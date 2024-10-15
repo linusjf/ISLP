@@ -13,7 +13,7 @@
 # ---
 
 # %% [markdown]
-# # Exercise 14
+# # Exercise 14: This problem focuses on the collinearity problem.
 
 # %% [markdown]
 # ## Import notebook funcs
@@ -25,10 +25,11 @@ from notebookfuncs import *
 # ## Import libraries
 
 # %%
-from sympy import symbols, solve
+from sympy import symbols, poly
 import numpy as np
 import seaborn as sns
 import pandas as pd
+import statsmodels.formula.api as smf
 
 # %% [markdown]
 # ## (a) Perform the following commands in Python:
@@ -43,9 +44,12 @@ import pandas as pd
 # *The last line corresponds to creating a linear model in which $y$ is a function of $x_1$ and $x_2$. Write out the form of the linear model. What are the regression coefficients?*
 
 # %%
-from sympy import symbols
-x1, x2, y = symbols("x1 x2 y")
-equation = 2 + 2 * x1 + 0.3 * x2
+x1, x2, y = symbols("x_1 x_2 y")
+beta_0, beta_1, beta_2 = symbols(r"\beta_0 \beta_1 \beta_2")
+equation =  beta_0 +  beta_1 * x1 + beta_2 * x2
+display(equation)
+equation = equation.subs([(beta_0,2), (beta_1,2),(beta_2, 0.3)])
+equation = poly(equation)
 
 # %%
 rng = np.random.default_rng (10)
@@ -73,13 +77,77 @@ sns.scatterplot(df, x="x1", y="x2");
 # ## (c) Using this data, fit a least squares regression to predict y using $x_1$ and $x_2$. Describe the results obtained. What are $\beta_0$, $\beta_1$ , and $\beta_2$ ? How do these relate to the true $\beta_0$, $\beta_1$ , and $\beta_2$ ? Can you reject the null hypothesis $H_0 : \beta_1 = 0$? How about the null hypothesis $H_0 : \beta_2 = 0$?
 
 # %% [markdown]
+# ### Fit a least squares regression
+
+# %%
+formula = "y ~ x1 + x2"
+model = smf.ols(f"{formula}", df)
+results = model.fit()
+results.summary()
+
+# %% [markdown]
+# ### Describe the results
+
+# %% [markdown]
+# - The regression tests whether the coefficients $\beta_0 \:, \beta_1 \: and \: \beta_2$ are 0. This is the null hypothesis.
+# - From the p-values, we deduce that the intercept and $\beta_1$ are significant and hence we do not accept the null hypothesis for them.
+# - $\beta_2$ , however, is not significant and thus its null hypothesis is accepted.
+# - The adjusted $R^2$ is 0.276 i.e., 27.6% of the variance of the response (y) is explianed by the regressors x1 and x2.
+
+# %% [markdown]
+# ### What are $\beta_0$, $\beta_1$ and $\beta_2$?
+
+# %%
+params = results.params.to_frame().transpose()
+params["Index"] = ["Estimate"]
+params.set_index("Index")
+
+# %% [markdown]
+# ### How do these relate to the true $\beta_0$, $\beta_1$ and $\beta_2$?
+
+# %%
+coeffs = equation.coeffs()
+orig = pd.DataFrame({"Intercept": coeffs[2], "x1": coeffs[0], "x2": coeffs[1]}, index=[0])
+orig["Index"] = ["Original"]
+orig.set_index("Index")
+res = pd.concat([params,orig], axis=0).set_index("Index")
+
+# %% [markdown]
 # ## (d) Now fit a least squares regression to predict y using only $x_1$. Comment on your results. Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
+
+# %%
+formula = "y ~ x1"
+model = smf.ols(f"{formula}", df)
+results = model.fit()
+results.summary()
+
+# %% [markdown]
+# ### Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
+
+# %% [markdown]
+# - Yes, we can reject the null hypothesis $H_0 : \beta_1 = 0$  since the p-value for the coefficient of $x_1$ is significant.
 
 # %% [markdown]
 # ## (e) Now fit a least squares regression to predict y using only $x_2$. Comment on your results. Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
 
+# %%
+formula = "y ~ x2"
+model = smf.ols(f"{formula}", df)
+results = model.fit()
+results.summary()
+
+# %% [markdown]
+# ### Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
+
+# %% [markdown]
+# - Yes, we can reject the null hypothesis $H_0 : \beta_1 = 0$  since the p-value for the coefficient of $x_2$ is significant.
+
 # %% [markdown]
 # ## (f) Do the results obtained in (c)–(e) contradict each other? Explain your answer.
+
+# %% [markdown]
+# - No, the results do not contradict each other since the two variables are collinear and contain the same information. 
+# - Thus, they can be interchanged for each other without much loss of information in the regression model.
 
 # %% [markdown]
 # ## (g) Suppose we obtain one additional observation, which was unfortunately mismeasured. We use the function np.concatenate() to add this additional observation to each of $x_1, x_2 \: and \: y$.
