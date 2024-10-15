@@ -22,6 +22,15 @@
 from notebookfuncs import *
 
 # %% [markdown]
+# ## Import libraries
+
+# %%
+from sympy import symbols, solve
+import numpy as np
+import seaborn as sns
+import pandas as pd
+
+# %% [markdown]
 # ## (a) Perform the following commands in Python:
 
 # %% [markdown]
@@ -33,8 +42,32 @@ from notebookfuncs import *
 # ```
 # *The last line corresponds to creating a linear model in which $y$ is a function of $x_1$ and $x_2$. Write out the form of the linear model. What are the regression coefficients?*
 
+# %%
+from sympy import symbols
+x1, x2, y = symbols("x1 x2 y")
+equation = 2 + 2 * x1 + 0.3 * x2
+
+# %%
+rng = np.random.default_rng (10)
+x1 = rng.uniform (0, 1, size =100)
+x2 = 0.5 * x1 + rng.normal(size =100) / 10
+y = 2 + 2 * x1 + 0.3 * x2 + rng.normal(size =100);
+
 # %% [markdown]
 # ## (b) What is the correlation between $x_1$ and $x_2$? Create a scatterplot displaying the relationship between the variables.
+
+# %% [markdown]
+# #### Correlation between x1 and x2
+
+# %%
+np.corrcoef(x1,x2)[0][1]
+
+# %% [markdown]
+# #### Display scatterplot of x1 against x2
+
+# %%
+df = pd.DataFrame({"x1": x1,"x2": x2, "y": y})
+sns.scatterplot(df, x="x1", y="x2");
 
 # %% [markdown]
 # ## (c) Using this data, fit a least squares regression to predict y using $x_1$ and $x_2$. Describe the results obtained. What are $\beta_0$, $\beta_1$ , and $\beta_2$ ? How do these relate to the true $\beta_0$, $\beta_1$ , and $\beta_2$ ? Can you reject the null hypothesis $H_0 : \beta_1 = 0$? How about the null hypothesis $H_0 : \beta_2 = 0$?
