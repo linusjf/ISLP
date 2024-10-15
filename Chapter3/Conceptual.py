@@ -624,10 +624,20 @@ simulate_regression(mostly_non_linear_equation())
 # ### Note: We interpret this result by saying that the fitted values from linear regression are linear combinations of the response values.
 
 # %% [markdown]
+# ![](Exercise5.jpg)
+
+# %% [markdown]
 # ## 6. Using (3.4), argue that in the case of simple linear regression, the least squares line always passes through the point $(\bar{x}, \bar{y})$.
 
 # %% [markdown]
+# ![](Exercise6.jpg)
+
+# %% [markdown]
 # ## 7. It is claimed in the text that in the case of simple linear regression of Y onto X, the $R^2$ statistic (3.17) is equal to the square of the correlation between X and Y (3.18). Prove that this is the case. For simplicity, you may assume that $\bar{x} = \bar{y} = 0$.
+
+# %% [markdown]
+# ![](Exercise7a.jpg)
+# ![](Exercise7b.jpg)
 
 # %%
 allDone();
