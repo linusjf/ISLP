@@ -66,12 +66,18 @@ y = 2 + 2 * x1 + 0.3 * x2 + rng.normal(size =100);
 # %%
 np.corrcoef(x1,x2)[0][1]
 
+
 # %% [markdown]
 # #### Display scatterplot of x1 against x2
 
 # %%
-df = pd.DataFrame({"x1": x1,"x2": x2, "y": y})
+def construct_df(x1, x2,y):
+  df = pd.DataFrame({"x1": x1,"x2": x2, "y": y})
+  return df
+
+df = construct_df(x1,x2,y)
 sns.scatterplot(df, x="x1", y="x2");
+
 
 # %% [markdown]
 # ## (c) Using this data, fit a least squares regression to predict y using $x_1$ and $x_2$. Describe the results obtained. What are $\beta_0$, $\beta_1$ , and $\beta_2$ ? How do these relate to the true $\beta_0$, $\beta_1$ , and $\beta_2$ ? Can you reject the null hypothesis $H_0 : \beta_1 = 0$? How about the null hypothesis $H_0 : \beta_2 = 0$?
@@ -80,10 +86,15 @@ sns.scatterplot(df, x="x1", y="x2");
 # ### Fit a least squares regression
 
 # %%
-formula = "y ~ x1 + x2"
-model = smf.ols(f"{formula}", df)
-results = model.fit()
-results.summary()
+# Fit combined regression
+def fit_combined(df):
+  formula = "y ~ x1 + x2"
+  model = smf.ols(f"{formula}", df)
+  results = model.fit()
+  print(results.summary())
+  return results
+
+results = fit_combined(df);
 
 # %% [markdown]
 # ### Describe the results
@@ -112,14 +123,20 @@ orig["Index"] = ["Original"]
 orig.set_index("Index")
 res = pd.concat([params,orig], axis=0).set_index("Index")
 
+
 # %% [markdown]
 # ## (d) Now fit a least squares regression to predict y using only $x_1$. Comment on your results. Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
 
 # %%
-formula = "y ~ x1"
-model = smf.ols(f"{formula}", df)
-results = model.fit()
-results.summary()
+def fit_x1(df):
+  formula = "y ~ x1"
+  model = smf.ols(f"{formula}", df)
+  results = model.fit()
+  print(results.summary())
+  return results
+
+results = fit_x1(df);
+
 
 # %% [markdown]
 # ### Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
@@ -131,10 +148,14 @@ results.summary()
 # ## (e) Now fit a least squares regression to predict y using only $x_2$. Comment on your results. Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
 
 # %%
-formula = "y ~ x2"
-model = smf.ols(f"{formula}", df)
-results = model.fit()
-results.summary()
+def fit_x2(df):
+  formula = "y ~ x2"
+  model = smf.ols(f"{formula}", df)
+  results = model.fit()
+  print(results.summary())
+  return results
+
+results = fit_x2(df);
 
 # %% [markdown]
 # ### Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
@@ -158,6 +179,24 @@ results.summary()
 # ```
 # Re-fit the linear models from (c) to (e) using this new data. What effect does this new observation have on the each of the models? In each model, is this observation an outlier? A high-leverage point? Both? Explain your answers.
 #
+
+# %% [markdown]
+# ### Add an additional observation
+
+# %%
+x1 = np.concatenate ([x1 , [0.1]])
+x2 = np.concatenate ([x2 , [0.8]])
+y = np.concatenate ([y, [6]]);
+
+# %%
+x1[-1], x2[-1], y[-1]
+
+# %%
+df = construct_df(x1,x2,y)
+df.tail(1)
+
+# %%
+results = fit_combined(df);
 
 # %%
 allDone();
