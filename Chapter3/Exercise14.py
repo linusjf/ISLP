@@ -201,6 +201,9 @@ x1[-1], x2[-1], y[-1]
 df = construct_df(x1,x2,y)
 df.tail(1)
 
+# %% [markdown]
+# ### Combined regression
+
 # %%
 results = fit_combined(df);
 
@@ -211,6 +214,36 @@ results = fit_combined(df);
 
 # %% [markdown]
 # ### Residuals, outliers, leverage and influence
+
+# %%
+display_cooks_distance_plot(results);
+
+# %%
+display_hat_leverage_plot(results)
+
+# %%
+get_influence_points(results)
+
+# %% [markdown]
+# ### Regress on x1
+
+# %%
+results = fit_x1(df);
+
+# %%
+display_cooks_distance_plot(results);
+
+# %%
+display_hat_leverage_plot(results)
+
+# %%
+get_influence_points(results)
+
+# %% [markdown]
+# ### Regress on x2
+
+# %%
+results = fit_x2(df);
 
 # %%
 display_cooks_distance_plot(results);
