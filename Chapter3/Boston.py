@@ -13,10 +13,22 @@
 # ---
 
 # %% [markdown]
-# # 15. This problem involves the Boston data set, which we saw in the lab for this chapter. We will now try to predict per capita crime rate using the other variables in this data set. In other words, per capita crime rate is the response, and the other variables are the predictors.
+# # Exercise 15: This problem involves the Boston data set, which we saw in the lab for this chapter. 
 
 # %% [markdown]
-# ## (a) For the response. Describe your results. In which of the models iseach predictor, fit a simple linear regression model to predict there a statistically significant association between the predictor and the response? Create some plots to back up your assertions.
+# ## Import notebook funcs
+
+# %%
+from notebookfuncs import *
+
+# %% [markdown]
+# ## We will now try to predict per capita crime rate using the other variables in this data set. 
+
+# %% [markdown]
+# ## In other words, per capita crime rate is the response, and the other variables are the predictors.
+
+# %% [markdown]
+# ## (a) For the response. Describe your results. In which of the models is there a statistically significant association between the predictor and the response? Create some plots to back up your assertions.
 
 # %% [markdown]
 # ## (b) Fit a multiple regression model to predict the response using all of the predictors. Describe your results. For which predictors can we reject the null hypothesis H0 : βj = 0?
@@ -28,3 +40,4 @@
 # ## (d) Is there evidence of non-linear association between any of the predictors and the response? To answer this question, for each predictor X, fit a model of the form Y = β0 + β1 X + β2 X <sup>2</sup> + β3 X <sup>3</sup> + $\epsilon$
 
 # %%
+allDone();
