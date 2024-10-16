@@ -48,7 +48,7 @@ def display_studentized_residuals(results):
     """
     _, ax = subplots(figsize=(8, 8))
     ax.scatter(results.fittedvalues, results.resid_pearson)
-    ax.set_xlabel("Fitted values for mpg")
+    ax.set_xlabel("Fitted values for " + results.model.endog_names)
     ax.set_ylabel("Standardized residuals")
     ax.axhline(0, c="k", ls="--")
     outliers_indexes = np.where(
@@ -236,7 +236,7 @@ def display_cooks_distance_plot(results):
     :return matplotlib.figure.Figurehttps://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure
     [[https://matplotlib.org/stable/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure]]
     """
-    fig = influence_plot(results)
+    fig = influence_plot(results);
     return fig
 
 

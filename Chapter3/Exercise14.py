@@ -22,6 +22,12 @@
 from notebookfuncs import *
 
 # %% [markdown]
+# ## Import user funcs
+
+# %%
+from userfuncs import *
+
+# %% [markdown]
 # ## Import libraries
 
 # %%
@@ -177,7 +183,7 @@ results = fit_x2(df);
 # x2 = np.concatenate ([x2 , [0.8]])
 # y = np.concatenate ([y, [6]])
 # ```
-# Re-fit the linear models from (c) to (e) using this new data. What effect does this new observation have on the each of the models? In each model, is this observation an outlier? A high-leverage point? Both? Explain your answers.
+# ## Re-fit the linear models from (c) to (e) using this new data. What effect does this new observation have on the each of the models? In each model, is this observation an outlier? A high-leverage point? Both? Explain your answers.
 #
 
 # %% [markdown]
@@ -197,6 +203,23 @@ df.tail(1)
 
 # %%
 results = fit_combined(df);
+
+# %% [markdown]
+# - Here, we see the effect of the additional mismeasured data point.
+# - The effect on the combined regression is to switch the significance of the regressors x1 and x2.
+# - Now, the coefficient of x1 is not statistically significant with a p-value of 0.07. 
+
+# %% [markdown]
+# ### Residuals, outliers, leverage and influence
+
+# %%
+display_cooks_distance_plot(results);
+
+# %%
+display_hat_leverage_plot(results)
+
+# %%
+get_influence_points(results)
 
 # %%
 allDone();
