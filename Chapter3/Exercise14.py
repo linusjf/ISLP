@@ -129,6 +129,12 @@ orig["Index"] = ["Original"]
 orig.set_index("Index")
 res = pd.concat([params,orig], axis=0).set_index("Index")
 
+# %% [markdown]
+# ### Influential points
+
+# %%
+get_influence_points(results)
+
 
 # %% [markdown]
 # ## (d) Now fit a least squares regression to predict y using only $x_1$. Comment on your results. Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
@@ -143,12 +149,18 @@ def fit_x1(df):
 
 results = fit_x1(df);
 
-
 # %% [markdown]
 # ### Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
 
 # %% [markdown]
 # - Yes, we can reject the null hypothesis $H_0 : \beta_1 = 0$  since the p-value for the coefficient of $x_1$ is significant.
+
+# %% [markdown]
+# ### Influential points
+
+# %%
+get_influence_points(results)
+
 
 # %% [markdown]
 # ## (e) Now fit a least squares regression to predict y using only $x_2$. Comment on your results. Can you reject the null hypothesis $H_0 : \beta_1 = 0$?
@@ -168,6 +180,12 @@ results = fit_x2(df);
 
 # %% [markdown]
 # - Yes, we can reject the null hypothesis $H_0 : \beta_1 = 0$  since the p-value for the coefficient of $x_2$ is significant.
+
+# %% [markdown]
+# ### Influential points
+
+# %%
+get_influence_points(results)
 
 # %% [markdown]
 # ## (f) Do the results obtained in (c)–(e) contradict each other? Explain your answer.
@@ -225,6 +243,10 @@ display_hat_leverage_plot(results)
 get_influence_points(results)
 
 # %% [markdown]
+# - From the above, we can see that there are two influential datapoints, 99 ans 100.
+# - This is initially surprising until we compute the influential points without the freshly added mismeasured data point and discover that point 99 was influential in the earlier regression.
+
+# %% [markdown]
 # ### Regress on x1
 
 # %%
@@ -240,6 +262,9 @@ display_hat_leverage_plot(results)
 get_influence_points(results)
 
 # %% [markdown]
+# - Similarly, in the regression of y on x1 only, we find points 99 and 100 to be influential.
+
+# %% [markdown]
 # ### Regress on x2
 
 # %%
@@ -253,6 +278,9 @@ display_hat_leverage_plot(results)
 
 # %%
 get_influence_points(results)
+
+# %% [markdown]
+# - In the regression of y on x2, no data point is influential since neither the studentized residuals or their associated p-values cross the thresholds for these parameters. 
 
 # %%
 allDone();
