@@ -33,6 +33,7 @@ from userfuncs import *
 # %%
 from ISLP import load_data
 from summarytools import dfSummary
+import seaborn as sns
 
 # %%
 Boston = load_data("Boston")
@@ -59,24 +60,42 @@ def regress_for_each_predictor(data=None,response=None):
     formula = f"{response} ~ {col}"
     model = smf.ols(formula, data=data)
     results = model.fit()
-    results_df = get_results_df(results)
-    results_df = results_df[results_df.index != "Intercept"]
+    results_df = pd.DataFrame({"Regressor": col,
+                              "Coefficient": results.params.iloc[1],
+                              "P-value": results.pvalues.iloc[1],
+                             "R-Squared": results.rsquared}, index=[0])
     rows = pd.concat([rows,results_df])
 
+  rows.set_index(["Regressor"],inplace=True)
+  rows.sort_values("R-Squared", inplace=True, ascending=False)
   return rows
 
-
-regress_for_each_predictor(data=Boston,response="crim")
+regressors = regress_for_each_predictor(data=Boston,response="crim")
 
 # %% [markdown]
 # ### Describe your results.
+
+# %%
+regressors[regressors["P-value"] > 0.05]
+
+# %% [markdown]
+# - From the above, we see that $chas$ (Charles River dummy variable whether tract bounds river or not) is the only regressor that is not statistically significant in the simple linear regressions of each variable for $crim$.
 
 # %% [markdown]
 #
 # ### In which of the models is there a statistically significant association between the predictor and the response?
 
 # %% [markdown]
+# - All of the variables except $chas$ are statistically significant in a regression for $crim$.
+
+# %% [markdown]
 # ### Create some plots to back up your assertions.
+
+# %%
+col_names = list(Boston.columns.values)
+col_names.remove("crim")
+sns.set_theme(rc={'figure.figsize':(11.7,8.27)})
+sns.pairplot(Boston, x_vars=col_names,y_vars="crim");
 
 # %% [markdown]
 # ## (b) Fit a multiple regression model to predict the response using all of the predictors.
