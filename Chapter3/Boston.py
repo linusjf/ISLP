@@ -94,20 +94,48 @@ regressors[regressors["P-value"] > 0.05]
 # %%
 col_names = list(Boston.columns.values)
 col_names.remove("crim")
-sns.set_theme(rc={'figure.figsize':(11.7,8.27)})
 sns.pairplot(Boston, x_vars=col_names,y_vars="crim");
+
 
 # %% [markdown]
 # ## (b) Fit a multiple regression model to predict the response using all of the predictors.
 
+# %%
+def regress_on_all_predictors(data=None,response=None):
+  if (data is None or response is None):
+    return None
+  columns = list(Boston.columns.values)
+  columns.remove(response)
+  formula = response + " ~ " + " + ".join(columns)
+  model = smf.ols(formula, data=data)
+  results = model.fit()
+  results_df = pd.DataFrame({"Regressor": columns,
+                              "Coefficient": results.params[1:],
+                              "P-value": results.pvalues[1:],
+                             "R-Squared": results.rsquared})
+  results_df.set_index(["Regressor"],inplace=True)
+  return results_df
+
+all_regressors = regress_on_all_predictors(data=Boston, response="crim")
+
 # %% [markdown]
 # ## Describe your results.
+
+# %%
+all_regressors[all_regressors["P-value"] > 0.05]
 
 # %% [markdown]
 # ## For which predictors can we reject the null hypothesis $H_0 : \beta_j = 0$?
 
+# %%
+all_regressors[all_regressors["P-value"] < 0.05]
+
 # %% [markdown]
 # ## (c) How do your results from (a) compare to your results from (b)?
+
+# %% [markdown]
+# - In the multilinear regression model over all regressors, we discover that only $zn$, $dis$, $rad$ and $medv$ are statistically significant and the rest aren't.
+# - This implies that there is multicollinearity in the data.
 
 # %% [markdown]
 # ### Create a plot displaying the univariate regression coefficients from (a) on the x-axis, and the multiple regression coefficients from (b) on the y-axis. That is, each predictor is displayed as a single point in the plot. Its coefficient in a simple linear regression model is shown on the x-axis, and its coefficient estimate in the multiple linear regression model is shown on the y-axis.
