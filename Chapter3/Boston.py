@@ -38,6 +38,7 @@ from summarytools import dfSummary
 Boston = load_data("Boston")
 dfSummary(Boston)
 
+
 # %% [markdown]
 # ## We will now try to predict per capita crime rate using the other variables in this data set.
 
@@ -48,6 +49,24 @@ dfSummary(Boston)
 # ## (a) For each predictor, fit a simple linear regression model to predict the response.
 
 # %%
+def regress_for_each_predictor(data=None,response=None):
+  if (data is None or response is None):
+    return None
+  col_names = list(data.columns.values)
+  col_names.remove(response)
+  rows = None
+  for col in col_names:
+    formula = f"{response} ~ {col}"
+    model = smf.ols(formula, data=data)
+    results = model.fit()
+    results_df = get_results_df(results)
+    results_df = results_df[results_df.index != "Intercept"]
+    rows = pd.concat([rows,results_df])
+
+  return rows
+
+
+regress_for_each_predictor(data=Boston,response="crim")
 
 # %% [markdown]
 # ### Describe your results.
