@@ -140,6 +140,17 @@ all_regressors[all_regressors["P-value"] < 0.05]
 # %% [markdown]
 # ### Create a plot displaying the univariate regression coefficients from (a) on the x-axis, and the multiple regression coefficients from (b) on the y-axis. That is, each predictor is displayed as a single point in the plot. Its coefficient in a simple linear regression model is shown on the x-axis, and its coefficient estimate in the multiple linear regression model is shown on the y-axis.
 
+# %%
+# merge the two dataframes
+combined = regressors.merge(all_regressors, left_index=True, right_index=True, suffixes=["_simple", "_all"])
+# select only the needed columns
+combined = combined[["Coefficient_simple", "Coefficient_all"]]
+
+# %%
+import plotly.express as px
+fig = px.scatter(combined, x="Coefficient_simple", y="Coefficient_all",color=combined.index)
+fig.show()
+
 # %% [markdown]
 # ## (d) Is there evidence of non-linear association between any of the predictors and the response?
 
