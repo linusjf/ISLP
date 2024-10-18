@@ -55,7 +55,7 @@ def regress_for_each_predictor(data=None,response=None):
     return None
   col_names = list(data.columns.values)
   col_names.remove(response)
-  rows = None
+  rows = []
   for col in col_names:
     formula = f"{response} ~ {col}"
     model = smf.ols(formula, data=data)
@@ -64,8 +64,9 @@ def regress_for_each_predictor(data=None,response=None):
                               "Coefficient": results.params.iloc[1],
                               "P-value": results.pvalues.iloc[1],
                              "R-Squared": results.rsquared}, index=[0])
-    rows = pd.concat([rows,results_df])
+    rows.append(results_df)
 
+  rows = pd.concat(rows)
   rows.set_index(["Regressor"],inplace=True)
   rows.sort_values("R-Squared", inplace=True, ascending=False)
   return rows
@@ -151,11 +152,41 @@ import plotly.express as px
 fig = px.scatter(combined, x="Coefficient_simple", y="Coefficient_all",color=combined.index)
 fig.show()
 
+
 # %% [markdown]
 # ## (d) Is there evidence of non-linear association between any of the predictors and the response?
 
 # %% [markdown]
 # ### To answer this question, for each predictor X, fit a model of the form $Y = \beta_0 + \beta_1 * X + \beta_2 * X^2 + \beta_3 * X^3 + \epsilon$
+
+# %%
+def regress_non_linear_for_each_predictor(data=None,response=None):
+  if (data is None or response is None):
+    return None
+  col_names = list(data.columns.values)
+  col_names.remove(response)
+  rows = []
+  keys = []
+  for col in col_names:
+    formula = f"{response} ~ {col} + I({col} ** 2) + I({col} ** 3)"
+    model = smf.ols(formula, data=data)
+    results = model.fit()
+    results_df = pd.DataFrame({"Coefficient": results.params.iloc[1:],
+                              "P-value": results.pvalues.iloc[1:],
+                             "R-Squared": results.rsquared})
+    rows.append(results_df)
+    keys.append(col)
+
+  rows = pd.concat(rows,keys=keys)
+  return rows
+
+nonlinears = regress_non_linear_for_each_predictor(data=Boston,response="crim")
+
+# %%
+nonlinears[nonlinears["P-value"] <= 0.05].filter(like="I(", axis=0)
+
+# %% [markdown]
+# - Thus, we can see that regressors $indus$, $nox$, $age$, $dis$, $ptratio$ and $medv$ are non-linear after fitting a cubic regression for each of these individually.
 
 # %%
 allDone();
