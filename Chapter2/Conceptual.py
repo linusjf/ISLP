@@ -36,13 +36,30 @@ def allDone():
 # ### (a) The sample size n is extremely large, and the number of predictors p is small.
 
 # %% [markdown]
+# - Flexible models, in general, perform better with more data and a smaller number of parameters to data point count.
+# - A flexible model fits the data better in the training data.
+# - Whether the flexible model performs better on test data depends on the true relationship underlying the data.
+# - If the true relationship is linear, then the flexible model will not perform as well on test data as the variance will tend to increase given that these are unseen observations not used to train the model.
+# - Generally, the flexible model will be better.
+
+# %% [markdown]
 # ### (b) The number of predictors p is extremely large, and the number of observations n is small.
+
+# %% [markdown]
+# - The inflexible model will perform better when the number of predictors are extremely large and the number of observations are few in number.
+# - The inflexible model will tend to overfit the data.
+# - This can be mitigated by use of well-designed syntehtic data but that's a topic yet to be covered or learnt.
 
 # %% [markdown]
 # ### (c) The relationship between the predictors and response is highly non-linear.
 
 # %% [markdown]
+# - A flexible model will be better since flexible models are better at capturing non-linearities in the data.
+
+# %% [markdown]
 # ### (d) The variance of the error terms, i.e.. $\sigma^2 = Var(\epsilon)$, is extremely high.
+
+# %%
 
 # %% [markdown]
 # ## 2. Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or prediction. Finally, provide n and p.
