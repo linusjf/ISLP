@@ -99,6 +99,9 @@ def allDone():
 # ### (a) Provide a sketch of typical (squared) bias, variance, training error, test error, and Bayes (or irreducible) error curves, on a single plot, as we go from less flexible statistical learning methods towards more flexible approaches. The x-axis should represent the amount of flexibility in the method, and the y-axis should represent the values for each curve. There should be five curves. Make sure to label each one.
 
 # %% [markdown]
+# ![Bias Variance Decomposition](Conceptual.jpg)
+
+# %% [markdown]
 # ### (b) Explain why each of the five curves has the shape displayed in part (a).
 
 # %% [markdown]
@@ -115,6 +118,20 @@ def allDone():
 
 # %% [markdown]
 # ## 5. What are the advantages and disadvantages of a very flexible (versus a less flexible) approach for regression or classification? Under what circumstances might a more flexible approach be preferred to a less flexible approach? When might a less flexible approach be preferred?
+
+# %% [markdown]
+# - Flexible approaches to regression or classification are able to capture non-linearities in the data better than a non-flexible (or linear approach).
+# - They are able to generalise better to unseen data when the true models are not linear in nature.
+# - One of their disadvantages is that they're hungry for data and have a lot more parameters than a simpler, linear approach.
+# - Linear approaches work better when the modelers have an idea of the domain and are thus able to generate parsimonious models which are usually good enough for their purposes.
+# - Interpretability is also simpler with less flexible models.
+# - It is difficult to understand a more flexible model.
+#
+# A more flexible approach is preferred when the model is known to be complex and cannot be easily captured by a less flexible model.
+#
+# A less flexible approach is preferred when the modelers seek interpretability, simplicity, speed, eficiency and have domain knowledge and expertise. Addtionally, when data quality is poor, a simpler model may function better than a more flexible model that may not learn as well and which adapts to the noise in the data.
+#
+# References: 1> <https://www.baeldung.com/cs/ml-flexible-and-inflexible-models>
 
 # %% [markdown]
 # ## 6. Describe the differences between a parametric and a non-parametric statistical learning approach. What are the advantages of a parametric approach to regression or classification (as opposed to a non-parametric approach)? What are its disadvantages?
