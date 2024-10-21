@@ -98,9 +98,6 @@ def allDone():
 # %% [markdown]
 # ### (a) Provide a sketch of typical (squared) bias, variance, training error, test error, and Bayes (or irreducible) error curves, on a single plot, as we go from less flexible statistical learning methods towards more flexible approaches. The x-axis should represent the amount of flexibility in the method, and the y-axis should represent the values for each curve. There should be five curves. Make sure to label each one.
 
-# %% [markdown]
-# ![Bias Variance Decomposition](Conceptual.jpg)
-
 # %%
 def draw_bias_variance_plot():
 
@@ -122,6 +119,40 @@ def draw_bias_variance_plot():
   xnew,ynew = interpolate.splev( np.linspace( 0, 1, 100 ), tck,der = 0)
 
   plt.plot( xnew ,ynew, 'Orange', label="Test MSE" )
+
+  # Draw Training  Error curve
+  nodes = np.array( [ [0, 125], [35, 75], [90, 25] ])
+  x = nodes[:,0]
+  y = nodes[:,1]
+
+  tck,u     = interpolate.splprep( [x,y] ,s = 0 , k=2)
+  xnew,ynew = interpolate.splev( np.linspace( 0, 1, 100 ), tck,der = 0)
+
+  plt.plot( xnew ,ynew, 'Green', label="Training Error" )
+
+
+  # Draw bias-squared
+  nodes = np.array( [ [0, 80], [70, 5], [90, 5] ] )
+
+  x = nodes[:,0]
+  y = nodes[:,1]
+
+  tck,u     = interpolate.splprep( [x,y] ,s = 0 , k=2)
+  xnew,ynew = interpolate.splev( np.linspace( 0, 1, 100 ), tck,der = 0)
+
+  plt.plot( xnew ,ynew, 'Red', label=r"$Bias^2$" )
+
+  # Draw Variance
+  nodes = np.array( [ [3, 5], [70, 25], [90, 80] ] )
+
+  x = nodes[:,0]
+  y = nodes[:,1]
+
+  tck,u     = interpolate.splprep( [x,y] ,s = 0 , k=2)
+  xnew,ynew = interpolate.splev( np.linspace( 0, 1, 100 ), tck,der = 0)
+
+  plt.plot( xnew ,ynew, 'Blue', label="Variance" )
+
 
   ax = plt.gca()
 
