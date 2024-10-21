@@ -276,19 +276,47 @@ draw_bias_variance_plot();
 # | 6 | 1 | 1 | 1 | Green |
 
 # %% [markdown]
-# ### Suppose we wish to use this data set to make a prediction for Y when $X_1 = X_2 = X-3 = 0$ using K-nearest neighbors.
+# ### Suppose we wish to use this data set to make a prediction for Y when $X_1 = X_2 = X_3 = 0$ using K-nearest neighbors.
 
 # %% [markdown]
 # #### (a) Compute the Euclidean distance between each observation and the test point, $X_1 = X_2 = X_3 = 0$.
 
+# %%
+import numpy as np
+from scipy.spatial import distance
+
+X = np.array([[0,3,0], [2,0,0], [0,1,3], [0,1,2], [-1, 0,1],[1,1,1]], np.int32)
+Y = np.transpose(np.array(["Red", "Red", "Red", "Green", "Green", "Green"]))
+X0 = np.array([0,0,0])
+euclidean_distances = [distance.euclidean(X0, point) for point in X]
+print(euclidean_distances)
+
 # %% [markdown]
 # #### (b) What is our prediction with K = 1? Why?
+
+# %%
+index = np.argmin(euclidean_distances)
+print(Y[index])
 
 # %% [markdown]
 # #### (c) What is our prediction with K = 3? Why?
 
+# %%
+k = 3
+idx = np.argpartition(euclidean_distances,k)
+print(Y[idx[: k]])
+
+# %% [markdown]
+# - With k = 3, our prediction will be the majority of the three closest neighbours of the point (0,0,0)
+# - In this case, it's Green, 2 out of 3.
+
 # %% [markdown]
 # #### (d) If the Bayes decision boundary in this problem is highly non-linear, then would we expect the best value for K to be large or small? Why?
+
+# %% [markdown]
+# - If the Bayes decision boundary is highly non-linear, we expect k to be small and best fit the decision boundary. That's because a small k would make the fit more flexible and would be drawn to the data boundaries better than a larger k which would smmoothen the data and probably have a more linear fit.
+# - The choice of k is crucial while using this method given that the Test Error is U-shaped and there has to be a balance struck in the Bias-Variance tradeoff.
+# - The choice of k = 1 minimizes the training error rate at the risk of overfitting to the seen data which will have high variance when exposed to unseen data.
 
 # %%
 allDone();
