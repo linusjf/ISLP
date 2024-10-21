@@ -226,6 +226,13 @@ draw_bias_variance_plot();
 # ### (c) Describe three real-life applications in which cluster analysis might be useful.
 
 # %% [markdown]
+# 1. Industrial clustering analysis benefits from using a cluster analysis to identify agglomeration in a region or nation.
+# <https://www.nature.com/articles/s41598-023-27655-8>
+# 2. Identification of residential building topologies <https://www.sciencedirect.com/science/article/pii/S2352710224004807>
+# 3. Cluster analysis to segregate cricketers into categories or types based on their performance data to enhance the selection process of players during the IPL auction.
+# <https://towardsdatascience.com/machine-learning-to-cluster-cricket-players-1d53beeb69b4>
+
+# %% [markdown]
 # ## 5. What are the advantages and disadvantages of a very flexible (versus a less flexible) approach for regression or classification? Under what circumstances might a more flexible approach be preferred to a less flexible approach? When might a less flexible approach be preferred?
 
 # %% [markdown]
@@ -244,6 +251,17 @@ draw_bias_variance_plot();
 
 # %% [markdown]
 # ## 6. Describe the differences between a parametric and a non-parametric statistical learning approach. What are the advantages of a parametric approach to regression or classification (as opposed to a non-parametric approach)? What are its disadvantages?
+
+# %% [markdown]
+# - A parametric approach involves a two-step model-based approach.
+# 1. We make an assumption about the functional form or shape of f. For example, we could assume that f is linear with p + 1 coefficients, $beta_0. \beta_1,...\beta_p$. Then , we only have to estimate the p + 1 coeffcients of the function.
+# 2. After we select the model, we need to choose a training method that fits the data. One of the possible ways to fit a linear model is Ordinary Least Squares (OLS).
+#
+# - The parametric approach is simpler since we just have to estimate the p + 1 parameters in the above example.
+# - The disadvantage with a parametric approach is if it doesn't actually match the true, unknown f.
+# - Then, we have to opt for more flexible methods which involve a lot more parameters These models are more complex and could lead to overfitting the data i.e., they tend to adapt to the noise in the data.
+# - A non-parametric approach, on the other hand, does not make any assumptions about the functional form of f. Instead they seek an estimate of f that gets close to the data points wihout being too rough or wiggly. They can accurately fit many possible shapes of f.
+# - But since non-parametric models need more parameters, they will also require more data observations.
 
 # %% [markdown]
 # ## 7. The table below provides a training data set containing six observations, three predictors, and one qualitative response variable.
