@@ -101,6 +101,53 @@ def allDone():
 # %% [markdown]
 # ![Bias Variance Decomposition](Conceptual.jpg)
 
+# %%
+def draw_bias_variance_plot():
+
+  import numpy as np
+  from matplotlib import pyplot as plt
+  from scipy import interpolate
+
+  # Set the figure size
+  plt.rcParams["figure.figsize"] = [15.00, 10]
+  plt.rcParams["figure.autolayout"] = True
+
+  # Drae Test MSE curve
+  nodes = np.array( [ [0, 135], [45, 90], [90, 135] ] )
+
+  x = nodes[:,0]
+  y = nodes[:,1]
+
+  tck,u     = interpolate.splprep( [x,y] ,s = 0 , k=2)
+  xnew,ynew = interpolate.splev( np.linspace( 0, 1, 100 ), tck,der = 0)
+
+  plt.plot( xnew ,ynew, 'Orange', label="Test MSE" )
+
+  ax = plt.gca()
+
+  # Hide X and Y axes label marks
+  ax.xaxis.set_tick_params(labelbottom=False)
+  ax.yaxis.set_tick_params(labelleft=False)
+
+  # Hide X and Y axes tick marks
+  ax.set_xticks([])
+  ax.set_yticks([])
+
+  # set x and y limits
+  ax.set_xlim(0, 100)
+  ax.set_ylim(0,150)
+
+  plt.xlabel("Model Flexibility")
+  plt.ylabel("MSE")
+
+  # Draw irreducible error
+  ax.axhline(75, linestyle='--', label="Irreducible error")
+
+  plt.legend()
+  plt.show();
+
+draw_bias_variance_plot();
+
 # %% [markdown]
 # ### (b) Explain why each of the five curves has the shape displayed in part (a).
 
