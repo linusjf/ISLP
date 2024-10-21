@@ -183,6 +183,30 @@ draw_bias_variance_plot();
 # ### (b) Explain why each of the five curves has the shape displayed in part (a).
 
 # %% [markdown]
+# #### Test MSE
+# The Test MSE is U-shaped. As the model flexibility increases, the test MSE decreases initially before increasing as the model's flexibility increaases. This is because as the model's flexibility increases, it tends to overfit to the training data. This, however, leads to an increased error for out-of-sample values thus leading to an increase in the Test MSE.
+
+# %% [markdown]
+# #### Training Error
+# The training error decreases montonically as the flexibility increases. This is because as noted above, the model tends to fit to the data thus leading to closeness between the estimated values and the actual values. Thus, the training error decreaees montonically,
+
+# %% [markdown]
+# #### $Bias^2$
+# The Squared Bias decreases as the model flexibility increases. A more flexible model is more likely to approximate the true function and thus the bias decreases as the model's flexibility increases. Thus, the estimate is more likely to match the actual value.
+
+# %% [markdown]
+# #### Variance
+# The variance of the model increases with the model's flexibilitty since a more flexible model is prone to overfitting and thus may not work as well on unseen data.
+# Unless the existing model is an extraordinarily good predictor of the population values, it is quite likely that the variance will increase as the model's flexbility increases.
+
+# %% [markdown]
+# #### Irreducible error
+# Irreducible error will always exist even if we somehow approximate the true function for the given values of X, the input features. This is because there will alwys be some fluctuations that cannot be explianed by the model. This is constant and is alsp termed Bayes error. This is caused by unknown variables and is the noise in the data.
+
+# %% [markdown]
+# #### $Error = Bias^2 + Variance + Irreducible Error$
+
+# %% [markdown]
 # ## 4. You will now think of some real-life applications for statistical learning.
 
 # %% [markdown]
