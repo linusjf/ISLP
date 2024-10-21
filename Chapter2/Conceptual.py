@@ -210,10 +210,17 @@ draw_bias_variance_plot();
 # ## 4. You will now think of some real-life applications for statistical learning.
 
 # %% [markdown]
-# ### (a) Describe three real-life applications in which classification might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.await
+# ### (a) Describe three real-life applications in which classification might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
+
+# %% [markdown]
+# - Predict the probability of a student getting a job through campus placements based on the following predictors: GPA, Aptitude Scores, Extra-curricular activities, internship count  and state of economy that year.
 
 # %% [markdown]
 # ### (b) Describe three real-life applications in which regression might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
+
+# %% [markdown]
+# - [Predict batting average for a player in the IPL based on balls faced + highest score + runs scored + strike ](https://www.linkedin.com/pulse/how-multi-linear-regression-mlr-can-effectively-used-analyse-puppala-jxtjc/)
+# - [Predict a pitcher's performance](https://3cloudsolutions.com/resources/using-linear-regression-pitchers-performance/)
 
 # %% [markdown]
 # ### (c) Describe three real-life applications in which cluster analysis might be useful.
