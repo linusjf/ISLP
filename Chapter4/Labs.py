@@ -12,4 +12,11 @@
 #     name: python3
 # ---
 
+# %% [markdown]
+# # Labs - Chapter 4
+
+# %% [markdown]
+# ## Import notebook functions
+
 # %%
+from notebookfuncs import *
