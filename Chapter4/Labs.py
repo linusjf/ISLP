@@ -70,5 +70,11 @@ Smarket.Direction = Smarket.Direction.astype("category")
 # %%
 Smarket.corr(numeric_only=True)
 
+# %% [markdown]
+# - As one would expect, the correlations between the lagged return variables and today’s return are close to zero. (Why? [Random walk](https://www.investopedia.com/terms/r/randomwalktheory.asp)?) The only substantial correlation is between Year and Volume. By plotting the data we see that Volume is in creasing over time. In other words, the average number of shares traded daily increased from 2001 to 2005.
+
+# %%
+Smarket.plot(y='Volume');
+
 # %%
 allDone();
