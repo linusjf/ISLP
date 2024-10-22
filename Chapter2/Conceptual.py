@@ -23,7 +23,6 @@ InteractiveShell.ast_node_interactivity = "all"
 ## Import up sound alert dependencies
 from IPython.display import Audio, display
 
-
 def allDone():
     url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
     display(Audio(url=url, autoplay=True))
@@ -214,6 +213,8 @@ draw_bias_variance_plot();
 
 # %% [markdown]
 # - Predict the probability of a student getting a job through campus placements based on the following predictors: GPA, Aptitude Scores, Extra-curricular activities, internship count  and state of economy that year.
+# - Loan Defaults: Classify loans into default or not based on factors such as credit score, outstanding balance, previous history of defaults, current income, total payments so far etc
+# - Fraud detection systems: Predict whether transaction is fraudulent or not based on factors such as size of transaction, time of day, first-time transaction of this type i.e.. new payee, country etc
 
 # %% [markdown]
 # ### (b) Describe three real-life applications in which regression might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
@@ -221,6 +222,7 @@ draw_bias_variance_plot();
 # %% [markdown]
 # - [Predict batting average for a player in the IPL based on balls faced + highest score + runs scored + strike ](https://www.linkedin.com/pulse/how-multi-linear-regression-mlr-can-effectively-used-analyse-puppala-jxtjc/)
 # - [Predict a pitcher's performance](https://3cloudsolutions.com/resources/using-linear-regression-pitchers-performance/)
+# - We can infer the relationship between house price  and factors such as area, number of rooms age, locality or zip code, amenities nearby, closeness to nearest station etc.
 
 # %% [markdown]
 # ### (c) Describe three real-life applications in which cluster analysis might be useful.
