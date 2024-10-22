@@ -14,18 +14,7 @@
 # ---
 
 # %%
-from IPython.core.interactiveshell import InteractiveShell
-
-InteractiveShell.ast_node_interactivity = "all"
-
-## Import up sound alert dependencies
-from IPython.display import Audio, display
-
-
-def allDone():
-    url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
-    display(Audio(url=url, autoplay=True))
-
+from notebookfuncs import *
 
 # %% [markdown]
 # # Chapter 2 Lab
@@ -193,15 +182,15 @@ from matplotlib.pyplot import subplots
 fig, ax = subplots(figsize=(8, 8))
 x = rng.standard_normal(100)
 y = rng.standard_normal(100)
-ax.plot(x, y)
+ax.plot(x, y);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-ax.plot(x, y, "o")
+ax.plot(x, y, "o");
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-ax.scatter(x, y, marker="o")
+ax.scatter(x, y, marker="o");
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
@@ -238,15 +227,15 @@ x = np.linspace(-np.pi, np.pi, 50)
 print(x)
 y = x
 f = np.multiply.outer(np.cos(y), 1 / (1 + x**2))
-ax.contour(x, y, f)
+ax.contour(x, y, f);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-ax.contour(x, y, f, levels=45)
+ax.contour(x, y, f, levels=45);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-ax.imshow(f)
+ax.imshow(f);
 
 # %%
 seq1 = np.linspace(0, 10, 11)
@@ -476,7 +465,7 @@ for col in D.columns:
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-ax.plot(Auto["horsepower"].values, Auto["mpg"].values, "o")
+ax.plot(Auto["horsepower"].values, Auto["mpg"].values, "o");
 
 # %%
 ax = Auto.plot.scatter("horsepower", "mpg")
@@ -496,24 +485,24 @@ Auto.cylinders.dtype
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-Auto.boxplot("mpg", by="cylinders", ax=ax)
+Auto.boxplot("mpg", by="cylinders", ax=ax);
+
+# %%
+fig, ax = subplots(figsize=(8, 8));
+Auto.hist("mpg", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-Auto.hist("mpg", ax=ax)
-
-# %%
-fig, ax = subplots(figsize=(8, 8))
-Auto.hist("mpg", color="red", bins=12, ax=ax)
+Auto.hist("mpg", color="red", bins=12, ax=ax);
 
 # %%
 # Auto.hist?
 
 # %%
-pd.plotting.scatter_matrix(Auto)
+pd.plotting.scatter_matrix(Auto);
 
 # %%
-pd.plotting.scatter_matrix(Auto[["mpg", "displacement", "weight"]])
+pd.plotting.scatter_matrix(Auto[["mpg", "displacement", "weight"]]);
 
 # %%
 Auto[["mpg", "weight"]].describe()

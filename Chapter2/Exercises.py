@@ -13,18 +13,7 @@
 # ---
 
 # %%
-from IPython.core.interactiveshell import InteractiveShell
-
-InteractiveShell.ast_node_interactivity = "all"
-
-## Import up sound alert dependencies
-from IPython.display import Audio, display
-
-
-def allDone():
-    url = "https://sound.peal.io/ps/audios/000/064/733/original/youtube_64733.mp3"
-    display(Audio(url=url, autoplay=True))
-
+from notebookfuncs import *
 
 # %%
 import numpy as np
@@ -55,11 +44,11 @@ College = College3
 College.describe()
 
 # %%
-pd.plotting.scatter_matrix(College[["Top10perc", "Apps", "Enroll"]])
+pd.plotting.scatter_matrix(College[["Top10perc", "Apps", "Enroll"]]);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Outstate", by="Private", ax=ax)
+College.boxplot("Outstate", by="Private", ax=ax);
 
 # %%
 College["Top10perc"]
@@ -71,14 +60,14 @@ College["Elite"].value_counts()
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Outstate", by="Elite", ax=ax)
+College.boxplot("Outstate", by="Elite", ax=ax);
 
 # %%
-College.plot.hist()
+College.plot.hist();
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.hist("Apps", ax=ax)
+College.hist("Apps", ax=ax);
 
 # %%
 numeric_columns = College.select_dtypes(include="number").columns.tolist()
@@ -104,14 +93,14 @@ College["AcceptanceRate"]
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("AcceptanceRate", by="Elite", ax=ax)
+College.boxplot("AcceptanceRate", by="Elite", ax=ax);
 
 # %%
 ### Plot boxplot for acceptance rate for Private colleges or not
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("AcceptanceRate", by="Private", ax=ax)
+College.boxplot("AcceptanceRate", by="Private", ax=ax);
 
 # %%
 College["EnrollmentRate"] = round(College["Enroll"] / College["Accept"] * 100, 2)
@@ -119,11 +108,11 @@ College["EnrollmentRate"]
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("EnrollmentRate", by="Elite", ax=ax)
+College.boxplot("EnrollmentRate", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("EnrollmentRate", by="Private", ax=ax)
+College.boxplot("EnrollmentRate", by="Private", ax=ax);
 
 # %%
 College["StudentCosts"] = (
@@ -132,59 +121,59 @@ College["StudentCosts"] = (
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("StudentCosts", by="Elite", ax=ax)
+College.boxplot("StudentCosts", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("StudentCosts", by="Private", ax=ax)
+College.boxplot("StudentCosts", by="Private", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("PhD", by="Private", ax=ax)
+College.boxplot("PhD", by="Private", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("PhD", by="Elite", ax=ax)
+College.boxplot("PhD", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Terminal", by="Elite", ax=ax)
+College.boxplot("Terminal", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Terminal", by="Private", ax=ax)
+College.boxplot("Terminal", by="Private", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("S.F.Ratio", by="Private", ax=ax)
+College.boxplot("S.F.Ratio", by="Private", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("S.F.Ratio", by="Elite", ax=ax)
+College.boxplot("S.F.Ratio", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("perc.alumni", by="Elite", ax=ax)
+College.boxplot("perc.alumni", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("perc.alumni", by="Private", ax=ax)
+College.boxplot("perc.alumni", by="Private", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Expend", by="Private", ax=ax)
+College.boxplot("Expend", by="Private", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Expend", by="Elite", ax=ax)
+College.boxplot("Expend", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Grad.Rate", by="Elite", ax=ax)
+College.boxplot("Grad.Rate", by="Elite", ax=ax);
 
 # %%
 fig, ax = subplots(figsize=(8, 8))
-College.boxplot("Grad.Rate", by="Private", ax=ax)
+College.boxplot("Grad.Rate", by="Private", ax=ax);
 
 # %%
 mean_grad_rate = College.groupby("Elite", observed=True)[
@@ -195,15 +184,15 @@ mean_grad_rate
 # %%
 mean_grad_rate.plot(
     y=["AcceptanceRate", "EnrollmentRate", "Grad.Rate"], kind="bar", rot=0
-)
+);
 
 # %%
 Auto = pd.read_csv("Auto.csv", na_values={"?"})
 print(Auto.shape)
 np.unique(Auto["horsepower"])
 
-# %%
-### Which predictors are quantitative and which are qualitative?
+# %% [markdown]
+# ### Which predictors are quantitative and which are qualitative?
 
 # %% [markdown]
 # Rename the misleading column name acceleration to timetoacceleration since it's a tad misleading.
@@ -252,7 +241,7 @@ Auto_new
 # Using the full data set, investigate the predictors graphically, using scatter plots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings.
 
 # %%
-pd.plotting.scatter_matrix(Auto, figsize=(14, 14))
+pd.plotting.scatter_matrix(Auto, figsize=(14, 14));
 
 # %% [markdown]
 # ### Findings:
@@ -309,7 +298,7 @@ sns.catplot(
     height=10,
     aspect=2,
     estimator=median,
-)
+);
 
 # %%
 print(np.unique(Boston_quant["rad"]))
@@ -317,11 +306,11 @@ mean_rad = Boston_quant.groupby(["rad"], observed=True)[["medv"]].mean()
 mean_rad
 
 # %%
-sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height=10, aspect=2)
+sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height=10, aspect=2);
 
 # %%
 sns.set_theme(style="ticks")
-g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["medv"])
+g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["medv"]);
 
 # %% [markdown]
 # Plotting the other quantitative columns against medv (Median value of owner-occupied homes), we can see that:
@@ -336,28 +325,28 @@ g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["med
 Boston_quant["zn"].value_counts()
 
 # %%
-g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["crim"])
+g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["crim"]);
 
 # %%
-sns.catplot(data=Boston_quant, x="zn", y="crim", kind="bar", height=6, aspect=2)
+sns.catplot(data=Boston_quant, x="zn", y="crim", kind="bar", height=6, aspect=2);
 
 # %%
-sns.displot(data=Boston_quant, x="indus", y="crim", height=4, aspect=3)
+sns.displot(data=Boston_quant, x="indus", y="crim", height=4, aspect=3);
 
 # %%
-sns.displot(data=Boston_quant, x="age", y="crim", height=4, aspect=3)
+sns.displot(data=Boston_quant, x="age", y="crim", height=4, aspect=3);
 
 # %%
-sns.displot(data=Boston_quant, x="nox", y="crim", height=4, aspect=3)
+sns.displot(data=Boston_quant, x="nox", y="crim", height=4, aspect=3);
 
 # %%
-sns.displot(data=Boston_quant, x="dis", y="crim", height=4, aspect=3)
+sns.displot(data=Boston_quant, x="dis", y="crim", height=4, aspect=3);
 
 # %%
-sns.displot(data=Boston_quant, x="tax", y="crim", height=4, aspect=3)
+sns.displot(data=Boston_quant, x="tax", y="crim", height=4, aspect=3);
 
 # %%
-sns.displot(data=Boston_quant, x="ptratio", y="crim", height=4, aspect=3)
+sns.displot(data=Boston_quant, x="ptratio", y="crim", height=4, aspect=3);
 
 # %% [markdown]
 # We've already seen that there appears to be a relationship b/w crime rate and medv where a higher crime rate is associated with lower property prices.
