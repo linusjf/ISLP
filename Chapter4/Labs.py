@@ -59,7 +59,7 @@ from sklearn.linear_model import LogisticRegression
 
 # %%
 Smarket = load_data('Smarket')
-Smarket
+Smarket.describe()
 
 # %%
 Smarket.columns
@@ -166,6 +166,68 @@ y_train , y_test = y.loc[train], y.loc[~train]
 glm_train = sm.GLM(y_train , X_train, family=sm.families.Binomial())
 results = glm_train.fit()
 probs = results.predict(exog=X_test)
+
+# %% [markdown]
+# We compare the predictions for 2005 to the actual movements of the market over that time period. We will first store the test and training labels (recall y_test is binary).
+
+# %%
+D = Smarket.Direction
+L_train , L_test = D.loc[train], D.loc[~train]
+
+# %% [markdown]
+# Now we threshold the fitted probability at 50% to form our predicted labels.
+
+# %%
+labels = np.array(['Down']*len(L_test))
+labels[probs > 0.5] = 'Up'
+confusion_table(labels , L_test)
+
+# %% [markdown]
+# The test accuracy is about 48% while the error rate is about 52%
+
+# %%
+np.mean(labels == L_test), np.mean(labels != L_test)
+
+# %% [markdown]
+# The results are rather disappointing: the test error rate is 52%, which is worse than random guessing! One would not generally expect to be able to use previous days’ returns to predict future market performance.
+
+# %% [markdown]
+# ### Trying a more effective model
+
+# %% [markdown]
+# The p-values in our original regression were quite underwhelming since none of them were less than 0.05, our preferred level of significance.
+# Since Lag1 and Lag2 have the lowest p-values, let's drop all the other predictors from our logistic model and check our results.
+
+# %%
+model = MS(['Lag1', 'Lag2']).fit(Smarket)
+X = model.transform(Smarket)
+X_train , X_test = X.loc[train], X.loc[~train]
+glm_train = sm.GLM(y_train , X_train, family=sm.families.Binomial())
+results = glm_train.fit()
+probs = results.predict(exog=X_test)
+labels = np.array (['Down']*len(X_test))
+labels[probs >0.5] = 'Up'
+confusion_table(labels , L_test)
+
+# %% [markdown]
+# Let’s evaluate the overall accuracy as well as the accuracy within the days when logistic regression predicts an increase.
+
+# %%
+(35+106) /252 ,106/(106+76)
+
+# %% [markdown]
+# Now the results appear to be a little better: 56% of the daily movements have been correctly predicted. It is worth noting that in this case, a much simpler strategy of predicting that the market will increase every day will also be correct 56% of the time! Hence, in terms of overall error rate, the logistic regression method is no better than the naive approach. However, the confusion matrix shows that on days when logistic regression predicts an increase in the market, it has a 58% accuracy rate. This suggests a possible trading strategy of buying on days when the model predicts an increasing market, and avoiding trades on days when a decrease is predicted. Of course one would need to investigate more carefully whether this small improvement was real or just due to random chance.
+
+# %% [markdown]
+# Suppose that we want to predict the returns associated with particular values of Lag1 and Lag2. In particular, we want to predict Direction on a day when Lag1 and Lag2 equal 1.2 and 1.1, respectively, and on a day when they equal 1.5 and −0.8. We do this using the predict() function.
+
+# %%
+newdata = pd.DataFrame ({'Lag1':[1.2 , 1.5], 'Lag2':[1.1 , -0.8]});
+newX = model.transform(newdata)
+results.predict(newX)
+
+# %% [markdown]
+# ## Linear Discriminant Analysis
 
 # %%
 allDone();
