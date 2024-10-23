@@ -118,5 +118,54 @@ results.params
 probs = results.predict()
 probs[:10]
 
+# %% [markdown]
+# In order to make a prediction as to whether the market will go up or down on a particular day, we must convert these predicted probabilities into class labels, Up or Down.
+
+# %%
+labels = np.array(['Down']*1250)
+labels[probs >0.5] = "Up"
+
+# %% [markdown]
+# The confusion_table() function from the ISLP package summarizes these confusion predictions, showing how many observations were correctly or incorrectly classified. Our function, which is adapted from a similar function in the module sklearn.metrics, transposes the resulting matrix and includes row and column labels. The confusion_table() function takes as first argument the predicted labels, and second argument the true labels.
+
+# %%
+confusion_table(labels , Smarket.Direction)
+
+# %% [markdown]
+# The diagonal elements of the confusion matrix indicate correct predictions, while the off-diagonals represent incorrect predictions. Hence our model correctly predicted that the market would go up on 507 days and that it would go down on 145 days, for a total of 507 + 145 = 652 correct predictions. The np.mean() function can be used to compute the fraction of days for which the prediction was correct. In this case, logistic regression correctly predicted the movement of the market 52.2% of the time.
+
+# %%
+(507+145) /1250 , np.mean(labels == Smarket.Direction)
+
+# %% [markdown]
+# At first glance, it appears that the logistic regression model is working a little better than random guessing. However, this result is misleading because we trained and tested the model on the same set of 1,250 observations. In other words, 100 − 52.2 = 47.8% is the training error rate. As we have seen previously, the training error rate is often overly optimistic — it tends to underestimate the test error rate. In order to better assess the accuracy of the logistic regression model in this setting, we can fit the model using part of the data, and then examine how well it predicts the held out data. This will yield a more realistic error rate, in the sense that in practice we will be interested in our model’s performance not on the data that we used to fit the model, but rather on days in the future for which the market’s movements are unknown.
+
+# %% [markdown]
+# ### Train and Test
+
+# %% [markdown]
+# To implement this strategy, we first create a Boolean vector corresponding to the observations from 2001 through 2004. We then use this vector to create a held out data set of observations from 2005.
+
+# %%
+train = (Smarket.Year < 2005)
+Smarket_train = Smarket.loc[train]
+Smarket_test = Smarket.loc[~train];
+
+# %%
+Smarket_train.shape
+
+# %%
+Smarket_test.shape
+
+# %% [markdown]
+# #### Fit the training data
+
+# %%
+X_train , X_test = X.loc[train], X.loc[~train]
+y_train , y_test = y.loc[train], y.loc[~train]
+glm_train = sm.GLM(y_train , X_train, family=sm.families.Binomial())
+results = glm_train.fit()
+probs = results.predict(exog=X_test)
+
 # %%
 allDone();
