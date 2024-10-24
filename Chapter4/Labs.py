@@ -300,5 +300,8 @@ np.sum(lda_prob [:,0] > 0.9)
 # %% [markdown]
 # No days in 2005 meet that threshold! In fact, the greatest posterior probability of decrease in all of 2005 was 52.02%.
 
+# %% [markdown]
+# ## Quadratic Discriminant Analysis
+
 # %%
 allDone();

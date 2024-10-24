@@ -206,6 +206,8 @@ draw_bias_variance_plot();
 # - Predict the probability of a student getting a job through campus placements based on the following predictors: GPA, Aptitude Scores, Extra-curricular activities, internship count  and state of economy that year.
 # - Loan Defaults: Classify loans into default or not based on factors such as credit score, outstanding balance, previous history of defaults, current income, total payments so far etc
 # - Fraud detection systems: Predict whether transaction is fraudulent or not based on factors such as size of transaction, time of day, first-time transaction of this type i.e.. new payee, country etc
+# - Disease prediction: In medicine, this analytics approach can be used to predict the likelihood of disease or illness for a given population. Healthcare organizations can set up preventative care for individuals that show higher propensity for specific illnesses.
+# - Churn prediction: Specific behaviors may be indicative of churn in different functions of an organization. For example, human resources and management teams may want to know if there are high performers within the company who are at risk of leaving the organization; this type of insight can prompt conversations to understand problem areas within the company, such as culture or compensation. Alternatively, the sales organization may want to learn which of their clients are at risk of taking their business elsewhere. This can prompt teams to set up a retention strategy to avoid lost revenue.
 
 # %% [markdown]
 # ### (b) Describe three real-life applications in which regression might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
