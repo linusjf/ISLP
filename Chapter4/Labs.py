@@ -1,6 +1,7 @@
 # ---
 # jupyter:
 #   jupytext:
+#     formats: ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -302,6 +303,53 @@ np.sum(lda_prob [:,0] > 0.9)
 
 # %% [markdown]
 # ## Quadratic Discriminant Analysis
+
+# %% [markdown]
+# ### Fit a QDA model to the Smarket data.
+
+# %%
+qda = QDA( store_covariance=True)
+qda.fit(X_train , L_train)
+
+# %% [markdown]
+# The QDA() function will again compute means_ and priors_.
+
+# %%
+qda.means_ , qda.priors_
+
+# %% [markdown]
+# The QDA() classifier will estimate one covariance per class. Here is the estimated covariance in the first class:
+
+# %%
+qda.covariance_[0]
+
+# %% [markdown]
+# List all the covariances.
+
+# %%
+qda.covariance_
+
+# %% [markdown]
+# The output contains the group means. But it does not contain the coefficients of the linear discriminants, because the QDA classifier involves a quadratic, rather than a linear function. The predict() function works in exactly the same fashion as for LDA.
+
+# %%
+qda_pred = qda.predict(X_test)
+confusion_table(qda_pred, L_test)
+
+# %% [markdown]
+# Interestingly, the QDA predictions are accurate almost 60% of the time, even though the 2005 data was not used to fit the model.
+
+# %%
+np.mean(qda_pred == L_test)
+
+# %% [markdown]
+# This level of accuracy is quite impressive for stock market data, which is known to be quite hard to model accurately. This suggests that the quadratic form assumed by QDA may capture the true relationship more accurately than the linear forms assumed by LDA and logistic regression. However, we recommend evaluating this method’s performance on a larger test set before betting that this approach will consistently beat the market!
+
+# %%
+The score() function is an alternate way of obtaining the level of accuracy.
+
+# %%
+qda.score(X_test, L_test)
 
 # %%
 allDone();
