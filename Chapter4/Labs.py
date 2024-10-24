@@ -229,5 +229,76 @@ results.predict(newX)
 # %% [markdown]
 # ## Linear Discriminant Analysis
 
+# %% [markdown]
+#  We begin by performing LDA on the Smarket data, using the function LinearDiscriminantAnalysis(), which we have abbreviated LDA(). We fit the model using only the observations before 2005.
+
+# %%
+lda = LDA( store_covariance=True)
+
+# %% [markdown]
+# Since the LDA estimator automatically adds an intercept, we should remove the column corresponding to the intercept in both X_train and X_test. We can also directly use the labels rather than the Boolean vectors y_train.
+
+# %%
+X_train , X_test = [M.drop(columns =['intercept']) for M in [X_train , X_test ]]
+lda.fit(X_train , L_train)
+
+# %% [markdown]
+# Having fit the model, we can extract the means in the two classes with the means_ attribute. These are the average of each predictor within each class, and are used by LDA as estimates of µk . These suggest that there is a tendency for the previous 2 days’ returns to be negative on days when the market increases, and a tendency for the previous days’ returns to be positive on days when the market declines.
+
+# %%
+lda.means_
+
+# %% [markdown]
+# The estimated prior probabilities are stored in the priors_ attribute. The package sklearn typically uses this trailing _ to denote a quantity estimated when using the fit() method. We can be sure of which entry corresponds to which label by looking at the classes_ attribute.
+
+# %%
+lda.classes_
+
+# %% [markdown]
+# The LDA output indicates that π̂Down = 0.492 and π̂Up = 0.508.
+
+# %%
+lda.priors_
+
+# %% [markdown]
+# The linear discriminant vectors can be found in the scalings_ attribute:
+
+# %%
+lda.scalings_
+
+# %% [markdown]
+# These values provide the linear combination of Lag1 and Lag2 that are used to form the LDA decision rule. In other words, these are the multipliers of the elements of X = x in (4.24). If −0.64 × Lag1 − 0.51 × Lag2 is large, then the LDA classifier will predict a market increase, and if it is small, then the LDA classifier will predict a market decline.
+
+# %%
+lda_pred = lda.predict(X_test)
+
+# %% [markdown]
+# As we observed in our comparison of classification methods (Section 4.5), the LDA and logistic regression predictions are almost identical.
+
+# %%
+confusion_table(lda_pred , L_test)
+
+# %% [markdown]
+# We can also estimate the probability of each class for each point in a training set. Applying a 50% threshold to the posterior probabilities of being in class one allows us to recreate the predictions contained in lda_pred.
+
+# %%
+lda_prob = lda.predict_proba(X_test)
+np.all(np.where(lda_prob [:,1] >= 0.5, 'Up','Down') == lda_pred)
+
+# %% [markdown]
+# Above, we used the np.where() function that creates an array with value 'Up' for indices where the second column of lda_prob (the estimated posterior probability of 'Up') is greater than 0.5. For problems with more than two classes the labels are chosen as the class whose posterior probability is highest:
+
+# %%
+np.all( [lda.classes_[i] for i in np.argmax(lda_prob , 1)] == lda_pred )
+
+# %% [markdown]
+# If we wanted to use a posterior probability threshold other than 50% in order to make predictions, then we could easily do so. For instance, suppose that we wish to predict a market decrease only if we are very certain that the market will indeed decrease on that day — say, if the posterior probability is at least 90%. We know that the first column of lda_prob corresponds to the label Down after having checked the classes_ attribute, hence we use the column index 0 rather than 1 as we did above.
+
+# %%
+np.sum(lda_prob [:,0] > 0.9)
+
+# %% [markdown]
+# No days in 2005 meet that threshold! In fact, the greatest posterior probability of decrease in all of 2005 was 52.02%.
+
 # %%
 allDone();
