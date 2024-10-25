@@ -86,12 +86,55 @@ from notebookfuncs import *
 
 # %% [markdown]
 # ## Exercise 5
+#
+# We now examine the differences between LDA and QDA.
+
+# %% [markdown]
+# ### (a)
+# If the Bayes decision boundary is linear, do we expect LDA or QDA to perform better on the training set? On the test set?
+
+# %% [markdown]
+# If the Bayes decision boundary is linear, QDA may perform better on the training set since it may tend to overfit the data.
+# However, on the test  set, it is LDA that will fit better to outside data not seen or encountered in the training set.
+
+# %% [markdown]
+# ### (b) 
+# If the Bayes decision boundary is non-linear, do we expect LDA or QDA to perform better on the training set? On the test set?
+
+# %% [markdown]
+# If the Bayes decision boundary is non-linear, QDA will perform better on the training set since it will tend to overfit the data
+# However, on the test  set, QDA will definitely fit better to outside data not seen or encountered in the training set.
+
+# %% [markdown]
+# ### (c)
+# In general, as the sample size n increases, do we expect the test prediction accuracy of QDA relative to LDA to improve, decline, or be unchanged? Why?
+
+# %% [markdown]
+# ### (d)
+# True or False: Even if the Bayes decision boundary for a given problem is linear, we will probably achieve a superior test error rate using QDA rather than LDA because QDA is flexible enough to model a linear decision boundary. Justify your answer.
 
 # %% [markdown]
 # ## Exercise 6
+#
+# Suppose we collect data for a group of students in a statistics class with variables $X_1 = hours \: studied, X_2 = undergrad \: GPA$, and $Y = receive \: an \: A$. We fit a logistic regression and produce estimated coefficient, $\beta_0 = −6, \beta_1 = 0.05, \beta_2 = 1$.
 
 # %% [markdown]
-# ## Exercise 7
+# ### (a)
+# Estimate the probability that a student who studies for 40 hours and has an undergrad GPA of 3.5 gets an A in the class.
+
+# %% [markdown]
+# ### (b)
+# How many hours would the student in part (a) need to study to have a 50 % chance of getting an A in the class?
+
+# %% [markdown]
+# ## Exercise 7 
+#
+# Suppose that we wish to predict whether a given stock will issue a dividend this year (“Yes” or “No”) based on X, last year’s percent profit. We examine a large number of companies and discover that the mean value of X for companies that issued a dividend was $\overline{X}$ = 10, while the mean for those that didn’t was $\overline{X}$ = 0. In addition, the variance of X for these two sets of companies was $\sigma^2$ = 36. Finally, 80% of companies issued dividends. Assuming that X follows a normal distribution, predict the probability that a company will issue a dividend this year given that its percentage profit was X = 4 last year.
+#
+# **Hint: Recall that the density function for a normal random variable is
+# $$
+# \huge f(x) = \frac {1} {\sqrt {2\pi\sigma^2}} e^{- {(x−µ)^2} / {2\sigma^2}}
+# $$. You will need to use Bayes’ theorem.**
 
 # %% [markdown]
 # ## Exercise 8
@@ -104,6 +147,9 @@ from notebookfuncs import *
 
 # %% [markdown]
 # ## Exercise 11
+# Work out the detailed forms of $\huge a_k$ , $\huge b_{kj}$ , and $\huge c_{kjl}$ in 
+#
+# (4.33). Your answer should involve $\huge \pi_k$ , $\huge \pi_K$ , $\huge \mu_k$ , $\huge \mu_K$ , $\huge \sum_k$ , and $\huge \sum_K$ .
 
 # %% [markdown]
 # ## Exercise 12
