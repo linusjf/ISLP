@@ -15,7 +15,7 @@
 # %% [markdown]
 # # Conceptual: Chapter 4 &mdash; Classification
 
-# %% [raw]
+# %% [markdown]
 # ## Import notebook functions
 
 # %%
@@ -25,11 +25,11 @@ from notebookfuncs import *
 # ## Exercise 1
 # Using a little bit of algebra, prove that
 # $$
-# \huge p(X)  = \frac {e^{\beta_0 + \beta_1 * X}} {1 + {e^{\beta_0 + \beta_1 * X}}}
+# \Large p(X)  = \frac {e^{\beta_0 + \beta_1 * X}} {1 + {e^{\beta_0 + \beta_1 * X}}}
 # $$
 #  is equivalent to
 # $$
-# \huge \frac {p(X)} {1 - p(X)} = e^{\beta_0 + \beta_1 * X}
+# \Large \frac {p(X)} {1 - p(X)} = e^{\beta_0 + \beta_1 * X}
 # $$.
 #
 # In other words, the logistic function representation and logit representation for the logistic regression model are equivalent.
@@ -38,12 +38,12 @@ from notebookfuncs import *
 # ## Exercise 2
 # It was stated in the text that classifying an observation to the class for which
 # $$
-# \huge p_k(x) = \frac {\pi_k \frac {1} {\sqrt{2\pi}  \sigma} exp (- \frac {1} {2\sigma^2} (x - \mu_k)^2) } {\sum_{l=1}^K \pi_l \frac {1} {\sqrt{2\pi}  \sigma} exp (- \frac {1} {2\sigma^2} (x - \mu_l)^2)}
+# \Large p_{k}(x) = \frac {\pi_k \frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)} {\sum_{l=1}^K \pi_l \frac {1} {\sqrt{2\pi}  \sigma} exp (- \frac {1} {2\sigma^2}(x - \mu_l)^2)}
 # $$
 # (4.17)
 # is largest is equivalent to classifying an observation to the class for which
 # $$
-# \huge \delta_k(x) = x.\frac {\mu_k} {\sigma^2} - \frac {\mu_k^2} {2\sigma^2} + log(\pi_k)
+# \Large \delta_k(x) = x.\frac {\mu_k} {\sigma^2} - \frac {\mu_k^2} {2\sigma^2} + log(\pi_k)
 # $$
 # (4.18) is the largest. Prove that this is the case. In other words, under the assumption that the observations in the $k_{th}$ class are drawn from a $N(\mu_k , \sigma^2)$ distribution, the Bayes classifier assigns an observation to the class for which the discriminant function is maximized.
 
@@ -51,7 +51,7 @@ from notebookfuncs import *
 # ## Exercise 3 
 # This problem relates to the QDA model, in which the observations within each class are drawn from a normal distribution with a class specific mean vector and a class specific covariance matrix. We consider the simple case where p = 1; i.e. there is only one feature. Suppose that we have K classes, and that if an observation belongs to the kth class then X comes from a one-dimensional normal distribution, $X ∼ N(\mu_k , \sigma_k^2)$. Recall that the density function for the one-dimensional normal distribution is given in 
 # $$
-# \huge f_k(x) = \frac {1} {\sqrt{2\pi}\sigma_k} exp(- \frac {1} {2\sigma_k^2}(x - \mu_k)^2)
+# \Large f_k(x) = \frac {1} {\sqrt{2\pi}\sigma_k} exp \Big (- \frac {1} {2\sigma_k^2}(x - \mu_k)^2 \Big )
 # $$
 #
 # (4.16). Prove that in this case, the Bayes classifier is not linear. Argue that it is in fact quadratic. 
@@ -116,7 +116,7 @@ from notebookfuncs import *
 # %% [markdown]
 # ## Exercise 6
 #
-# Suppose we collect data for a group of students in a statistics class with variables $X_1 = hours \: studied, X_2 = undergrad \: GPA$, and $Y = receive \: an \: A$. We fit a logistic regression and produce estimated coefficient, $\beta_0 = −6, \beta_1 = 0.05, \beta_2 = 1$.
+# Suppose we collect data for a group of students in a statistics class with variables $\large X_1 = hours \: studied, X_2 = undergrad \: GPA$, and $Y = receive \: an \: A$. We fit a logistic regression and produce estimated coefficient, $\large \beta_0 = −6, \beta_1 = 0.05, \beta_2 = 1$.
 
 # %% [markdown]
 # ### (a)
@@ -129,27 +129,50 @@ from notebookfuncs import *
 # %% [markdown]
 # ## Exercise 7 
 #
-# Suppose that we wish to predict whether a given stock will issue a dividend this year (“Yes” or “No”) based on X, last year’s percent profit. We examine a large number of companies and discover that the mean value of X for companies that issued a dividend was $\overline{X}$ = 10, while the mean for those that didn’t was $\overline{X}$ = 0. In addition, the variance of X for these two sets of companies was $\sigma^2$ = 36. Finally, 80% of companies issued dividends. Assuming that X follows a normal distribution, predict the probability that a company will issue a dividend this year given that its percentage profit was X = 4 last year.
+# Suppose that we wish to predict whether a given stock will issue a dividend this year (“Yes” or “No”) based on X, last year’s percent profit. We examine a large number of companies and discover that the mean value of X for companies that issued a dividend was $\large \overline{X}$ = 10, while the mean for those that didn’t was $\large \overline{X}$ = 0. In addition, the variance of X for these two sets of companies was $\large \sigma^2$ = 36. Finally, 80% of companies issued dividends. Assuming that X follows a normal distribution, predict the probability that a company will issue a dividend this year given that its percentage profit was X = 4 last year.
 #
 # **Hint: Recall that the density function for a normal random variable is
 # $$
-# \huge f(x) = \frac {1} {\sqrt {2\pi\sigma^2}} e^{- {(x−µ)^2} / {2\sigma^2}}
+# \Large f(x) = \frac {1} {\sqrt {2\pi\sigma^2}} e^{- {(x−µ)^2} / {2\sigma^2}}
 # $$. You will need to use Bayes’ theorem.**
 
 # %% [markdown]
 # ## Exercise 8
+#
+# Suppose that we take a data set, divide it into equally-sized training and test sets, and then try out two different classification procedures. First we use logistic regression and get an error rate of 20% on the training data and 30% on the test data. Next we use 1-nearest neighbors (i.e. K = 1) and get an average error rate (averaged over both test and training data sets) of 18%. Based on these results, which method should we prefer to use for classification of new observations? Why?
 
 # %% [markdown]
 # ## Exercise 9
 
 # %% [markdown]
+# This problem has to do with odds. 
+
+# %% [markdown]
+# ### (a)
+# On average, what fraction of people with an odds of 0.37 of defaulting on their credit card payment will in fact default? 
+
+# %% [markdown]
+# ### (b)
+# Suppose that an individual has a 16% chance of defaulting on her credit card payment. What are the odds that she will default?
+
+# %% [markdown]
 # ## Exercise 10
+# Equation 4.32 derived an expression for $\Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big )$ in the setting where p > 1, so that the mean for the $k_{th}$ class, $\mu_k$ , is a p-dimensional vector, and the shared covariance $\sum$ is a p × p matrix. However, in the setting with p = 1, (4.32) takes a simpler form, since the means $\large \mu_1 , . . . , \mu_K$ and the variance $\large \sigma^2$ are scalars. In this simpler setting, repeat the calculation in (4.32), and provide expressions for $\large a_k$ and $\large b_{kj}$ in terms of $\large \pi_k$ , $\large \pi_K$ , $\large \mu_k$ , $\large \mu_K$ , and $\large \sigma^2$ .
+#
+# Equation 4.32:
+#
+# $$
+# \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) = a_k + \sum_{j=1}^p b_{kj}x_j
+# $$
 
 # %% [markdown]
 # ## Exercise 11
-# Work out the detailed forms of $\huge a_k$ , $\huge b_{kj}$ , and $\huge c_{kjl}$ in 
+# Work out the detailed forms of $\large a_k$ , $\large b_{kj}$ , and $\large c_{kjl}$ in 
+# $$
+# \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) = a_k + \sum_{j=1}^p b_{kj}x_j + \sum_{j=1}^p\sum_{l=1}^pc_{kjl}x_jx_l
+# $$
 #
-# (4.33). Your answer should involve $\huge \pi_k$ , $\huge \pi_K$ , $\huge \mu_k$ , $\huge \mu_K$ , $\huge \sum_k$ , and $\huge \sum_K$ .
+# (4.33). Your answer should involve $\large \pi_k$ , $\large \pi_K$ , $\large \mu_k$ , $\large \mu_K$ , $\large \sum_k$ , and $\large \sum_K$ .
 
 # %% [markdown]
 # ## Exercise 12
