@@ -23,7 +23,8 @@ from notebookfuncs import *
 
 # %% [markdown]
 # ## Exercise 1
-# Using a little bit of algebra, prove that
+#
+# Using a little bit of algebra, prove that 
 # $$
 # \Large p(X)  = \frac {e^{\beta_0 + \beta_1 * X}} {1 + {e^{\beta_0 + \beta_1 * X}}}
 # $$
@@ -32,7 +33,7 @@ from notebookfuncs import *
 # \Large \frac {p(X)} {1 - p(X)} = e^{\beta_0 + \beta_1 * X}
 # $$.
 #
-# In other words, the logistic function representation and logit representation for the logistic regression model are equivalent.
+# In other words, the logistic function representation and logit representation for the logistic regression model are equivalent. 
 
 # %% [markdown]
 # ## Exercise 2
@@ -176,6 +177,40 @@ from notebookfuncs import *
 
 # %% [markdown]
 # ## Exercise 12
+# Suppose that you wish to classify an observation X ∈ R into apples and oranges. You fit a logistic regression model and find that 
+# $$
+# \large \hat{Pr}(Y = orange | X = x) = \frac {exp(\hat{\beta_0} + \hat{\beta_1}x)} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)}
+# $$.
+#
+# Your friend fits a logistic regression model to the same data using the softmax formulation in
+# $$
+# \large \hat{Pr}(Y = orange | X = x) = \frac {e^{\beta_0 + \beta_1x_1 + .... + \beta_px_p}} {\sum_{l=1}^K{e^{\beta_0 + \beta_1x_1 + .... + \beta_px_p}}}
+# $$
+# (4.13), and finds that 
+# $$
+# \large \hat{Pr}(Y = orange | X = x) = \frac {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x)} {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x) + exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)  }
+# $$
+#
+
+# %% [markdown]
+# ### (a)
+# What is the log odds of orange versus apple in your model?
+
+# %% [markdown]
+# ### (b)
+# What is the log odds of orange versus apple in your friend’s model?
+
+# %% [markdown]
+# ### (c)
+# Suppose that in your model, $\beta_0$ = 2 and $\beta_1$ = −1. What are the coefficient estimates in your friend’s model? Be as specific as possible.
+
+# %% [markdown]
+# ### (d)
+# Now suppose that you and your friend fit the same two models on a different data set. This time, your friend gets the coefficient estimates $\large {\hat{\alpha}}_{orange0}$ = 1.2, $\large {\hat{\alpha}}_{orange1}$ = −2, $\large {\hat{\alpha}}_{orange0}$ = 3, $\large {\hat{\alpha}}_{orange1}$ = 0.6. What are the coefficient estimates in your model?
+
+# %% [markdown]
+# ### (e) 
+# Finally, suppose you apply both models from (d) to a data set with 2,000 test observations. What fraction of the time do you expect the predicted class labels from your model to agree with those from your friend’s model? Explain your answer.
 
 # %%
 allDone();
