@@ -59,8 +59,8 @@ def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
 
 # %% [markdown]
 # We generate three datasets. In the first dataset, the two classes share the same
-# covariance matrix, and this covariance matrix has the specificity of being spherical
-# (isotropic). The second dataset is similar to the first one but does not enforce the
+# covariance matrix, and this covariance matrix has the specificity of being [spherical
+# (isotropic)](https://stats.stackexchange.com/questions/204595/what-is-an-isotropic-spherical-covariance-matrix). The second dataset is similar to the first one but does not enforce the
 # covariance to be spherical. Finally, the third dataset has a non-spherical covariance
 # matrix for each class.
 #
