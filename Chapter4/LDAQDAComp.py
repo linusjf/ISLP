@@ -41,18 +41,48 @@ from notebookfuncs import *
 #
 #
 
+# %% [markdown]
+# ## Import libraries
+
 # %% jupyter={"outputs_hidden": false}
 import numpy as np
+import matplotlib as mpl
+from matplotlib import colors
+from sklearn.inspection import DecisionBoundaryDisplay
+import matplotlib.pyplot as plt
+from sklearn.discriminant_analysis import (
+    LinearDiscriminantAnalysis,
+    QuadraticDiscriminantAnalysis,
+)
 
 
+# %%
+def alternate_make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
+  rng = np.random.RandomState(seed)
+  mu = np.array([0, 0])
+  X = np.concatenate(
+    [
+     rng.multivariate_normal(mu, cov_class_1, size=n_samples, tol=1e-12),
+     rng.multivariate_normal(mu, cov_class_2, size=n_samples,tol=1e-12) + np.array([1, 1])
+    ]
+  )
+  # concatenate the response variable y to have the first half as zeros and the rest as ones
+  y = np.concatenate([np.zeros(n_samples), np.ones(n_samples)])
+  return X, y
+
+
+# %% jupyter={"outputs_hidden": false}
 def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
     rng = np.random.RandomState(seed)
     X = np.concatenate(
         [
+            # matrix multiply by covariance matrix to add correlation to the values generated
             rng.randn(n_samples, n_features) @ cov_class_1,
+            # adding an offset of 1 does not change the covariance in the dataset
             rng.randn(n_samples, n_features) @ cov_class_2 + np.array([1, 1]),
         ]
     )
+    # concatenate the response variable y to have the first half as zeros and the rest as ones
     y = np.concatenate([np.zeros(n_samples), np.ones(n_samples)])
     return X, y
 
@@ -67,6 +97,7 @@ def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
 #
 
 # %% jupyter={"outputs_hidden": false}
+fig, axs = plt.subplots(nrows=3, ncols=2, sharex="row", sharey="row", figsize=(8, 12))
 covariance = np.array([[1, 0], [0, 1]])
 X_isotropic_covariance, y_isotropic_covariance = make_data(
     n_samples=1_000,
@@ -75,7 +106,19 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
-covariance = np.array([[0.0, -0.23], [0.83, 0.23]])
+X_isotropic_covariance_alt, y_isotropic_covariance_alt = alternate_make_data(
+    n_samples=1_000,
+    n_features=2,
+    cov_class_1=covariance,
+    cov_class_2=covariance,
+    seed=0,
+)
+print(np.all(X_isotropic_covariance == X_isotropic_covariance_alt))
+print(np.all(np.cov(X_isotropic_covariance) == np.cov(X_isotropic_covariance_alt)))
+axs[0][0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
+axs[0][1].scatter(X_isotropic_covariance_alt[:, 0],X_isotropic_covariance_alt[:, 1]);
+
+covariance = np.array([[0.0 + 1e-12, -0.23], [0.83, 0.23 + 1e-12]])
 X_shared_covariance, y_shared_covariance = make_data(
     n_samples=300,
     n_features=2,
@@ -83,7 +126,18 @@ X_shared_covariance, y_shared_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
-cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
+X_shared_covariance_alt, y_shared_covariance_alt = alternate_make_data(
+    n_samples=300,
+    n_features=2,
+    cov_class_1=covariance,
+    cov_class_2=covariance,
+    seed=0,
+)
+print(np.all(X_shared_covariance == X_shared_covariance_alt))
+axs[1][0].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
+axs[1][1].scatter(X_shared_covariance_alt[:, 0],X_shared_covariance_alt[:, 1]);
+
+cov_class_1 = np.array([[0.0+1e-12, -1.0], [2.5, 0.7 + 1e-12]]) * 2.0
 cov_class_2 = cov_class_1.T
 X_different_covariance, y_different_covariance = make_data(
     n_samples=300,
@@ -92,6 +146,30 @@ X_different_covariance, y_different_covariance = make_data(
     cov_class_2=cov_class_2,
     seed=0,
 )
+X_different_covariance_alt, y_different_covariance_alt = alternate_make_data(
+    n_samples=300,
+    n_features=2,
+    cov_class_1=cov_class_1,
+    cov_class_2=cov_class_2,
+    seed=0,
+)
+print(np.all(X_different_covariance == X_different_covariance_alt))
+
+axs[2][0].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
+axs[2][1].scatter(X_different_covariance_alt[:, 0],X_different_covariance_alt[:, 1]);
+
+axs[0][0].set_title("Data with fixed and spherical covariance")
+axs[1][0].set_title("Data with fixed covariance")
+axs[2][0].set_title("Data with varying covariances")
+axs[0][1].set_title("Alternate Data with fixed and spherical covariance")
+axs[1][1].set_title("Alternate Data with fixed covariance")
+axs[2][1].set_title("Alternate Data with varying covariances")
+fig.suptitle(
+    "Scatter plots for different generated datasets",
+    y=0.94,
+    fontsize=15,
+);
+
 
 # %% [markdown]
 # ## Plotting Functions
@@ -107,16 +185,8 @@ X_different_covariance, y_different_covariance = make_data(
 # - the mean of each class, estimated by the estimator, marked with a star;
 # - the estimated covariance represented by an ellipse at 2 standard deviations from the
 #   mean.
-#
-#
 
 # %% jupyter={"outputs_hidden": false}
-import matplotlib as mpl
-from matplotlib import colors
-
-from sklearn.inspection import DecisionBoundaryDisplay
-
-
 def plot_ellipse(mean, cov, color, ax):
     v, w = np.linalg.eigh(cov)
     u = w[0] / np.linalg.norm(w[0])
@@ -135,7 +205,6 @@ def plot_ellipse(mean, cov, color, ax):
     ell.set_clip_box(ax.bbox)
     ell.set_alpha(0.4)
     ax.add_artist(ell)
-
 
 def plot_result(estimator, X, y, ax):
     cmap = colors.ListedColormap(["tab:red", "tab:blue"])
@@ -198,17 +267,8 @@ def plot_result(estimator, X, y, ax):
 # ## Comparison of LDA and QDA
 #
 # We compare the two estimators LDA and QDA on all three datasets.
-#
-#
 
 # %% jupyter={"outputs_hidden": false}
-import matplotlib.pyplot as plt
-
-from sklearn.discriminant_analysis import (
-    LinearDiscriminantAnalysis,
-    QuadraticDiscriminantAnalysis,
-)
-
 fig, axs = plt.subplots(nrows=3, ncols=2, sharex="row", sharey="row", figsize=(8, 12))
 
 lda = LinearDiscriminantAnalysis(solver="svd", store_covariance=True)
@@ -257,6 +317,34 @@ plt.show()
 # single covariance matrix.
 #
 #
+
+# %%
+fig, axs = plt.subplots(nrows=3, ncols=2, sharex="row", sharey="row", figsize=(8, 12))
+
+lda = LinearDiscriminantAnalysis(solver="svd", store_covariance=True)
+qda = QuadraticDiscriminantAnalysis(store_covariance=True)
+
+for ax_row, X, y in zip(
+    axs,
+    (X_isotropic_covariance_alt, X_shared_covariance_alt, X_different_covariance_alt),
+    (y_isotropic_covariance_alt, y_shared_covariance_alt, y_different_covariance_alt),
+):
+    lda.fit(X, y)
+    plot_result(lda, X, y, ax_row[0])
+    qda.fit(X, y)
+    plot_result(qda, X, y, ax_row[1])
+
+axs[0, 0].set_title("Linear Discriminant Analysis")
+axs[0, 0].set_ylabel("Data with fixed and spherical covariance")
+axs[1, 0].set_ylabel("Data with fixed covariance")
+axs[0, 1].set_title("Quadratic Discriminant Analysis")
+axs[2, 0].set_ylabel("Data with varying covariances")
+fig.suptitle(
+    "Linear Discriminant Analysis vs Quadratic Discriminant Analysis",
+    y=0.94,
+    fontsize=15,
+)
+plt.show()
 
 # %%
 allDone();
