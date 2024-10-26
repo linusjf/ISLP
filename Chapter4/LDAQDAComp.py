@@ -32,6 +32,12 @@
 from notebookfuncs import *
 
 # %% [markdown]
+# ## Import user functions
+
+# %%
+from GenExact import *
+
+# %% [markdown]
 # ## Data generation
 #
 # First, we define a function to generate synthetic data. It creates two blobs centered
@@ -62,6 +68,9 @@ def is_pos_def(x):
 
 def check_symmetric(a, rtol=1e-05, atol=1e-08):
     return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+def is_symmetric_pos_def(x):
+  return (is_pos_def(x) & check_symmetric(x))
 
 
 # %%
@@ -105,9 +114,8 @@ def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
 #
 
 # %% jupyter={"outputs_hidden": false}
-fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(8, 12))
+fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(10, 12))
 covariance = np.array([[1, 0], [0, 1]])
-print("Is Positive definite symmetric: " + str(is_pos_def(covariance) & check_symmetric(covariance)))
 X_isotropic_covariance, y_isotropic_covariance = make_data(
     n_samples=1_000,
     n_features=2,
@@ -115,18 +123,18 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
-covar1 = np.cov(X_isotropic_covariance[0: 1000,],rowvar=False)
-covar2 = np.cov(X_isotropic_covariance[1000: ,],rowvar=False)
+covar = covariance
 X_isotropic_covariance_alt, y_isotropic_covariance_alt = alternate_make_data(
     n_samples=1_000,
     n_features=2,
-    cov_class_1=covar1,
-    cov_class_2=covar2,
+    cov_class_1=covar,
+    cov_class_2=covar,
     seed=0,
 )
 
-print(covar1, covar2)
-print(np.cov(X_isotropic_covariance_alt[0: 1000,],rowvar=False),np.cov(X_isotropic_covariance_alt[1000:,],rowvar=False))
+axs[0][0].set_title("Data with fixed & spherical covariance: \n" + str(covar[0][1]))
+axs[0][1].set_title("Alt Data with fixed & spherical covariance: \n" + str(covar[0][1]))
+
 axs[0][0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 axs[0][1].scatter(X_isotropic_covariance_alt[:, 0],X_isotropic_covariance_alt[:, 1]);
 
@@ -139,23 +147,22 @@ X_shared_covariance, y_shared_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
-covar1 = np.cov(X_shared_covariance[0: 300,],rowvar=False)
-covar2 = np.cov(X_shared_covariance[300: ,],rowvar=False)
+covar = np.cov(X_shared_covariance[0:,],rowvar=False)
+
 X_shared_covariance_alt, y_shared_covariance_alt = alternate_make_data(
     n_samples=300,
     n_features=2,
-    cov_class_1=covar1,
-    cov_class_2=covar2,
+    cov_class_1=covar,
+    cov_class_2=covar,
     seed=0,
 )
-print(covar1, covar2)
-print(np.cov(X_shared_covariance_alt[0: 300,],rowvar=False),np.cov(X_shared_covariance_alt[300:,],rowvar=False))
 
 axs[1][0].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
 axs[1][1].scatter(X_shared_covariance_alt[:, 0],X_shared_covariance_alt[:, 1]);
 
 cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
 cov_class_2 = cov_class_1.T
+
 X_different_covariance, y_different_covariance = make_data(
     n_samples=300,
     n_features=2,
@@ -165,6 +172,8 @@ X_different_covariance, y_different_covariance = make_data(
 )
 covar1 = np.cov(X_different_covariance[0: 300,],rowvar=False)
 covar2 = np.cov(X_different_covariance[300: ,],rowvar=False)
+
+
 X_different_covariance_alt, y_different_covariance_alt = alternate_make_data(
     n_samples=300,
     n_features=2,
@@ -173,18 +182,16 @@ X_different_covariance_alt, y_different_covariance_alt = alternate_make_data(
     seed=0,
 )
 
-print(covar1, covar2)
-print(np.cov(X_different_covariance_alt[0: 300,],rowvar=False),np.cov(X_different_covariance_alt[300:,],rowvar=False))
-
 axs[2][0].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
 axs[2][1].scatter(X_different_covariance_alt[:, 0],X_different_covariance_alt[:, 1]);
 
-axs[0][0].set_title("Data with fixed & spherical covariance")
-axs[1][0].set_title("Data with fixed covariance")
-axs[2][0].set_title("Data with varying covariances")
-axs[0][1].set_title("Alt Data with fixed & spherical covariance")
-axs[1][1].set_title("Alt Data with fixed covariance")
-axs[2][1].set_title("Alt Data with varying covariances")
+axs[1][0].set_title("Data with fixed covariance: ")
+axs[2][0].set_title("Data with varying covariances: ")
+axs[1][1].set_title("Alt Data with fixed covariance: \n" + str(covar[0][1]))
+axs[2][1].set_title("Alt Data with varying covariances: \n" +
+                    str(covar1[0][1]) +
+                    ","
+                    + str(covar2[0][1]))
 fig.suptitle(
     "Scatter plots for different generated datasets",
     y=0.94,
