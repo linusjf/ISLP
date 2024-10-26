@@ -57,13 +57,21 @@ from sklearn.discriminant_analysis import (
 
 
 # %%
+def is_pos_def(x):
+    return np.all(np.linalg.eigvals(x) > 0)
+
+def check_symmetric(a, rtol=1e-05, atol=1e-08):
+    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+
+# %%
 def alternate_make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
   rng = np.random.RandomState(seed)
   mu = np.array([0, 0])
   X = np.concatenate(
     [
-     rng.multivariate_normal(mu, cov_class_1, size=n_samples, tol=1e-12),
-     rng.multivariate_normal(mu, cov_class_2, size=n_samples,tol=1e-12) + np.array([1, 1])
+     rng.multivariate_normal(mu, cov_class_1, size=(n_samples), tol=1e-12),
+     rng.multivariate_normal(mu, cov_class_2, size=(n_samples),tol=1e-12) + np.array([1, 1])
     ]
   )
   # concatenate the response variable y to have the first half as zeros and the rest as ones
@@ -97,8 +105,9 @@ def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
 #
 
 # %% jupyter={"outputs_hidden": false}
-fig, axs = plt.subplots(nrows=3, ncols=2, sharex="row", sharey="row", figsize=(8, 12))
+fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(8, 12))
 covariance = np.array([[1, 0], [0, 1]])
+print("Is Positive definite symmetric: " + str(is_pos_def(covariance) & check_symmetric(covariance)))
 X_isotropic_covariance, y_isotropic_covariance = make_data(
     n_samples=1_000,
     n_features=2,
@@ -106,19 +115,23 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
+covar1 = np.cov(X_isotropic_covariance[0: 1000,],rowvar=False)
+covar2 = np.cov(X_isotropic_covariance[1000: ,],rowvar=False)
 X_isotropic_covariance_alt, y_isotropic_covariance_alt = alternate_make_data(
     n_samples=1_000,
     n_features=2,
-    cov_class_1=covariance,
-    cov_class_2=covariance,
+    cov_class_1=covar1,
+    cov_class_2=covar2,
     seed=0,
 )
-print(np.all(X_isotropic_covariance == X_isotropic_covariance_alt))
-print(np.all(np.cov(X_isotropic_covariance) == np.cov(X_isotropic_covariance_alt)))
+
+print(covar1, covar2)
+print(np.cov(X_isotropic_covariance_alt[0: 1000,],rowvar=False),np.cov(X_isotropic_covariance_alt[1000:,],rowvar=False))
 axs[0][0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 axs[0][1].scatter(X_isotropic_covariance_alt[:, 0],X_isotropic_covariance_alt[:, 1]);
 
-covariance = np.array([[0.0 + 1e-12, -0.23], [0.83, 0.23 + 1e-12]])
+covariance = np.array([[0.0, -0.23], [0.83, 0.23]])
+
 X_shared_covariance, y_shared_covariance = make_data(
     n_samples=300,
     n_features=2,
@@ -126,18 +139,22 @@ X_shared_covariance, y_shared_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
+covar1 = np.cov(X_shared_covariance[0: 300,],rowvar=False)
+covar2 = np.cov(X_shared_covariance[300: ,],rowvar=False)
 X_shared_covariance_alt, y_shared_covariance_alt = alternate_make_data(
     n_samples=300,
     n_features=2,
-    cov_class_1=covariance,
-    cov_class_2=covariance,
+    cov_class_1=covar1,
+    cov_class_2=covar2,
     seed=0,
 )
-print(np.all(X_shared_covariance == X_shared_covariance_alt))
+print(covar1, covar2)
+print(np.cov(X_shared_covariance_alt[0: 300,],rowvar=False),np.cov(X_shared_covariance_alt[300:,],rowvar=False))
+
 axs[1][0].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
 axs[1][1].scatter(X_shared_covariance_alt[:, 0],X_shared_covariance_alt[:, 1]);
 
-cov_class_1 = np.array([[0.0+1e-12, -1.0], [2.5, 0.7 + 1e-12]]) * 2.0
+cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
 cov_class_2 = cov_class_1.T
 X_different_covariance, y_different_covariance = make_data(
     n_samples=300,
@@ -146,24 +163,28 @@ X_different_covariance, y_different_covariance = make_data(
     cov_class_2=cov_class_2,
     seed=0,
 )
+covar1 = np.cov(X_different_covariance[0: 300,],rowvar=False)
+covar2 = np.cov(X_different_covariance[300: ,],rowvar=False)
 X_different_covariance_alt, y_different_covariance_alt = alternate_make_data(
     n_samples=300,
     n_features=2,
-    cov_class_1=cov_class_1,
-    cov_class_2=cov_class_2,
+    cov_class_1=covar1,
+    cov_class_2=covar2,
     seed=0,
 )
-print(np.all(X_different_covariance == X_different_covariance_alt))
+
+print(covar1, covar2)
+print(np.cov(X_different_covariance_alt[0: 300,],rowvar=False),np.cov(X_different_covariance_alt[300:,],rowvar=False))
 
 axs[2][0].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
 axs[2][1].scatter(X_different_covariance_alt[:, 0],X_different_covariance_alt[:, 1]);
 
-axs[0][0].set_title("Data with fixed and spherical covariance")
+axs[0][0].set_title("Data with fixed & spherical covariance")
 axs[1][0].set_title("Data with fixed covariance")
 axs[2][0].set_title("Data with varying covariances")
-axs[0][1].set_title("Alternate Data with fixed and spherical covariance")
-axs[1][1].set_title("Alternate Data with fixed covariance")
-axs[2][1].set_title("Alternate Data with varying covariances")
+axs[0][1].set_title("Alt Data with fixed & spherical covariance")
+axs[1][1].set_title("Alt Data with fixed covariance")
+axs[2][1].set_title("Alt Data with varying covariances")
 fig.suptitle(
     "Scatter plots for different generated datasets",
     y=0.94,
@@ -318,6 +339,11 @@ plt.show()
 #
 #
 
+# %% [markdown]
+# ## Comparison of LDA and QDA for alternate data
+#
+# We compare the two estimators LDA and QDA on all three alternate datasets.
+
 # %%
 fig, axs = plt.subplots(nrows=3, ncols=2, sharex="row", sharey="row", figsize=(8, 12))
 
@@ -335,10 +361,10 @@ for ax_row, X, y in zip(
     plot_result(qda, X, y, ax_row[1])
 
 axs[0, 0].set_title("Linear Discriminant Analysis")
-axs[0, 0].set_ylabel("Data with fixed and spherical covariance")
-axs[1, 0].set_ylabel("Data with fixed covariance")
+axs[0, 0].set_ylabel("Alt Data with fixed & spherical covariance")
+axs[1, 0].set_ylabel("Alt Data with fixed covariance")
 axs[0, 1].set_title("Quadratic Discriminant Analysis")
-axs[2, 0].set_ylabel("Data with varying covariances")
+axs[2, 0].set_ylabel("Alt Data with varying covariances")
 fig.suptitle(
     "Linear Discriminant Analysis vs Quadratic Discriminant Analysis",
     y=0.94,
