@@ -91,12 +91,9 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     seed=0,
 )
 covar = covariance
-
-
 axs[0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 
 covariance = np.array([[0.91, 0.42], [0.42, 0.33]])
-
 X_shared_covariance, y_shared_covariance = make_data(
     n_samples=300,
     n_features=2,
@@ -106,7 +103,6 @@ X_shared_covariance, y_shared_covariance = make_data(
 )
 
 axs[1].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
-
 cov_class_1 = np.array([[24.84,6.92], [6.92, 6.03]])
 cov_class_2 = np.array([[3.71,-2.67], [-2.67, 23.93]])
 

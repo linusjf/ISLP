@@ -54,6 +54,7 @@ from sklearn.discriminant_analysis import (
     LinearDiscriminantAnalysis,
     QuadraticDiscriminantAnalysis,
 )
+from sklearn.covariance import empirical_covariance, shrunk_covariance
 
 
 # %% jupyter={"outputs_hidden": false}
@@ -107,6 +108,7 @@ X_shared_covariance, y_shared_covariance = make_data(
 )
 
 print(np.cov(X_shared_covariance,rowvar=False))
+print(shrunk_covariance(empirical_covariance(X_shared_covariance,assume_centered=False)))
 axs[1].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
 
 cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
@@ -121,7 +123,6 @@ X_different_covariance, y_different_covariance = make_data(
 )
 print(np.cov(X_different_covariance[0: 300, ], rowvar=False))
 print(np.cov(X_different_covariance[300: , ], rowvar=False))
-
 
 axs[2].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
 axs[1].set_title("Data with fixed covariance")
