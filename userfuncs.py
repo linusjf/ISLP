@@ -26,6 +26,7 @@ from statsmodels.graphics.regressionplots import influence_plot
 import plotly.express as px
 
 
+# %%
 # Display residuals plot function
 def display_residuals_plot(results):
     """Display residuals plot
@@ -40,6 +41,7 @@ def display_residuals_plot(results):
     ax.axhline(0, c="k", ls="--")
 
 
+# %%
 def display_studentized_residuals(results):
     """Display studentized residuals
     :param results - the statsmodels.regression.linear_model.RegressionResults object
@@ -64,6 +66,7 @@ def display_studentized_residuals(results):
         print(Auto.iloc[outliers_indexes])
 
 
+# %%
 def display_hat_leverage_plot(results):
     """Display hat leverage plot.
     The size of the bubble or point is an indicator of the influence the point has on the regression.
@@ -95,6 +98,7 @@ def display_hat_leverage_plot(results):
     fig.show()
 
 
+# %%
 def get_influence_points(results):
     """Get high influential data points from a combination of hat_diagonal_matrix, DFBetas, DFFITS, Cook's distance and studentized residuals.
     [[https://www.theopeneducator.com/doe/Regression/outlier-leverage-influential-points]]
@@ -193,6 +197,7 @@ def get_influence_points(results):
     return summary_frame, data_dictionary
 
 
+# %%
 def display_hat_leverage_cutoffs(results):
     """Display hat leverage plot
     :param results - the statsmodels.regression.linear_model.RegressionResults object
@@ -229,6 +234,7 @@ def display_hat_leverage_cutoffs(results):
     ax.axhline(high_influence_cutoff, c="r", ls="-")
 
 
+# %%
 def display_cooks_distance_plot(results):
     """Display cook's distance leverage plot
     :param results - the statsmodels.regression.linear_model.RegressionResults object
@@ -240,6 +246,7 @@ def display_cooks_distance_plot(results):
     return fig
 
 
+# %%
 def display_DFFITS_plot(results):
     """Display DFFITS leverage plot
     :param results - the statsmodels.regression.linear_model.RegressionResults object
@@ -251,6 +258,7 @@ def display_DFFITS_plot(results):
     return fig
 
 
+# %%
 # Identify least statistically significant variable or column
 def identify_least_significant_feature(results, alpha=0.05):
     """Identify least significant feature
@@ -282,6 +290,7 @@ def identify_least_significant_feature(results, alpha=0.05):
         print("The model " + results.model.formula + " cannot be pruned further.")
 
 
+# %%
 # Calculate [Variance Inflation Factors(VIFs) for features
 # in a model](https://www.statology.org/how-to-calculate-vif-in-python/)
 def calculate_VIFs(formula, df):
@@ -299,6 +308,7 @@ def calculate_VIFs(formula, df):
     return vif
 
 
+# %%
 # Identify feature with highest VIF
 def identify_highest_VIF_feature(vifdf, threshold=10):
     """Identify highest VIF feature
@@ -322,6 +332,7 @@ def identify_highest_VIF_feature(vifdf, threshold=10):
         print("No variables are significantly collinear.")
 
 
+# %%
 # Function to standardize numeric columns
 def standardize(series):
     """Standardize
@@ -349,6 +360,8 @@ def perform_analysis(response, formula, dataframe):
     print(anova_lm(results))
     return results
 
+
+# %%
 # Function to get results of regression in a data frame compactly
 def get_results_df(results):
     result_df = pd.DataFrame(
@@ -366,5 +379,12 @@ def get_results_df(results):
     return result_df
 
 
-
 # %%
+def is_pos_def(x):
+      return np.all(np.linalg.eigvals(x) > 0)
+
+def check_symmetric(a, rtol=1e-05, atol=1e-08):
+    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+def is_symmetric_pos_def(x):
+  return (is_pos_def(x) & check_symmetric(x))

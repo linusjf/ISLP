@@ -57,17 +57,6 @@ from sklearn.discriminant_analysis import (
 
 
 # %%
-def is_pos_def(x):
-    return np.all(np.linalg.eigvals(x) > 0)
-
-def check_symmetric(a, rtol=1e-05, atol=1e-08):
-    return np.allclose(a, a.T, rtol=rtol, atol=atol)
-
-def is_symmetric_pos_def(x):
-  return (is_pos_def(x) & check_symmetric(x))
-
-
-# %%
 def alternate_make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
   rng = np.random.RandomState(seed)
   mu = np.array([0, 0])
@@ -108,7 +97,7 @@ def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
 #
 
 # %% jupyter={"outputs_hidden": false}
-fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(10, 12))
+fig, axs = plt.subplots(nrows=3, ncols=1, figsize=(8, 12))
 covariance = np.array([[1, 0], [0, 1]])
 X_isotropic_covariance, y_isotropic_covariance = make_data(
     n_samples=1_000,
@@ -118,20 +107,9 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     seed=0,
 )
 covar = covariance
-axs[0][0].set_title("Data with fixed & spherical covariance: \n" + f"{covariance[0][1]:.2f}")
-X_isotropic_covariance_alt, y_isotropic_covariance_alt = alternate_make_data(
-    n_samples=1_000,
-    n_features=2,
-    cov_class_1=covar,
-    cov_class_2=covar,
-    seed=0,
-)
+axs[0].set_title("Data with fixed & spherical covariance: \n" + f"{covariance[0][1]:.2f}")
 
-covar = np.cov(X_isotropic_covariance_alt,rowvar=False)
-axs[0][1].set_title("Alt Data with fixed & spherical covariance: \n" + f"{covar[0][1]:.2f}")
-
-axs[0][0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
-axs[0][1].scatter(X_isotropic_covariance_alt[:, 0],X_isotropic_covariance_alt[:, 1]);
+axs[0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 
 covariance = np.array([[0.0, -0.23], [0.83, 0.23]])
 
@@ -142,18 +120,8 @@ X_shared_covariance, y_shared_covariance = make_data(
     cov_class_2=covariance,
     seed=0,
 )
-covar = np.cov(X_shared_covariance,rowvar=False)
 
-X_shared_covariance_alt, y_shared_covariance_alt = alternate_make_data(
-    n_samples=300,
-    n_features=2,
-    cov_class_1=covar,
-    cov_class_2=covar,
-    seed=0,
-)
-
-axs[1][0].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
-axs[1][1].scatter(X_shared_covariance_alt[:, 0],X_shared_covariance_alt[:, 1]);
+axs[1].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
 
 cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
 cov_class_2 = cov_class_1.T
@@ -165,28 +133,10 @@ X_different_covariance, y_different_covariance = make_data(
     cov_class_2=cov_class_2,
     seed=0,
 )
-covar1 = np.cov(X_different_covariance[0: 300,],rowvar=False)
-covar2 = np.cov(X_different_covariance[300: ,],rowvar=False)
 
-
-X_different_covariance_alt, y_different_covariance_alt = alternate_make_data(
-    n_samples=300,
-    n_features=2,
-    cov_class_1=covar1,
-    cov_class_2=covar2,
-    seed=0,
-)
-
-axs[2][0].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
-axs[2][1].scatter(X_different_covariance_alt[:, 0],X_different_covariance_alt[:, 1]);
-
-axs[1][0].set_title("Data with fixed covariance: \n" + f"")
-axs[2][0].set_title("Data with varying covariances: \n" + f"")
-axs[1][1].set_title("Alt Data with fixed covariance: \n" + f"{covar[0][1]:.2f}")
-axs[2][1].set_title("Alt Data with varying covariances: \n" +
-                    f"({covar1[0][1]:.2f}" +
-                    ","
-                    + f"{covar2[0][1]:.2f})")
+axs[2].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
+axs[1].set_title("Data with fixed covariance: \n" + f"")
+axs[2].set_title("Data with varying covariances: \n" + f"")
 fig.suptitle(
     "Scatter plots for different generated datasets",
     y=0.94,
@@ -340,39 +290,6 @@ plt.show()
 # single covariance matrix.
 #
 #
-
-# %% [markdown]
-# ## Comparison of LDA and QDA for alternate data
-#
-# We compare the two estimators LDA and QDA on all three alternate datasets.
-
-# %%
-fig, axs = plt.subplots(nrows=3, ncols=2, sharex="row", sharey="row", figsize=(8, 12))
-
-lda = LinearDiscriminantAnalysis(solver="svd", store_covariance=True)
-qda = QuadraticDiscriminantAnalysis(store_covariance=True)
-
-for ax_row, X, y in zip(
-    axs,
-    (X_isotropic_covariance_alt, X_shared_covariance_alt, X_different_covariance_alt),
-    (y_isotropic_covariance_alt, y_shared_covariance_alt, y_different_covariance_alt),
-):
-    lda.fit(X, y)
-    plot_result(lda, X, y, ax_row[0])
-    qda.fit(X, y)
-    plot_result(qda, X, y, ax_row[1])
-
-axs[0, 0].set_title("Linear Discriminant Analysis")
-axs[0, 0].set_ylabel("Alt Data with fixed & spherical covariance")
-axs[1, 0].set_ylabel("Alt Data with fixed covariance")
-axs[0, 1].set_title("Quadratic Discriminant Analysis")
-axs[2, 0].set_ylabel("Alt Data with varying covariances")
-fig.suptitle(
-    "Linear Discriminant Analysis vs Quadratic Discriminant Analysis",
-    y=0.94,
-    fontsize=15,
-)
-plt.show()
 
 # %%
 allDone();
