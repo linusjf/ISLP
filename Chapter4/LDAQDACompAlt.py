@@ -56,6 +56,21 @@ from sklearn.discriminant_analysis import (
 )
 
 
+# %%
+def alternate_make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
+  rng = np.random.RandomState(seed)
+  mu = np.array([0, 0])
+  X = np.concatenate(
+    [
+     rng.multivariate_normal(mu, cov_class_1, size=(n_samples), tol=1e-12),
+     rng.multivariate_normal(mu, cov_class_2, size=(n_samples),tol=1e-12) + np.array([1, 1])
+    ]
+  )
+  # concatenate the response variable y to have the first half as zeros and the rest as ones
+  y = np.concatenate([np.zeros(n_samples), np.ones(n_samples)])
+  return X, y
+
+
 # %% jupyter={"outputs_hidden": false}
 def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
     rng = np.random.RandomState(seed)
@@ -92,7 +107,7 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     seed=0,
 )
 covar = covariance
-axs[0].set_title("Data with fixed & spherical covariance:")
+axs[0].set_title("Data with fixed & spherical covariance: \n" + f"{covariance[0][1]:.2f}")
 
 axs[0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 
@@ -120,8 +135,8 @@ X_different_covariance, y_different_covariance = make_data(
 )
 
 axs[2].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
-axs[1].set_title("Data with fixed covariance")
-axs[2].set_title("Data with varying covariances")
+axs[1].set_title("Data with fixed covariance: \n" + f"")
+axs[2].set_title("Data with varying covariances: \n" + f"")
 fig.suptitle(
     "Scatter plots for different generated datasets",
     y=0.94,
