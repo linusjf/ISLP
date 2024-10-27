@@ -106,6 +106,7 @@ X_shared_covariance, y_shared_covariance = make_data(
     seed=0,
 )
 
+print(np.cov(X_shared_covariance,rowvar=False))
 axs[1].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
 
 cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
@@ -118,6 +119,9 @@ X_different_covariance, y_different_covariance = make_data(
     cov_class_2=cov_class_2,
     seed=0,
 )
+print(np.cov(X_different_covariance[0: 300, ], rowvar=False))
+print(np.cov(X_different_covariance[300: , ], rowvar=False))
+
 
 axs[2].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
 axs[1].set_title("Data with fixed covariance")

@@ -16,11 +16,11 @@
 import numpy as np
 
 # https://stats.stackexchange.com/questions/120179/generating-data-with-a-given-sample-covariance-matrix
-def gen_exact(mean=None,sigma=None,size=None,seed=0):
-  if (mean is None or sigma is None or size is None):
+def gen_exact(mean=None,sigma=None,size=None,rng=None):
+  if (mean is None or sigma is None or size is None or rng is None):
     return None
   # Generate size cases
-  rng = np.random.RandomState(seed)
+  # rng = np.random.RandomState(seed)
   X = rng.multivariate_normal(mean, sigma, size=size).T
 
   # Subtract the mean from each variable
@@ -42,6 +42,5 @@ def gen_exact(mean=None,sigma=None,size=None,seed=0):
 
   # The covariance of the generated data should match Sigma
   cov = np.cov(X, bias = True)
-  print(cov)
   X = X.T
   return X

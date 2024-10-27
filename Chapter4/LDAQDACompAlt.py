@@ -57,34 +57,18 @@ from sklearn.discriminant_analysis import (
 
 
 # %%
-def alternate_make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
+def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
   rng = np.random.RandomState(seed)
   mu = np.array([0, 0])
   X = np.concatenate(
     [
-     rng.multivariate_normal(mu, cov_class_1, size=(n_samples), tol=1e-12),
-     rng.multivariate_normal(mu, cov_class_2, size=(n_samples),tol=1e-12) + np.array([1, 1])
+    rng.multivariate_normal(mu, cov_class_1, size=(n_samples)),
+    rng.multivariate_normal(mu, cov_class_2, size=(n_samples)) + np.array([1, 1])
     ]
   )
   # concatenate the response variable y to have the first half as zeros and the rest as ones
   y = np.concatenate([np.zeros(n_samples), np.ones(n_samples)])
   return X, y
-
-
-# %% jupyter={"outputs_hidden": false}
-def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
-    rng = np.random.RandomState(seed)
-    X = np.concatenate(
-        [
-            # matrix multiply by covariance matrix to add correlation to the values generated
-            rng.randn(n_samples, n_features) @ cov_class_1,
-            # adding an offset of 1 does not change the covariance in the dataset
-            rng.randn(n_samples, n_features) @ cov_class_2 + np.array([1, 1]),
-        ]
-    )
-    # concatenate the response variable y to have the first half as zeros and the rest as ones
-    y = np.concatenate([np.zeros(n_samples), np.ones(n_samples)])
-    return X, y
 
 
 # %% [markdown]
@@ -107,11 +91,11 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
     seed=0,
 )
 covar = covariance
-axs[0].set_title("Data with fixed & spherical covariance: \n" + f"{covariance[0][1]:.2f}")
+
 
 axs[0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 
-covariance = np.array([[0.0, -0.23], [0.83, 0.23]])
+covariance = np.array([[0.91, 0.42], [0.42, 0.33]])
 
 X_shared_covariance, y_shared_covariance = make_data(
     n_samples=300,
@@ -123,8 +107,8 @@ X_shared_covariance, y_shared_covariance = make_data(
 
 axs[1].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
 
-cov_class_1 = np.array([[0.0, -1.0], [2.5, 0.7]]) * 2.0
-cov_class_2 = cov_class_1.T
+cov_class_1 = np.array([[24.84,6.92], [6.92, 6.03]])
+cov_class_2 = np.array([[3.71,-2.67], [-2.67, 23.93]])
 
 X_different_covariance, y_different_covariance = make_data(
     n_samples=300,
@@ -135,8 +119,10 @@ X_different_covariance, y_different_covariance = make_data(
 )
 
 axs[2].scatter(X_different_covariance[:, 0],X_different_covariance[:, 1]);
-axs[1].set_title("Data with fixed covariance: \n" + f"")
-axs[2].set_title("Data with varying covariances: \n" + f"")
+
+axs[0].set_title("Data with fixed & spherical covariance")
+axs[1].set_title("Data with fixed covariance")
+axs[2].set_title("Data with varying covariances")
 fig.suptitle(
     "Scatter plots for different generated datasets",
     y=0.94,
