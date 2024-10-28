@@ -54,6 +54,7 @@ from sklearn.discriminant_analysis import (
     LinearDiscriminantAnalysis,
     QuadraticDiscriminantAnalysis,
 )
+from GenExact import *
 
 
 # %%
@@ -62,9 +63,11 @@ def make_data(n_samples, n_features, cov_class_1, cov_class_2, seed=0):
   mu = np.array([0, 0])
   X = np.concatenate(
     [
-    rng.multivariate_normal(mu, cov_class_1, size=(n_samples)),
-    rng.multivariate_normal(mu, cov_class_2, size=(n_samples)) + np.array([1, 1])
-    ]
+   # rng.multivariate_normal(mu, cov_class_1, size=(n_samples)),
+   # rng.multivariate_normal(mu, cov_class_2, size=(n_samples)) + np.array([1, 1])
+   gen_inexact(mu, cov_class_1, size=(n_samples),rng=rng),
+   gen_inexact(mu, cov_class_2, size=(n_samples),rng=rng) + np.array([1, 1])
+   ]
   )
   # concatenate the response variable y to have the first half as zeros and the rest as ones
   y = np.concatenate([np.zeros(n_samples), np.ones(n_samples)])
@@ -93,7 +96,9 @@ X_isotropic_covariance, y_isotropic_covariance = make_data(
 covar = covariance
 axs[0].scatter(X_isotropic_covariance[:, 0],X_isotropic_covariance[:, 1]);
 
-covariance = np.array([[0.91, 0.42], [0.42, 0.33]])
+#covariance = np.array([[0.91, 0.42], [0.42, 0.33]])
+covariance = np.array([[0.88, 0.38], [0.38, 0.36]])
+
 X_shared_covariance, y_shared_covariance = make_data(
     n_samples=300,
     n_features=2,
@@ -103,8 +108,10 @@ X_shared_covariance, y_shared_covariance = make_data(
 )
 
 axs[1].scatter(X_shared_covariance[:, 0],X_shared_covariance[:, 1]);
-cov_class_1 = np.array([[24.84,6.92], [6.92, 6.03]])
-cov_class_2 = np.array([[3.71,-2.67], [-2.67, 23.93]])
+#cov_class_1 = np.array([[24.84,6.92], [6.92, 6.03]])
+#cov_class_2 = np.array([[3.71,-2.67], [-2.67, 23.93]])
+cov_class_1 = np.array([[23.82,6.21], [6.21, 6.95]])
+cov_class_2 = np.array([[4.71,-2.39], [-2.39, 22.84]])
 
 X_different_covariance, y_different_covariance = make_data(
     n_samples=300,
