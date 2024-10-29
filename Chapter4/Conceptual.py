@@ -36,6 +36,26 @@ from notebookfuncs import *
 # In other words, the logistic function representation and logit representation for the logistic regression model are equivalent. 
 
 # %% [markdown]
+# $$\Large p(X)  = \frac {e^{\beta_0 + \beta_1 * X}} {1 + {e^{\beta_0 + \beta_1 * X}}}$$
+
+# %% [markdown]
+# $$ \large \implies p(X) * (1 + e^{\beta_0 + \beta_1 * X}) = e^{\beta_0 + \beta_1 * X}$$
+
+# %% [markdown]
+# $$
+# \large \implies p(X) + p(X) * e^{\beta_0 + \beta_1 * X} = e^{\beta_0 + \beta_1 * X}
+# $$
+
+# %% [markdown]
+# $$ \large \implies p(X) = e^{\beta_0 + \beta_1 * X} (1 - p(X)) $$
+
+# %% [markdown]
+# $$ \large \implies \frac {p(X)} {1 - p(X)} = e^{\beta_0 + \beta_1 * X} $$
+
+# %% [markdown]
+# $$ \large \implies \log \Big ({\frac {p(X)} {1 - p(X)}} \Big ) = \beta_0 + \beta_1 * X $$
+
+# %% [markdown]
 # ## Exercise 2
 # It was stated in the text that classifying an observation to the class for which
 # $$
