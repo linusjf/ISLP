@@ -73,16 +73,19 @@ from notebookfuncs import *
 # $$
 # \large Pr \Big (Y = k | X = x \Big ) = \frac {\pi_k f_k(x)} {\sum_{l=1}^K {\pi_x f_k(x)}}
 # $$
-#
+
+# %% [markdown]
 # We change the notation to
 # $$ \large p_k(x) = Pr \Big (Y = k | X = x \Big ) 
 # $$
-#
+
+# %% [markdown]
 # This is the posterior probability that an observation X = x belongs to the $k_{th}$ class.
 # That is, it is the probability that the observation belongs to the $k_{th}$ class, given the predictor value for that observation.
 #
 # Now, we assume that the observations in the $k_{th}$ class are drawn from a $N(\mu_k,\sigma^2)$ distribution.
-#
+
+# %% [markdown]
 # Therefore, substituting the normal distribution function for a Gaussian or normal distribution in the equation for $p_k(x)$, we have:
 # $$
 # \Large f_{k}(x) = {\frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)} 
@@ -91,13 +94,56 @@ from notebookfuncs import *
 # $$
 # \Large p_{k}(x) = \frac {\pi_k \frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)} {\sum_{l=1}^K \pi_l \frac {1} {\sqrt{2\pi}  \sigma} exp (- \frac {1} {2\sigma^2}(x - \mu_l)^2)}
 # $$
-#
+
+# %% [markdown]
 # We select the $k_{th}$ classifier if the value of the above function is maximum amongst all the K classifiers, from 1 to K. 
 #
 # Since the denominator is a sum over all the K classifiers, it is constant.
 # So the problem reduces to maximizing the value of the numerator.
 # $$
 # \large  \pi_k \frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)
+# $$
+
+# %% [markdown]
+# This is the same as maximizing the log of the above equation.
+#
+# That is, we try to maximize:
+# $$
+# log(\pi_k) - log(\sqrt{2\pi}\sigma) - \frac {1} {2\sigma^2}(x - \mu_k)^2
+# $$
+
+# %% [markdown]
+# $- log(\sqrt{2\pi}\sigma)$ is a constant as well. So that drops out as well.
+#
+# Hence, we seek to maximize 
+# $$
+# \large log(\pi_k)  - \frac {1} {2\sigma^2}(x - \mu_k)^2
+# $$
+
+# %% [markdown]
+# Expanding the quadratic equation, we have
+# $$
+# \large log(\pi_k)  - \frac {1} {2\sigma^2}[x^2 + \mu_k^2 - 2x\mu_k]
+# $$
+
+# %% [markdown]
+# Again, $\large x^2 * \frac {1} {2\sigma^2}$ is a constant in terms of k.
+
+# %% [markdown]
+# The equation reduces to
+# $$
+# \large log(\pi_k)  - \frac {1} {2\sigma^2}[\mu_k^2 - 2x\mu_k]
+# $$
+
+# %% [markdown]
+# $$
+# \large \log(\pi_k) - \mu_k^2/2\sigma^2 +  \mu_kx/ \sigma^2
+# $$
+
+# %% [markdown]
+# Thus, the final equation becomes (rearranging the terms):
+# $$
+# \large \delta_k  = \large \frac {\mu_k} {\sigma^2}x  - \frac {\mu_k^2} {2\sigma^2} +  \log(\pi_k)  
 # $$
 
 # %% [markdown]
