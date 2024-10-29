@@ -69,6 +69,38 @@ from notebookfuncs import *
 # (4.18) is the largest. Prove that this is the case. In other words, under the assumption that the observations in the $k_{th}$ class are drawn from a $N(\mu_k , \sigma^2)$ distribution, the Bayes classifier assigns an observation to the class for which the discriminant function is maximized.
 
 # %% [markdown]
+# By Bayes' theorem, we have
+# $$
+# \large Pr \Big (Y = k | X = x \Big ) = \frac {\pi_k f_k(x)} {\sum_{l=1}^K {\pi_x f_k(x)}}
+# $$
+#
+# We change the notation to
+# $$ \large p_k(x) = Pr \Big (Y = k | X = x \Big ) 
+# $$
+#
+# This is the posterior probability that an observation X = x belongs to the $k_{th}$ class.
+# That is, it is the probability that the observation belongs to the $k_{th}$ class, given the predictor value for that observation.
+#
+# Now, we assume that the observations in the $k_{th}$ class are drawn from a $N(\mu_k,\sigma^2)$ distribution.
+#
+# Therefore, substituting the normal distribution function for a Gaussian or normal distribution in the equation for $p_k(x)$, we have:
+# $$
+# \Large f_{k}(x) = {\frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)} 
+# $$
+# and
+# $$
+# \Large p_{k}(x) = \frac {\pi_k \frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)} {\sum_{l=1}^K \pi_l \frac {1} {\sqrt{2\pi}  \sigma} exp (- \frac {1} {2\sigma^2}(x - \mu_l)^2)}
+# $$
+#
+# We select the $k_{th}$ classifier if the value of the above function is maximum amongst all the K classifiers, from 1 to K. 
+#
+# Since the denominator is a sum over all the K classifiers, it is constant.
+# So the problem reduces to maximizing the value of the numerator.
+# $$
+# \large  \pi_k \frac {1} {\sqrt{2\pi}\sigma} exp(- \frac {1} {2\sigma^2}(x - \mu_k)^2)
+# $$
+
+# %% [markdown]
 # ## Exercise 3 
 # This problem relates to the QDA model, in which the observations within each class are drawn from a normal distribution with a class specific mean vector and a class specific covariance matrix. We consider the simple case where p = 1; i.e. there is only one feature. Suppose that we have K classes, and that if an observation belongs to the kth class then X comes from a one-dimensional normal distribution, $X ∼ N(\mu_k , \sigma_k^2)$. Recall that the density function for the one-dimensional normal distribution is given in 
 # $$
