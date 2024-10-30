@@ -109,7 +109,7 @@ from notebookfuncs import *
 #
 # That is, we try to maximize:
 # $$
-# log(\pi_k) - log(\sqrt{2\pi}\sigma) - \frac {1} {2\sigma^2}(x - \mu_k)^2
+# \large log(\pi_k) - log(\sqrt{2\pi}\sigma) - \frac {1} {2\sigma^2}(x - \mu_k)^2
 # $$
 
 # %% [markdown]
@@ -156,6 +156,68 @@ from notebookfuncs import *
 # (4.16). Prove that in this case, the Bayes classifier is not linear. Argue that it is in fact quadratic. 
 #
 # **Hint: For this problem, you should follow the arguments laid out in Section 4.4.1, but without making the assumption that $\sigma_1^2 = · · · = \sigma_K^2$**
+
+# %% [markdown]
+# By Bayes' theorem, we have
+# $$
+# \large Pr \Big (Y = k | X = x \Big ) = \frac {\pi_k f_k(x)} {\sum_{l=1}^K {\pi_x f_k(x)}}
+# $$
+
+# %% [markdown]
+# We change the notation to
+# $$ \large p_k(x) = Pr \Big (Y = k | X = x \Big ) 
+# $$
+
+# %% [markdown]
+# This is the posterior probability that an observation X = x belongs to the $k_{th}$ class.
+# That is, it is the probability that the observation belongs to the $k_{th}$ class, given the predictor value for that observation.
+#
+# Now, we assume that the observations in the $k_{th}$ class are drawn from a $N(\mu_k,\sigma_k^2)$ distribution.
+
+# %% [markdown]
+# Therefore, substituting the normal distribution function for a Gaussian or normal distribution in the equation for $p_k(x)$, we have:
+# $$
+# \Large f_{k}(x) = {\frac {1} {\sqrt{2\pi}\sigma_k} exp(- \frac {1} {2\sigma_k^2}(x - \mu_k)^2)} 
+# $$
+# and
+# $$
+# \Large p_{k}(x) = \frac {\pi_k \frac {1} {\sqrt{2\pi}\sigma_k} exp(- \frac {1} {2\sigma_k^2}(x - \mu_k)^2)} {\sum_{l=1}^K \pi_l \frac {1} {\sqrt{2\pi}  \sigma_l} exp (- \frac {1} {2\sigma_l^2}(x - \mu_l)^2)}
+# $$
+
+# %% [markdown]
+# We select the $k_{th}$ classifier if the value of the above function is maximum amongst all the K classifiers, from 1 to K. 
+#
+# Since the denominator is a sum over all the K classifiers, it is constant.
+# So the problem reduces to maximizing the value of the numerator.
+# $$
+# \large  \pi_k \frac {1} {\sqrt{2\pi}\sigma_k} exp(- \frac {1} {2\sigma_k^2}(x - \mu_k)^2)
+# $$
+
+# %% [markdown]
+# This is the same as maximizing the log of the above equation and removing the constant term $1/\sqrt{2\pi}$
+#
+# That is, we try to maximize:
+# $$
+# \large log(\pi_k) - log(\sigma_k) - \frac {1} {2\sigma_k^2}(x - \mu_k)^2
+# $$
+
+# %% [markdown]
+# $$
+# \large log(\pi_k) - log(\sigma_k) - \frac {1} {2\sigma_k^2}[x^2 - 2\mu_kx + \mu_k^2]
+# $$
+
+# %% [markdown]
+# $$
+# \large - \frac {x^2} {2\sigma_k^2} + \frac {\mu_kx} {\sigma_k^2} - \frac {\mu_k^2}{2\sigma_k^2} - log(\sigma_k) + log(\pi_k)
+# $$
+
+# %% [markdown]
+# $$
+# \large \delta_k = - \frac {x^2} {2\sigma_k^2} + \frac {\mu_kx} {\sigma_k^2} - \frac {\mu_k^2}{2\sigma_k^2} - log(\sigma_k) + log(\pi_k)
+# $$
+
+# %% [markdown]
+# The above function is quadratic in x with linear coefficients for both x and $x^2$. Thus, the Bayes classifier is not linear, but quadratic.
 
 # %% [markdown]
 # ## Exercise 4
