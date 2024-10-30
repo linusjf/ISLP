@@ -217,7 +217,89 @@ from notebookfuncs import *
 # $$
 
 # %% [markdown]
-# The above function is quadratic in x with linear coefficients for both x and $x^2$. Thus, the Bayes classifier is not linear, but quadratic.
+# The above function is quadratic in x with non-zero coefficients for both x and $x^2$. Thus, the Bayes classifier is not linear, but quadratic.
+
+# %% [markdown]
+# ## Exercises 3 and 4
+
+# %% [markdown]
+# Alternatively, we can derive the $\delta$ form of the LDA and QDA  as follows:
+
+# %% [markdown]
+# $$
+# \large P(y=k|x) = \frac {P(x|y=k)P(y=k)} {P(x)} = \frac {P(x|y=k)P(y=k)} {\sum_l P(x|y=l)P(y=l)}
+# $$
+
+# %% [markdown]
+# And we select the class that maximizes this posterior probability. 
+
+# %% [markdown]
+# When P(x|y) is modeleed as a multivariate Gaussian distribution with density:
+
+# %% [markdown]
+# $$
+# \large P(x|y=k) = p_k(x) = \frac {1} {{(2\pi)}^{d/2} {\mid \Sigma_k \mid}^{1/2}} exp \Big (- \frac{1}{2}{(x - \mu_k)}^T {\Sigma_k}^{-1}(x - \mu_k) \Big )
+# $$
+#
+# wherre d is the number of features.
+
+# %% [markdown]
+# According to the model above, the log of the posterior is:
+#
+# $$
+# \large log(P(x|y=k)) = log(P(x|y=k)) + log(P(y=k)) + C_{st}
+# $$
+# where the constant term $C_{st}$
+#  corresponds to the denominator P(x)
+# , in addition to other constant terms from the Gaussian. The predicted class is the one that maximises this log-posterior.
+
+# %% [markdown]
+# $$
+# \large = - \frac {1} {2} log \mid \Sigma_k \mid - \frac{1}{2}{(x - \mu_k)}^T {\Sigma_k}^{-1}(x - \mu_k) + log(P(y=k)) + C_{st}
+# $$
+
+# %% [markdown]
+# $$
+# = \large - \frac {1} {2} log \mid \Sigma_k \mid - \frac {1} {2} [x^T\Sigma_k^{-1}x - \mu_k^T\Sigma_k^{-1}x - x^T\Sigma_k^{-1}\mu_k + \mu_k^T\Sigma_k^{-1}\mu_k] + log(\pi_k) + C_{st}
+# $$
+
+# %% [markdown]
+# $$
+# = \large - \frac {1} {2} log \mid \Sigma_k \mid - \frac {1} {2} [x^T\Sigma_k^{-1}x - 2x^T\Sigma_k^{-1}\mu_k + \mu_k^T\Sigma_k^{-1}\mu_k] + log(\pi_k) + C_{st}
+# $$
+
+# %% [markdown]
+# Hence for QDA, we have the following delta equation to be maximized to select the classifier k with the maximum probability.
+#
+# $$
+#   \large \delta_k = - \frac {1} {2} log \mid \Sigma_k \mid - \frac {1} {2} [x^T\Sigma_k^{-1}x - 2x^T\Sigma_k^{-1}\mu_k + \mu_k^T\Sigma_k^{-1}\mu_k] + log(\pi_k) + C_{st}
+# $$
+
+# %% [markdown]
+# $$
+# \large \delta_k =  - \frac {x^T\Sigma_k^{-1}x} {2} + x^T\Sigma_k^{-1}\mu_k + \frac {\mu_k^T\Sigma_k^{-1}\mu_k} {2} + log(\pi_k)  - \frac {1} {2} log \mid \Sigma_k \mid + C_{st}
+# $$
+#
+# This is quadratic in x.
+
+# %% [markdown]
+# In the case of LDA, we have a common covariance matrix, $\Sigma$ instead of $\Sigma_k$ for each classifier class.
+
+# %% [markdown]
+# $$
+# \large \delta_k =  - \frac {x^T\Sigma^{-1}x} {2} + x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k)  - \frac {1} {2} log \mid \Sigma \mid + C_{st}
+# $$
+
+# %% [markdown]
+# Here, $x^T\Sigma_k^{-1}x$ and $log \mid \Sigma \mid$ are constant in k. Hence, these can be merged into a constant term, $C_{stadj}$
+
+# %% [markdown]
+# $$
+# \large \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k) + C_{stadj}
+# $$
+
+# %% [markdown]
+# This equation is linear in x.
 
 # %% [markdown]
 # ## Exercise 4
