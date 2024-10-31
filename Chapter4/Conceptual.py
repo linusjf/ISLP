@@ -351,10 +351,14 @@ from notebookfuncs import *
 # %% [markdown]
 # ### (c)
 # In general, as the sample size n increases, do we expect the test prediction accuracy of QDA relative to LDA to improve, decline, or be unchanged? Why?
+#
+# As the sample size increases, the variance of the classifier is not a major concern or when obviously the assumption of a common covariance for the K classes is untenable. The QDA test prediction accuracy will increase when the training set is very large.
 
 # %% [markdown]
 # ### (d)
 # True or False: Even if the Bayes decision boundary for a given problem is linear, we will probably achieve a superior test error rate using QDA rather than LDA because QDA is flexible enough to model a linear decision boundary. Justify your answer.
+#
+# False. The QDA may overfit on the training data when the Bayes decision boundary is linear but the variance will increase when exposed to out-of-sample test data. This will cause a decline in the test error rate where the LDA will prove superior since it actually matches the linear decision boundary more closely.
 
 # %% [markdown]
 # ## Exercise 6
