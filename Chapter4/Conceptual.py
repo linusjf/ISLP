@@ -444,11 +444,11 @@ from notebookfuncs import *
 
 # %% [markdown]
 # ### (b)
-# What is the log odds of orange versus apple in your friend’s model?
+# What is the log odds of orange versus apple in your friend's model?
 
 # %% [markdown]
 # ### (c)
-# Suppose that in your model, $\beta_0$ = 2 and $\beta_1$ = −1. What are the coefficient estimates in your friend’s model? Be as specific as possible.
+# Suppose that in your model, $\beta_0$ = 2 and $\beta_1$ = -1. What are the coefficient estimates in your friend's model? Be as specific as possible.
 
 # %% [markdown]
 # ### (d)
@@ -456,7 +456,7 @@ from notebookfuncs import *
 
 # %% [markdown]
 # ### (e) 
-# Finally, suppose you apply both models from (d) to a data set with 2,000 test observations. What fraction of the time do you expect the predicted class labels from your model to agree with those from your friend’s model? Explain your answer.
+# Finally, suppose you apply both models from (d) to a data set with 2,000 test observations. What fraction of the time do you expect the predicted class labels from your model to agree with those from your friend's model? Explain your answer.
 
 # %%
 allDone();
