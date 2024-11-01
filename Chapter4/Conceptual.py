@@ -412,6 +412,56 @@ solve(eqn_to_solve,X1)
 # $$. You will need to use Bayes’ theorem.**
 
 # %% [markdown]
+# By Bayes' theorem, we have
+# $$
+# \large P(Y=k|X=x) = \frac {\pi_k * f_k(x)} {\sum_l \pi_l * f_l(x)}
+# $$
+#
+# Now the relevant terms from the above problem statement are as follows:
+#
+# X - Last year's profit percentage for the company
+#
+# $\bar{X}_y$ - The mean profit percent for companies that declared dividends = 10
+#
+# $\bar{X}_n$ - The mean profit percent for companies that did not declare dividends = 0
+#
+# $\sigma^2$ - The variance of X for these two sets of companies = 36
+#
+# $\implies \sigma = \sqrt{36} = 6$
+#
+# $\pi_y$ - Percentage or proportion of companies that declared dividends = 0.8
+#
+# $\pi_n$ - Percentage or proportion of companies that did not declare dividends = 0.2
+#
+# Predict the probability that a company will issue a dividend this year given that its percentage profit was X = 4 last year.
+
+# %%
+from sympy import sqrt, Integer, pi
+sigma = Symbol("σ")
+x = Symbol("x")
+mu_yes = Symbol("μᵧ")
+mu_no = Symbol("μₙ")
+x_bar_yes = Symbol("x̄ᵧ")
+x_bar_no = Symbol("x̄ₙ")
+pi_yes = Symbol("πᵧ")
+pi_no = Symbol("πₙ")
+density_fn_const = 1 /  ((2 * pi)**(1/2) * sigma)
+density_fn_exponent_yes = ((x - mu_yes) ** 2) / (2 * sigma ** 2)
+density_fn_exponent_no = ((x - mu_no) ** 2) / (2 * sigma ** 2)
+density_fn_yes = (density_fn_const) * e ** -(density_fn_exponent_yes)
+probability_yes = pi_yes * density_fn_yes
+density_fn_no = (density_fn_const) * e ** -(density_fn_exponent_no)
+probability_no = pi_no * density_fn_no
+probability_x = probability_yes + probability_no
+
+# %% [markdown]
+# The probability that a company will issue a dividend this year given that its percentage profit was X = 4 last year is as follows:
+
+# %%
+conditional_prob = probability_yes / probability_x
+conditional_prob.subs([(mu_no, 0), (mu_yes, 10), (sigma,6), (pi_yes, 0.8), (pi_no,0.2), (x,4)])
+
+# %% [markdown]
 # ## Exercise 8
 #
 # Suppose that we take a data set, divide it into equally-sized training and test sets, and then try out two different classification procedures. First we use logistic regression and get an error rate of 20% on the training data and 30% on the test data. Next we use 1-nearest neighbors (i.e. K = 1) and get an average error rate (averaged over both test and training data sets) of 18%. Based on these results, which method should we prefer to use for classification of new observations? Why?
