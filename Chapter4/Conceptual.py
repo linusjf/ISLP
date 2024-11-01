@@ -365,13 +365,41 @@ from notebookfuncs import *
 #
 # Suppose we collect data for a group of students in a statistics class with variables $\large X_1 = hours \: studied, X_2 = undergrad \: GPA$, and $Y = receive \: an \: A$. We fit a logistic regression and produce estimated coefficient, $\large \beta_0 = −6, \beta_1 = 0.05, \beta_2 = 1$.
 
+# %%
+from sympy import Symbol
+from mpmath import e
+from algebra_with_sympy import Eqn, solve
+
+X1 = Symbol("hours.studied")
+X2 = Symbol("undergrad.GPA")
+Y = Symbol("receive.an.A")
+beta_0 = Symbol("β₀")
+beta_1 = Symbol("β₁")
+beta_2 = Symbol("β₂")
+
+exponent = beta_0 + beta_1 * X1 + beta_2 * X2
+numerator = e ** exponent
+denominator = 1 + numerator
+logit_probability = numerator / denominator
+logit_probability = logit_probability.subs([(beta_0, -6),(beta_1,0.05),(beta_2,1)])
+
 # %% [markdown]
 # ### (a)
 # Estimate the probability that a student who studies for 40 hours and has an undergrad GPA of 3.5 gets an A in the class.
 
+# %%
+hours_studied = 40
+undergrad_GPA = 3.5
+logit_probability.subs([(X1, hours_studied),(X2, undergrad_GPA)])
+
 # %% [markdown]
 # ### (b)
-# How many hours would the student in part (a) need to study to have a 50 % chance of getting an A in the class?
+# How many hours would the student in part (a) need to study to have a 50% chance of getting an A in the class?
+
+# %%
+prob = logit_probability.subs(X2, undergrad_GPA)
+eqn_to_solve = Eqn(0.5, prob)
+solve(eqn_to_solve,X1)
 
 # %% [markdown]
 # ## Exercise 7 
