@@ -473,12 +473,31 @@ conditional_prob.subs([(mu_no, 0), (mu_yes, 10), (sigma,6), (pi_yes, 0.8), (pi_n
 # This problem has to do with odds. 
 
 # %% [markdown]
+# Odds are defined as $\large \frac {P(X)} {1 - P(X)}$. 
+
+# %% [markdown]
 # ### (a)
 # On average, what fraction of people with an odds of 0.37 of defaulting on their credit card payment will in fact default? 
 
 # %% [markdown]
+# This implies that $\large \frac {P(X)} {1 - P(X)} = 0.37$
+
+# %%
+odds = 0.37
+probability = Symbol("P(X)")
+odds_formula = probability / (1 - probability)
+print(odds_formula)
+odds_equation = Eqn(odds, odds_formula )
+print(odds_equation)
+solve(odds_equation, probability)
+
+# %% [markdown]
 # ### (b)
 # Suppose that an individual has a 16% chance of defaulting on her credit card payment. What are the odds that she will default?
+
+# %%
+prob_value = 0.16
+odds_formula.subs(probability, prob_value)
 
 # %% [markdown]
 # ## Exercise 10
