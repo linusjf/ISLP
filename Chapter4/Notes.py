@@ -222,6 +222,24 @@ print(classification_report(y_true=y,
 #  score align with the Yes row above. For completeness, support simply refers to the number of observations in each class. For our working example, that is number of observations that did not default (9667) or that did default (333) present in our training data.
 
 # %% [markdown]
+# ## Train Logistic Regression Model
+
+# %%
+from sklearn.linear_model import LogisticRegression
+
+# Setting penalty=None to disable regularization
+log_reg = LogisticRegression(penalty=None)
+log_reg.fit(X, y)
+log_reg.score(X, y)  # 0.9732
+
+# %%
+from sklearn.metrics import RocCurveDisplay
+lr_disp = RocCurveDisplay.from_estimator(log_reg,X,y,alpha=0.8,plot_chance_level=True)
+RocCurveDisplay.from_estimator(lda,X,y,ax=lr_disp.ax_,alpha=0.8)
+plt.title("ROC Curve Comparison")
+plt.show()
+
+# %% [markdown]
 # ## References:
 # 1. [Linear discriminant analysis #2
 # scikit-learn, precision, recall, F-scores, ROC curves, and a comparison to logistic regression](https://ethanwicker.com/2021-02-07-linear-discriminant-analysis-002/)
