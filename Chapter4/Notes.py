@@ -64,6 +64,7 @@ from notebookfuncs import *
 # ## ROC Curve in Python
 
 # %%
+import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -107,9 +108,15 @@ y_pred = lda.predict(X)
 
 # Creating confusion matrix
 cm = confusion_matrix(y_true=y, y_pred=y_pred)
+print(cm)
 
 # Getting individual values
 tn, fp, fn, tp = confusion_matrix(y, y_pred).ravel()
+
+tn = sum(1 for i, j in zip(y, y_pred) if i == "No" and j == "No")
+tp = sum(1 for i, j in zip(y, y_pred) if i == "Yes" and j == "Yes")
+fp = sum(1 for i, j in zip(y, y_pred) if i == "No" and j == "Yes")
+fn = sum(1 for i, j in zip(y, y_pred) if i == "Yes" and j == "No")
 print(tn,fp,fn,tp)
 
 # %%
@@ -117,6 +124,60 @@ from sklearn.metrics import ConfusionMatrixDisplay
 disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                       display_labels=["No", "Yes"])
 disp.plot();
+
+# %% [markdown]
+# ### Accuracy
+
+# %% [markdown]
+# Accuracy is defined as
+#
+# (number of true negatives + number of true positives) /
+# (number of true negatives + number of true positives + number of false negatives +
+# number of false positives)
+
+# %%
+Accuracy = (tn + tp) / (tn + tp + fn + fp)
+
+# %% [markdown]
+# ### Precision
+#
+# Precision is defined as
+#
+# (number of true positives) / (number of true positives + number of false positives)
+#
+# = TP / P*
+#
+# where P* is the total number of predicted positives (defaults) in the dataset.
+
+# %%
+Precision = tp / (tp + fp)
+
+# %% [markdown]
+# Intuitively, precision is representing the proportion of all our predicted positive values that are actually positive. When comparing different classification models, precision is a good measure when we want to avoid false positives.
+#
+# For example, when detecting spam emails, a model with high precision is likely preferred. In the case of spam email, the email user would much rather get the occasional spam email (a false negative) than miss an important email that wasn't spam (a false positive).
+
+# %% [markdown]
+# ### Recall
+
+# %% [markdown]
+# Recall is defined as
+#
+# (number of true positives) / (number of true positives + number of false negatives)
+# = TP / P
+#
+# where P is actual positives (defaults) in the dataset.
+
+# %%
+Recall = tp / (tp + fn)
+
+# %% [markdown]
+# Intuitively, recall is representing how well a model is classifying positive observations as actually positive. When comparing different classification models, recall is a good measure when we want to avoid false negatives.
+
+# %% [markdown]
+# Recall is a metric of particular interest. When classifying events as anomalous or not, I would much rather classify a non-anomalous event as anomalous (a false positive), than misclassify an actual anomaly as non-anomalous (a false negative). Said another way, out of all the actual anomalies out there, I want to make sure I detect as many as I can, even at the expense of including some false positives.
+#
+# In the medical setting, recall is more commonly referred to as sensitivity. A related term in the medical literature is specificity, which is equivalent to the true negative rate. Occasionally, specificity is also referred to as recall of the negative class
 
 # %%
 allDone();
