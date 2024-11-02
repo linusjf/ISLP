@@ -65,6 +65,7 @@ from notebookfuncs import *
 
 # %%
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -80,7 +81,14 @@ Default.shape
 Default.describe()
 
 # %%
-X = Default[["balance", "income"]]
+Default["student"] = Default["student"].astype("category")
+
+# %%
+Default = pd.get_dummies(Default,columns=["student"],drop_first=True)
+Default["student"] = Default["student_Yes"]
+
+# %%
+X = Default[["balance", "income","student"]]
 
  # %%
  y= Default["default"]
@@ -99,6 +107,13 @@ lda.score(X,y)
 # %%
 # Null error rate
 sum(Default["default"] == "No") / len(Default)   # 0.9667
+
+# %%
+### Count of defaults versus non-defaults
+
+# %%
+print(sum(Default["default"] == "No"),
+sum(Default["default"] == "Yes"))
 
 # %%
 from sklearn.metrics import confusion_matrix
@@ -175,9 +190,41 @@ Recall = tp / (tp + fn)
 # Intuitively, recall is representing how well a model is classifying positive observations as actually positive. When comparing different classification models, recall is a good measure when we want to avoid false negatives.
 
 # %% [markdown]
-# Recall is a metric of particular interest. When classifying events as anomalous or not, I would much rather classify a non-anomalous event as anomalous (a false positive), than misclassify an actual anomaly as non-anomalous (a false negative). Said another way, out of all the actual anomalies out there, I want to make sure I detect as many as I can, even at the expense of including some false positives.
+# Recall is a metric of particular interest. When classifying events as anomalous or not, we would much rather classify a non-anomalous event as anomalous (a false positive), than misclassify an actual anomaly as non-anomalous (a false negative). Said another way, out of all the actual anomalies out there, we want to make sure we detect as many as we can, even at the expense of including some false positives.
 #
-# In the medical setting, recall is more commonly referred to as sensitivity. A related term in the medical literature is specificity, which is equivalent to the true negative rate. Occasionally, specificity is also referred to as recall of the negative class
+# In the medical setting, recall is more commonly referred to as sensitivity. A related term in the medical literature is specificity, which is equivalent to the true negative rate. Occasionally, specificity is also referred to as recall of the negative class.
+
+# %% [markdown]
+# ### $F_1$ score
+
+# %% [markdown]
+# The $F_1$ score is the harmonic mean of precision and recall, and is defined as
+#
+# $$\large 2 * \frac { precision \: * \: recall} {precision \: + \: recall}$$
+#
+# When comparing models, the $\large F_1$ score is useful when we want to strike a balance between precision and recall. That is, when we want to avoid both false positives (as in spam email classification) and false negatives (as in anomaly detection).
+#
+
+# %%
+F1 = 2 * Precision * Recall / (Precision + Recall)
+
+# %% [markdown]
+# ### scikit-learn's Classification Report
+
+# %%
+from sklearn.metrics import classification_report
+print(classification_report(y_true=y,
+                                y_pred=y_pred,
+                                target_names=["No", "Yes"]))
+
+# %% [markdown]
+# Note that our manually calculated values of precision, recall, and the $F_1$
+#  score align with the Yes row above. For completeness, support simply refers to the number of observations in each class. For our working example, that is number of observations that did not default (9667) or that did default (333) present in our training data.
+
+# %% [markdown]
+# ## References:
+# 1. [Linear discriminant analysis #2
+# scikit-learn, precision, recall, F-scores, ROC curves, and a comparison to logistic regression](https://ethanwicker.com/2021-02-07-linear-discriminant-analysis-002/)
 
 # %%
 allDone();
