@@ -510,6 +510,47 @@ odds_formula.subs(probability, prob_value)
 # $$
 
 # %% [markdown]
+# In the simpler form of equation 4.32 with p =1 , $\Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big )$ becomes 
+#
+# $$
+# \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) = log \Big ( \frac {\pi_kf_k(x)} {\pi_Kf_K(x)} \Big )
+# $$
+#
+# $$
+# \Large = log \Big (\frac {\pi_k \frac {1} {\sqrt {2\pi\sigma^2}} exp(-\frac {1} {2} (x - \mu_k)^2 / \sigma^2)}    {\pi_K \frac {1} {\sqrt {2\pi\sigma^2}} exp(- \frac {1}{2} (x - \mu_K)^2 / \sigma^2)}     \Big )
+# $$
+#
+# $$
+# \Large = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \frac {1} {2} \frac {(x - \mu_k)^2} {\sigma^2} + \frac {1}{2} \frac {(x - \mu_K)^2} {\sigma^2}
+# $$
+#
+# $$
+# \Large = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \cancel{\frac {1} {2} \frac {x^2}{\sigma^2}}  + \cancel{\frac {1} {2} \frac {x^2}{\sigma^2}} + \frac {x\mu_k} {\sigma^2} - \frac {x\mu_K} {\sigma^2} - \frac {1} {2} \frac {\mu_k^2} {\sigma^2} + \frac {1} {2} \frac {\mu_K^2} {\sigma^2}
+# $$
+#
+# $$
+# \Large = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \frac {1} {2} \frac {\mu_k^2} {\sigma^2} + \frac {1} {2} \frac {\mu_K^2} {\sigma^2} + \frac {x\mu_k} {\sigma^2} - \frac {x\mu_K} {\sigma^2} 
+# $$
+#
+# $$
+# \Large = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \frac {1} {2} \frac {\mu_k^2 - \mu_K^2} {\sigma^2}  + (\frac {\mu_k - \mu_K } {\sigma^2})x
+# $$
+#
+# Here, we have the solution
+#
+# $$
+# \large a_k = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \frac {1} {2} \frac {(\mu_k - \mu_K)(\mu_k + \mu_K)} {\sigma^2}
+# $$
+#
+# and 
+#
+# $$
+# \large b_k = (\frac {\mu_k - \mu_K } {\sigma^2})
+# $$
+#
+# and the expanded equation is linear in x.
+
+# %% [markdown]
 # ## Exercise 11
 # Work out the detailed forms of $\large a_k$ , $\large b_{kj}$ , and $\large c_{kjl}$ in 
 # $$
