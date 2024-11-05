@@ -557,7 +557,57 @@ odds_formula.subs(probability, prob_value)
 # \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) = a_k + \sum_{j=1}^p b_{kj}x_j + \sum_{j=1}^p\sum_{l=1}^pc_{kjl}x_jx_l
 # $$
 #
-# (4.33). Your answer should involve $\large \pi_k$ , $\large \pi_K$ , $\large \mu_k$ , $\large \mu_K$ , $\large \sum_k$ , and $\large \sum_K$ .
+# (4.33). Your answer should involve $\large \pi_k$ , $\large \pi_K$ , $\large \mu_k$ , $\large \mu_K$ , $\large \sum_k$ , and $\large \sum_K$.
+
+# %% [markdown]
+# $$
+# \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) = log \Big ( \frac {\pi_kf_k(x)} {\pi_Kf_K(x)} \Big )
+# $$
+#
+# $$
+# = \Large log \Big ( \frac {\pi_kexp(- \frac {1}{2}(x - \mu_k)^T\Sigma_k^{-1}(x - \mu_k) )} {\pi_Kexp(- \frac {1}{2}(x - \mu_K)^T\Sigma_K^{-1}(x - \mu_K))} \Big )
+# $$
+#
+# $$
+# = \Large log(\frac {\pi_k}{\pi_K}) - \frac {1} {2} (x - \mu_k)^T\Sigma_k^{-1}(x - \mu_k) + \frac {1} {2} (x - \mu_K)^T\Sigma_K^{-1}(x - \mu_K)
+# $$
+#
+# $$
+# = \Large log \Big (\frac {\pi_k}{\pi_K} \Big ) - \frac {1} {2} \Big [x^T\Sigma_k^{-1}x - x^T\Sigma_k^{-1}\mu_k - \mu_k^T\Sigma_k^{-1}x + \mu_k^T\Sigma_k^{-1}\mu_k \Big ] + \frac {1} {2} \Big [x^T\Sigma_K^{-1}x  - x^T\Sigma_K^{-1}\mu_K - \mu_K^T\Sigma_K^{-1}x  + \mu_K^T\Sigma_K^{-1}\mu_K \Big ] 
+# $$
+#
+# $$\begin{align}
+# \large \because A^TxB = B^TxA \\
+# \large x^T\Sigma_k^{-1}\mu_k = \mu_k^T\Sigma_k^{-1}x \: and \\
+# \large x^T\Sigma_K^{-1}\mu_K = \mu_K^T\Sigma_K^{-1}x
+# \end{align}$$
+#
+# $$\begin{align}
+# \large \therefore we \: have \\
+# \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) \\
+# \end{align}$$
+#
+# $$\begin{align}
+# \Large = \Large log \Big (\frac {\pi_k}{\pi_K} \Big ) - \frac {1} {2} \Big [x^T\Sigma_k^{-1}x - 2 x^T\Sigma_k^{-1}\mu_k  + \mu_k^T\Sigma_k^{-1}\mu_k \Big ] + \frac {1} {2} \Big [x^T\Sigma_K^{-1}x  - 2 x^T\Sigma_K^{-1}\mu_K  + \mu_K^T\Sigma_K^{-1}\mu_K \Big ] \\
+# \Large = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big ) - \Big (x^T\Sigma_K^{-1}\mu_K - x^T\Sigma_k^{-1}\mu_k \Big) + \frac {1} {2} \Big ( x^T\Sigma_K^{-1}x - x^T\Sigma_k^{-1}x \Big ) \\
+# \Large = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big ) - x^T (\Sigma_K^{-1}\mu_K - \Sigma_k^{-1}\mu_k)  + \frac {1} {2}  x^T(\Sigma_K^{-1} - \Sigma_k^{-1})x  \\
+# \end{align}$$
+#
+# Here, we have 
+#
+# $$\begin{align}
+# \large a_k = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big ) \\
+# \large b_{kj} \: is \: the \: j_{th} \: component \: of \: \Sigma_K^{-1}\mu_K - \Sigma_k^{-1}\mu_k \\
+# \large c_{kjl} \: is \: the \: jl_{th} \: component \: of \: \Sigma_K^{-1} - \Sigma_k^{-1}
+# \end{align}$$
+#
+# And the equation becomes:
+#
+# $$\begin{align}
+# \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) \\
+# \large =  a_k + \sum_{j=1}^p b_{kj}x_{j} + \sum_{j=1}^p\sum_{l=1}^p x_jc_{kjl}x_l
+# \end{align}$$
+#
 
 # %% [markdown]
 # ## Exercise 12
@@ -574,7 +624,6 @@ odds_formula.subs(probability, prob_value)
 # $$
 # \large \hat{Pr}(Y = orange | X = x) = \frac {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x)} {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x) + exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)  }
 # $$
-#
 
 # %% [markdown]
 # ### (a)
