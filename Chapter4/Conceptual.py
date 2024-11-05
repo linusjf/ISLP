@@ -579,7 +579,10 @@ odds_formula.subs(probability, prob_value)
 # $$\begin{align}
 # \large \because A^TxB = B^TxA \\
 # \large x^T\Sigma_k^{-1}\mu_k = \mu_k^T\Sigma_k^{-1}x \: and \\
-# \large x^T\Sigma_K^{-1}\mu_K = \mu_K^T\Sigma_K^{-1}x
+# \large x^T\Sigma_K^{-1}\mu_K = \mu_K^T\Sigma_K^{-1}x \\
+# \large  \Sigma_k \: and \: \Sigma_K \: are \: symmetric \\
+# \large \: covariance \: matrices \: and \: \\ 
+# \large their  \: inverses \:  are \: also \: symmetric.
 # \end{align}$$
 #
 # $$\begin{align}
@@ -630,20 +633,70 @@ odds_formula.subs(probability, prob_value)
 # What is the log odds of orange versus apple in your model?
 
 # %% [markdown]
+# $$\begin{eqnarray}
+# \large \hat{Pr}(Y = orange | X = x) = \frac {exp(\hat{\beta_0} + \hat{\beta_1}x)} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
+# \large \implies \hat{Pr}(Y = apple | X = x) = 1 - (\frac {exp(\hat{\beta_0} + \hat{\beta_1}x)} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)}) \\
+# \large = \frac {1 + \cancel{exp(\hat{\beta_0} + \hat{\beta_1}x)} - \cancel{exp(\hat{\beta_0} + \hat{\beta_1}x)}} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
+# \large = \frac {1} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
+# \large \implies \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} = exp(\hat{\beta_0} + \hat{\beta_1}x) \\
+# \large \implies log \Big ( \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} \Big ) = \hat{\beta_0} + \hat{\beta_1}x
+# \end{eqnarray}$$
+
+# %% [markdown]
 # ### (b)
 # What is the log odds of orange versus apple in your friend's model?
+
+# %% [markdown]
+# $$\begin{eqnarray}
+# \large \hat{Pr}(Y = orange | X = x) = \frac {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x)} {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x) + exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)  } \\
+# \large \implies  
+# \hat{Pr}(Y = apple | X = x) = \frac {exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)} {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x) + exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)  } \\
+# \large \implies \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} = \frac {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x)} {exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)} \\
+# \large \implies log \Big ( \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} \Big ) = {\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x -{\hat{\alpha}}_{apple0} - {\hat{\alpha}}_{apple1}x \\
+# \large = {\hat{\alpha}}_{orange0} - {\hat{\alpha}}_{apple0} + ({\hat{\alpha}}_{orange1} - {\hat{\alpha}}_{apple1})x
+# \end{eqnarray}$$
 
 # %% [markdown]
 # ### (c)
 # Suppose that in your model, $\beta_0$ = 2 and $\beta_1$ = -1. What are the coefficient estimates in your friend's model? Be as specific as possible.
 
 # %% [markdown]
+# $\beta_0$ = 2
+# and 
+# $\beta_1$ = -1.
+#
+# Since the two models are equivalent, this implies that 
+# $$
+# \large \beta_0 = {\hat{\alpha}}_{orange0} - {\hat{\alpha}}_{apple0}
+# $$
+#
+# and
+#
+# $$
+# \large \beta_1 = {\hat{\alpha}}_{orange1} - {\hat{\alpha}}_{apple1}
+# $$
+#
+# Therefore, the coefficient estimates in the softmax model are also 2 and -1 respectively for $x^0$ and $x^1$ respectively.
+
+# %% [markdown]
 # ### (d)
-# Now suppose that you and your friend fit the same two models on a different data set. This time, your friend gets the coefficient estimates $\large {\hat{\alpha}}_{orange0}$ = 1.2, $\large {\hat{\alpha}}_{orange1}$ = −2, $\large {\hat{\alpha}}_{orange0}$ = 3, $\large {\hat{\alpha}}_{orange1}$ = 0.6. What are the coefficient estimates in your model?
+# Now suppose that you and your friend fit the same two models on a different data set. This time, your friend gets the coefficient estimates $\large {\hat{\alpha}}_{orange0}$ = 1.2, $\large {\hat{\alpha}}_{orange1}$ = −2, $\large {\hat{\alpha}}_{apple0}$ = 3, $\large {\hat{\alpha}}_{apple1}$ = 0.6. What are the coefficient estimates in your model?
+
+# %% [markdown]
+# The coefficient estimates in my model are:
+#
+# $\beta_0$ = 1.2 - 3 = -1.8
+#
+# and
+#
+# $\beta_1$ = -2 - 0.6 = -2.6
 
 # %% [markdown]
 # ### (e) 
 # Finally, suppose you apply both models from (d) to a data set with 2,000 test observations. What fraction of the time do you expect the predicted class labels from your model to agree with those from your friend's model? Explain your answer.
+
+# %% [markdown]
+# Always since the models are equivalent and the classification predictions will not differ.
 
 # %%
 allDone();
