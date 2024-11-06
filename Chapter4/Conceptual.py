@@ -363,35 +363,92 @@ print(f"{(0.0975 ** 100) * 100}% which is close to zero.")
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
-import pandas as pd
 
 rng = np.random.RandomState(0)
-test_obs = tuple((0.25,0.58, 0.67))
 
-unif_sim = pd.DataFrame({"x1": rng.uniform(size=1000),"x2": rng.uniform(size=1000),"x3": rng.uniform(size=1000)})
+# Generate random x, y, z coordinates from uniform distribution
+x = rng.uniform(0, 1, 1000)
+y = rng.uniform(0, 1, 1000)
+z = rng.uniform(0, 1, 1000)
 
-unif_sim.shape
+# Target point
+target_x, target_y, target_z = 0.5, 0.6, 0.3
 
-fig = plt.figure()
+# Filter radius (5% on each side)
+filter_radius = 0.0975 / 2
+
+# Calculate filter bounds
+filter_x_min = max(target_x - filter_radius, 0)
+filter_x_max = min(target_x + filter_radius, 1)
+filter_y_min = max(target_y - filter_radius, 0)
+filter_y_max = min(target_y + filter_radius, 1)
+filter_z_min = max(target_z - filter_radius, 0)
+filter_z_max = min(target_z + filter_radius, 1)
+
+# Filter points
+mask = (filter_x_min <= x) & (x <= filter_x_max) & \
+       (filter_y_min <= y) & (y <= filter_y_max) & \
+       (filter_z_min <= z) & (z <= filter_z_max)
+
+# Create the 3D plot
+fig = plt.figure(figsize=(8,14))
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(unif_sim["x1"], unif_sim["x2"],unif_sim["x3"], alpha=0.3, color="gray", label="uniform data");
-x1, x2 , x3 = test_obs
-ax.plot(x1, x2,x3 ,marker='*', alpha=1.0, color="red", markersize=10,label="test point");
-xmin = np.max([x1 - np.cbrt(0.0975)/2.0,0])
-xmax = np.min([x1 + np.cbrt(0.0975)/2.0,1])
-ymin = np.max([x2 - np.cbrt(0.0975)/2,0])
-ymax = np.min([x2 + np.cbrt(0.0975)/2,1])
-zmin = np.max([x3 - np.cbrt(0.0975)/2,0])
-zmax = np.min([x3 + np.cbrt(0.0975)/2,1])
 
-search_space = \
-unif_sim[(unif_sim["x1"] >= xmin) & (unif_sim["x1"] <= xmax) \
-& (unif_sim["x2"] >= ymin) & (unif_sim["x2"] <= ymax) & \
-(unif_sim["x3"] >= zmin) & (unif_sim["x3"] <= zmax)]
+# Plot points outside filter
+ax.scatter(x[~mask], y[~mask], z[~mask], c='b', alpha=0.1, label="Data")
 
-ax.scatter(search_space["x1"], search_space["x2"],search_space["x3"], alpha=0.1,color="blue",label="search space");
-ax.plot_trisurf(search_space["x1"], search_space["x2"],search_space["x3"], color="blue", alpha=0.1);
-ax.legend();
+# Plot points within filter
+ax.scatter(x[mask], y[mask], z[mask], c='g', s=50, marker='x', alpha=1.0, label="Neighbours")
+
+print(f"Only {len(x[mask])} points fit the filter")
+
+# Plot target point
+ax.scatter(target_x, target_y, target_z, c='r', s=100, marker='*', label="Target",alpha=0.5)
+
+# Plot smaller cube around filtered points
+cube_vertices = np.array([
+    [filter_x_min, filter_y_min, filter_z_min],
+    [filter_x_max, filter_y_min, filter_z_min],
+    [filter_x_max, filter_y_max, filter_z_min],
+    [filter_x_min, filter_y_max, filter_z_min],
+    [filter_x_min, filter_y_min, filter_z_max],
+    [filter_x_max, filter_y_min, filter_z_max],
+    [filter_x_max, filter_y_max, filter_z_max],
+    [filter_x_min, filter_y_max, filter_z_max]
+])
+cube_edges = np.array([
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 0],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 4],
+    [0, 4],
+    [1, 5],
+    [2, 6],
+    [3, 7]
+])
+for edge in cube_edges:
+    ax.plot3D(*zip(cube_vertices[edge[0]], cube_vertices[edge[1]]), c='black')
+
+ax.plot3D(0,0,0,c='black', label="Search Space")
+
+# Set plot limits
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+ax.set_zlim(0, 1)
+
+# Set labels
+ax.set_xlabel('X1')
+ax.set_ylabel('X2')
+ax.set_zlabel('X3')
+
+# Show grid
+ax.grid(True)
+ax.legend()
+plt.show()
 
 # %% [markdown]
 # In high dimensional space, points that are drawn from a distribution tend to be far away from each other.
