@@ -359,6 +359,69 @@ print(f"{(0.0975 ** 100) * 100}% which is close to zero.")
 #
 # *Note: A hypercube is a generalization of a cube to an arbitrary number of dimensions. When p = 1, a hypercube is simply a line segment, when p = 2 it is a square, and when p = 100 it is a 100-dimensional cube.*
 
+# %%
+import matplotlib.pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+import pandas as pd
+
+rng = np.random.RandomState(0)
+test_obs = tuple((0.25,0.58, 0.67))
+
+unif_sim = pd.DataFrame({"x1": rng.uniform(size=1000),"x2": rng.uniform(size=1000),"x3": rng.uniform(size=1000)})
+
+unif_sim.shape
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(unif_sim["x1"], unif_sim["x2"],unif_sim["x3"], alpha=0.3, color="gray", label="uniform data");
+x1, x2 , x3 = test_obs
+ax.plot(x1, x2,x3 ,marker='*', alpha=1.0, color="red", markersize=10,label="test point");
+xmin = np.max([x1 - np.cbrt(0.0975)/2.0,0])
+xmax = np.min([x1 + np.cbrt(0.0975)/2.0,1])
+ymin = np.max([x2 - np.cbrt(0.0975)/2,0])
+ymax = np.min([x2 + np.cbrt(0.0975)/2,1])
+zmin = np.max([x3 - np.cbrt(0.0975)/2,0])
+zmax = np.min([x3 + np.cbrt(0.0975)/2,1])
+
+search_space = \
+unif_sim[(unif_sim["x1"] >= xmin) & (unif_sim["x1"] <= xmax) \
+& (unif_sim["x2"] >= ymin) & (unif_sim["x2"] <= ymax) & \
+(unif_sim["x3"] >= zmin) & (unif_sim["x3"] <= zmax)]
+
+ax.scatter(search_space["x1"], search_space["x2"],search_space["x3"], alpha=0.1,color="blue",label="search space");
+ax.plot_trisurf(search_space["x1"], search_space["x2"],search_space["x3"], color="blue", alpha=0.1);
+ax.legend();
+
+# %% [markdown]
+# In high dimensional space, points that are drawn from a distribution tend to be far away from each other.
+#
+# Let us consider uniform distribution over a hypercube ${[0,1]}^d$
+#
+# Q: What is the probability that is inside the small cube? 
+#
+# A: Volume(small cube)/volume(${[0,1]}^d$) = $l^d$
+#
+# Now assume we sample points uniform randomly, and we observe K points fall inside the small cube. So empirically, the probability of sampling a  point inside the small cube is roughly $\large \frac {K} {n}$. Thus, we have $\large l^d \approx \frac {K} {n}$.
+#
+# Q: How large we should set l s.t., we will have K examples (out of n) fall inside the  small cube?
+#
+# A: $\large l \approx {(\frac {K} {n}})^{1/d} \to 1 \: as \: d \to \infty $
+#
+# Bad news: When  $d \to \infty$, the K nearest neighbors will be all over the place! 
+# (Cannot trust them, as they are not nearby points anymore!) 
+
+# %% [markdown]
+# Reference:
+# 1. <https://www.cs.cornell.edu/courses/cs4780/2022fa/slides/KNN_annotated.pdf>
+
+# %% [markdown]
+# Here, $\large \frac {K} {n}$ = 0.0975 as calculated earlier.
+
+# %%
+no_of_parameters = np.array([1,2,100])
+l = [(0.0975) ** (1/p) for p in no_of_parameters]
+
 # %% [markdown]
 # ## Exercise 5
 #
