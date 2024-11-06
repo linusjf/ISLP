@@ -35,3 +35,4 @@ black==24.8.0
 markdown==3.7
 Algebra_with_SymPy==1.1.2
 latex2sympy2==1.9.1
+jupyterlab-mathjax3==4.3.0
