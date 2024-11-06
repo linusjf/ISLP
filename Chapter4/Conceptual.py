@@ -310,16 +310,48 @@ from notebookfuncs import *
 # **Suppose that we have a set of observations, each with measurements on p = 1 feature, X. We assume that X is uniformly (evenly) distributed on [0, 1]. Associated with each observation is a response value. Suppose that we wish to predict a test observation's response using only observations that are within 10 % of the range of X closest to that test observation. For instance, in order to predict the response for a test observation with X = 0.6, we will use observations in the range [0.55, 0.65]. On average, what fraction of the available observations will we use to make the prediction?**
 
 # %% [markdown]
+# X is uniformly distributed on [0, 1]. Therefore, X follows the standard uniform distribution where each point is equally likely. 
+# We wish to predict a test observation's response using only observations that are within 10% of the range of X closest to that test observation.
+# This implies that for observations in the range [0.5, 0.95] , we use 10% of the closest observations on either side of the test observation. 
+# That is, for 90% of the observations in the range [0,1], we use 10% of the closest observations, 5% on either side of the test observation.
+# For observations that fall in the range [0, 0.5] , we are restricted to observations in the range [0, 0.5], [0, 0.6], [0, 0.7] , [0,0.8], [0,0.9] and [0.0.10], which would make it 5, 6, 7, 8, 9 and 10 percentage points respectively with an average of 
+# $$
+# \frac {5 + 6 + 7 + 8 + 9 + 10} {6} = \frac {45} {6} = 7.5 \%
+# $$
+#
+# Thus, on average, we would use 
+#
+# $$
+# 0.9 * 10  + 0.1 * 7.5 = 9 + 0.75 = 9.75 \% \: of \: the \: observations.
+# $$
+#
+# *Explanation:
+# The question states we are using only observations that are within 10 % of the range of X closest to that test observation and not 10% (or rather k)  of the closest observations like we would do under KNN.*
+
+# %% [markdown]
 # ### (b)
 # **Now suppose that we have a set of observations, each with measurements on p = 2 features, $X_1$ and $X_2$ . We assume that $(X_1 , X_2 )$ are uniformly distributed on [0, 1] × [0, 1]. We wish to predict a test observation’s response using only observations that are within 10 % of the range of $X_1$ and within 10 % of the range of $X_2$ closest to that test observation. For instance, in order to predict the response for a test observation with $X_1$ = 0.6 and $X_2$ = 0.35, we will use observations in the range [0.55, 0.65] for $X_1$ and in the range [0.3, 0.4] for $X_2$ . On average, what fraction of the available observations will we use to make the prediction?**
+
+# %% [markdown]
+# We have 9.75% of observations that satisfy the range [max(X1-0.05,0), min(X1+0.05, 1)] where X1 is the first predictor. Similarly, We have 9.75% of observations that satisfy the range [max(X2-0.05,0), min(X2+0.05, 1)] where X2 is the second predictor.
+# For the observations to satisfy both criteria and assuming that X1 and X2 are independent of each other, the fraction of available observations used to make the predictions are:
+
+# %%
+print(f"{(0.0975 * 0.0975) * 100}%")
 
 # %% [markdown]
 # ### (c)
 # **Now suppose that we have a set of observations on p = 100 features. Again the observations are uniformly distributed on each feature, and again each feature ranges in value from 0 to 1. We wish to predict a test observation’s response using observations within the 10% of each feature’s range that is closest to that test observation. What fraction of the available observations will we use to make the prediction?**
 
+# %%
+print(f"{(0.0975 ** 100) * 100}% which is close to zero.")
+
 # %% [markdown]
 # ### (d)
 # **Using your answers to parts (a)–(c), argue that a drawback of KNN when p is large is that there are very few training observations "near" any given test observation.**
+
+# %% [markdown]
+# Since the $\lim_{p\to\infty} (0.0975)^p$ approaches zero as p increases, it is quite likely that there will be very few or no points actually "near" any given test observation. Thus, a drawback of KNN is that the K nearest neighbors chosen won't be very close at all and thus may not be the best estimators for the given test  observation.
 
 # %% [markdown]
 # ### (e)
