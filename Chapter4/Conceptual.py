@@ -26,7 +26,7 @@ from notebookfuncs import *
 #
 # **Using a little bit of algebra, prove that** 
 # $$
-# \Large p(X)  = \frac {e^{\beta_0 + \beta_1 * X}} {1 + {e^{\beta_0 + \beta_1 * X}}}
+# \large p(X)  = \frac {e^{\beta_0 + \beta_1 * X}} {1 + {e^{\beta_0 + \beta_1 * X}}}
 # $$
 #  **is equivalent to**
 # $$
@@ -53,7 +53,7 @@ from notebookfuncs import *
 # $$ \large \implies \frac {p(X)} {1 - p(X)} = e^{\beta_0 + \beta_1 * X} $$
 
 # %% [markdown]
-# $$ \large \implies \log \Big ({\frac {p(X)} {1 - p(X)}} \Big ) = \beta_0 + \beta_1 * X $$
+# $$ \large \implies \log \Big ({\frac {p(X)} {1 - p(X)}} \Big ) = \beta_0 + \beta_1 * X$$
 
 # %% [markdown]
 # ## Exercise 2
@@ -143,7 +143,7 @@ from notebookfuncs import *
 # %% [markdown]
 # Thus, the final equation becomes (rearranging the terms):
 # $$
-# \large \delta_k  = \large \frac {\mu_k} {\sigma^2}x  - \frac {\mu_k^2} {2\sigma^2} +  \log(\pi_k)  
+# {\large \delta_k  = \large \frac {\mu_k} {\sigma^2}x  - \frac {\mu_k^2} {2\sigma^2} +  \log(\pi_k)} 
 # $$
 
 # %% [markdown]
@@ -213,7 +213,7 @@ from notebookfuncs import *
 
 # %% [markdown]
 # $$
-# \large \delta_k = - \frac {x^2} {2\sigma_k^2} + \frac {\mu_kx} {\sigma_k^2} - \frac {\mu_k^2}{2\sigma_k^2} - log(\sigma_k) + log(\pi_k)
+# {\large \delta_k = - \frac {x^2} {2\sigma_k^2} + \frac {\mu_kx} {\sigma_k^2} - \frac {\mu_k^2}{2\sigma_k^2} - log(\sigma_k) + log(\pi_k)}
 # $$
 
 # %% [markdown]
@@ -277,7 +277,7 @@ from notebookfuncs import *
 
 # %% [markdown]
 # $$
-# \large \delta_k =  - \frac {x^T\Sigma_k^{-1}x} {2} + x^T\Sigma_k^{-1}\mu_k + \frac {\mu_k^T\Sigma_k^{-1}\mu_k} {2} + log(\pi_k)  - \frac {1} {2} log \mid \Sigma_k \mid + C_{st}
+# {\large \delta_k =  - \frac {x^T\Sigma_k^{-1}x} {2} + x^T\Sigma_k^{-1}\mu_k + \frac {\mu_k^T\Sigma_k^{-1}\mu_k} {2} + log(\pi_k)  - \frac {1} {2} log \mid \Sigma_k \mid + C_{st}}
 # $$
 #
 # This is quadratic in x.
@@ -295,7 +295,7 @@ from notebookfuncs import *
 
 # %% [markdown]
 # $$
-# \large \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k) + C_{stadj}
+# {\large \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k) + C_{stadj}}
 # $$
 
 # %% [markdown]
@@ -525,7 +525,7 @@ odds_formula.subs(probability, prob_value)
 # $$
 #
 # $$
-# \Large = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \cancel{\frac {1} {2} \frac {x^2}{\sigma^2}}  + \cancel{\frac {1} {2} \frac {x^2}{\sigma^2}} + \frac {x\mu_k} {\sigma^2} - \frac {x\mu_K} {\sigma^2} - \frac {1} {2} \frac {\mu_k^2} {\sigma^2} + \frac {1} {2} \frac {\mu_K^2} {\sigma^2}
+# \large = log \Big (\frac {\pi_k} {\pi_K} \Big )  - \frac {1} {2} \frac {x^2}{\sigma^2}   + \frac {1} {2} \frac {x^2}{\sigma^2} + \frac {x\mu_k} {\sigma^2} - \frac {x\mu_K} {\sigma^2} - \frac {1} {2} \frac {\mu_k^2} {\sigma^2} + \frac {1} {2} \frac {\mu_K^2} {\sigma^2}
 # $$
 #
 # $$
@@ -539,13 +539,13 @@ odds_formula.subs(probability, prob_value)
 # Here, we have the solution
 #
 # $$
-# \large a_k = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \frac {1} {2} \frac {(\mu_k - \mu_K)(\mu_k + \mu_K)} {\sigma^2}
+# {\large a_k = log \Big (\frac {\pi_k} {\pi_K} \Big ) - \frac {1} {2} \frac {(\mu_k - \mu_K)(\mu_k + \mu_K)} {\sigma^2}}
 # $$
 #
 # and 
 #
 # $$
-# \large b_k = (\frac {\mu_k - \mu_K } {\sigma^2})
+# {\large b_k = (\frac {\mu_k - \mu_K } {\sigma^2})}
 # $$
 #
 # and the expanded equation is linear in x.
@@ -576,40 +576,40 @@ odds_formula.subs(probability, prob_value)
 # = \Large log \Big (\frac {\pi_k}{\pi_K} \Big ) - \frac {1} {2} \Big [x^T\Sigma_k^{-1}x - x^T\Sigma_k^{-1}\mu_k - \mu_k^T\Sigma_k^{-1}x + \mu_k^T\Sigma_k^{-1}\mu_k \Big ] + \frac {1} {2} \Big [x^T\Sigma_K^{-1}x  - x^T\Sigma_K^{-1}\mu_K - \mu_K^T\Sigma_K^{-1}x  + \mu_K^T\Sigma_K^{-1}\mu_K \Big ] 
 # $$
 #
-# $$\begin{align}
+# $$\begin{aligned}
 # \large \because A^TxB = B^TxA \\
 # \large x^T\Sigma_k^{-1}\mu_k = \mu_k^T\Sigma_k^{-1}x \: and \\
 # \large x^T\Sigma_K^{-1}\mu_K = \mu_K^T\Sigma_K^{-1}x \\
 # \large  \Sigma_k \: and \: \Sigma_K \: are \: symmetric \\
 # \large \: covariance \: matrices \: and \: \\ 
 # \large their  \: inverses \:  are \: also \: symmetric.
-# \end{align}$$
+# \end{aligned}$$
 #
-# $$\begin{align}
+# $$\begin{aligned}
 # \large \therefore we \: have \\
 # \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) \\
-# \end{align}$$
+# \end{aligned}$$
 #
-# $$\begin{align}
+# $$\begin{aligned}
 # \Large = \Large log \Big (\frac {\pi_k}{\pi_K} \Big ) - \frac {1} {2} \Big [x^T\Sigma_k^{-1}x - 2 x^T\Sigma_k^{-1}\mu_k  + \mu_k^T\Sigma_k^{-1}\mu_k \Big ] + \frac {1} {2} \Big [x^T\Sigma_K^{-1}x  - 2 x^T\Sigma_K^{-1}\mu_K  + \mu_K^T\Sigma_K^{-1}\mu_K \Big ] \\
 # \Large = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big ) - \Big (x^T\Sigma_K^{-1}\mu_K - x^T\Sigma_k^{-1}\mu_k \Big) + \frac {1} {2} \Big ( x^T\Sigma_K^{-1}x - x^T\Sigma_k^{-1}x \Big ) \\
 # \Large = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big ) - x^T (\Sigma_K^{-1}\mu_K - \Sigma_k^{-1}\mu_k)  + \frac {1} {2}  x^T(\Sigma_K^{-1} - \Sigma_k^{-1})x  \\
-# \end{align}$$
+# \end{aligned}$$
 #
 # Here, we have 
 #
-# $$\begin{align}
-# \large a_k = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big ) \\
-# \large b_{kj} \: is \: the \: j_{th} \: component \: of \: \Sigma_K^{-1}\mu_K - \Sigma_k^{-1}\mu_k \\
-# \large c_{kjl} \: is \: the \: jl_{th} \: component \: of \: \Sigma_K^{-1} - \Sigma_k^{-1}
-# \end{align}$$
+# $$\begin{aligned}
+# {\large a_k = log \Big (\frac {\pi_k}{\pi_K} \Big ) + \frac {1} {2} \Big (\mu_K^T\Sigma_K^{-1}\mu_K - \mu_k^T\Sigma_k^{-1}\mu_k \Big )} \\
+# {\large b_{kj} \: is \: the \: j_{th} \: component \: of \: \Sigma_K^{-1}\mu_K - \Sigma_k^{-1}\mu_k} \\
+# {\large c_{kjl} \: is \: the \: jl_{th} \: component \: of \: \Sigma_K^{-1} - \Sigma_k^{-1}}
+# \end{aligned}$$
 #
 # And the QDA equation becomes:
 #
-# $$\begin{align}
+# $$\begin{aligned}
 # \Large log \Big (\frac {Pr(Y=k | X = x)} {Pr(Y=K | X = x)} \Big ) \\
-# \large =  a_k + \sum_{j=1}^p b_{kj}x_{j} + \sum_{j=1}^p\sum_{l=1}^p x_jc_{kjl}x_l
-# \end{align}$$
+# {\large =  a_k + \sum_{j=1}^p b_{kj}x_{j} + \sum_{j=1}^p\sum_{l=1}^p x_jc_{kjl}x_l}
+# \end{aligned}$$
 #
 # - LDA is a special case of QDA with $c_{jkl}$ = 0 for all j = 1, . . . , p, l = 1, . . . , p, and k = 1, . . . , K. (Of course, this is not surprising, since LDA is simply a restricted version of QDA with $\Sigma_1$ = · · · = $\Sigma_K$ = $\Sigma$.)
 # - This can be seen in the above equation as well where $\Sigma_K^{-1} - \Sigma_k^{-1} = 0$ when the covariance matrix is common as in for LDA.
@@ -636,28 +636,30 @@ odds_formula.subs(probability, prob_value)
 # **What is the log odds of orange versus apple in your model?**
 
 # %% [markdown]
-# $$\begin{eqnarray}
+# $$\begin{aligned}
 # \large \hat{Pr}(Y = orange | X = x) = \frac {exp(\hat{\beta_0} + \hat{\beta_1}x)} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
 # \large \implies \hat{Pr}(Y = apple | X = x) = 1 - (\frac {exp(\hat{\beta_0} + \hat{\beta_1}x)} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)}) \\
-# \large = \frac {1 + \cancel{exp(\hat{\beta_0} + \hat{\beta_1}x)} - \cancel{exp(\hat{\beta_0} + \hat{\beta_1}x)}} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
+# \large = \frac {1 + exp(\hat{\beta_0} + \hat{\beta_1}x) - exp(\hat{\beta_0} + \hat{\beta_1}x)} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
 # \large = \frac {1} {1 + exp(\hat{\beta_0} + \hat{\beta_1}x)} \\
 # \large \implies \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} = exp(\hat{\beta_0} + \hat{\beta_1}x) \\
 # \large \implies log \Big ( \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} \Big ) = \hat{\beta_0} + \hat{\beta_1}x
-# \end{eqnarray}$$
+# \end{aligned}$$
 
 # %% [markdown]
 # ### (b)
 # **What is the log odds of orange versus apple in your friend's model?**
 
 # %% [markdown]
-# $$\begin{eqnarray}
+# $$\begin{aligned}
+# \begin{split}
 # \large \hat{Pr}(Y = orange | X = x) = \frac {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x)} {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x) + exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)  } \\
 # \large \implies  
 # \hat{Pr}(Y = apple | X = x) = \frac {exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)} {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x) + exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)  } \\
 # \large \implies \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} = \frac {exp({\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x)} {exp({\hat{\alpha}}_{apple0} + {\hat{\alpha}}_{apple1}x)} \\
 # \large \implies log \Big ( \frac {\hat{Pr}(Y = orange | X = x)} {\hat{Pr}(Y = apple | X = x)} \Big ) = {\hat{\alpha}}_{orange0} + {\hat{\alpha}}_{orange1}x -{\hat{\alpha}}_{apple0} - {\hat{\alpha}}_{apple1}x \\
 # \large = {\hat{\alpha}}_{orange0} - {\hat{\alpha}}_{apple0} + ({\hat{\alpha}}_{orange1} - {\hat{\alpha}}_{apple1})x
-# \end{eqnarray}$$
+# \end{split}
+# \end{aligned}$$
 
 # %% [markdown]
 # ### (c)
