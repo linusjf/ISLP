@@ -463,7 +463,7 @@ plt.show()
 #
 # Q: How large we should set l s.t., we will have K examples (out of n) fall inside the  small cube?
 #
-# A: $\large l \approx {(\frac {K} {n}})^{1/d} \to 1 \: as \: d \to \infty $
+# A: $\large l \approx (\frac {K} {n})^{1/d} \to 1$ as $d \to \infty$
 #
 # Bad news: When  $d \to \infty$, the K nearest neighbors will be all over the place! 
 # (Cannot trust them, as they are not nearby points anymore!) 
@@ -515,7 +515,7 @@ l = [(0.0975) ** (1/p) for p in no_of_parameters]
 # %% [markdown]
 # ## Exercise 6
 #
-# **Suppose we collect data for a group of students in a statistics class with variables $\large X_1 = hours \: studied, X_2 = undergrad \: GPA$, and $Y = receive \: an \: A$. We fit a logistic regression and produce estimated coefficient, $\large \beta_0 = −6, \beta_1 = 0.05, \beta_2 = 1$.**
+# **Suppose we collect data for a group of students in a statistics class with variables $\large X_1 = hours \: studied, X_2 = undergrad \: GPA$, and $Y = receive \: an \: A$. We fit a logistic regression and produce estimated coefficient, $\large \beta_0 = -6, \beta_1 = 0.05, \beta_2 = 1$.**
 
 # %%
 from sympy import Symbol
@@ -560,7 +560,7 @@ solve(eqn_to_solve,X1)
 #
 # *Hint: Recall that the density function for a normal random variable is
 # $$
-# \Large f(x) = \frac {1} {\sqrt {2\pi\sigma^2}} e^{- {(x−µ)^2} / {2\sigma^2}}
+# \Large f(x) = \frac {1} {\sqrt {2\pi\sigma^2}} e^{- {(x-µ)^2} / {2\sigma^2}}
 # $$. You will need to use Bayes’ theorem.*
 
 # %% [markdown]
@@ -846,7 +846,7 @@ odds_formula.subs(probability, prob_value)
 
 # %% [markdown]
 # ### (d)
-# **Now suppose that you and your friend fit the same two models on a different data set. This time, your friend gets the coefficient estimates $\large {\hat{\alpha}}_{orange0}$ = 1.2, $\large {\hat{\alpha}}_{orange1}$ = −2, $\large {\hat{\alpha}}_{apple0}$ = 3, $\large {\hat{\alpha}}_{apple1}$ = 0.6. What are the coefficient estimates in your model?**
+# **Now suppose that you and your friend fit the same two models on a different data set. This time, your friend gets the coefficient estimates $\large {\hat{\alpha}}_{orange0}$ = 1.2, $\large {\hat{\alpha}}_{orange1}$ = -2, $\large {\hat{\alpha}}_{apple0}$ = 3, $\large {\hat{\alpha}}_{apple1}$ = 0.6. What are the coefficient estimates in your model?**
 
 # %% [markdown]
 # The coefficient estimates in my model are:
@@ -864,5 +864,76 @@ odds_formula.subs(probability, prob_value)
 # %% [markdown]
 # Always since the models are equivalent and the classification predictions will not differ.
 
+# %% [markdown]
+# ## Bonus Exercise
+#
+# ### Theorem: as n → ∞, 1-NN prediction error is no more than twice of the error of the Bayes optimal classifier.
+
+# %% [markdown]
+# #### Bayes Optimal Predictor
+#
+# - Assume our data is collected in an i.i.d fashion, i.e., $(x, y) \sim$ P (say y $\in [-1,1])$
+# - Assume we know P(y | x) for now
+# - Q: What label you would predict?
+# - A: We will simply predict the most-likely label,
+# - Bayes Optimal Predictor is $h_{opt}(x)$ = $arg max P(y | x)  y \in [-1,1]$
+#
+# Example:
+# $$\left\{
+# \begin{aligned}
+# & \large P(1 | x) = 0.8 \\
+# & \large P(-1 | x) = 0.2
+# \end{aligned}
+# \right\}
+# $$
+#
+# $y_b := h_{opt}(x) = 1$
+#
+# Q: What's the probability of $h_{opt}$ making a mistake on x?
+#
+# A: $ϵ_{opt} = 1 - P(y_b | x) = 0.2$
+#
+# Assume $x \in [-1,1]^2$, P(x) has support everywhere P(x) > 0, $\forall x \in [-1,1]^2$
+#
+# P(x,y)
+#
+# P(x) = P(x, +1) + P(x,-1)
+#
+# What does it look like when $n \to \infty$?
+
+# %% [markdown]
+# ![](KNN.jpg)
+
+# %% [markdown]
+# Given test x, as $n \to \infty$, its nearest neighbor xNN is super close, i.e., $d(x, xNN ) \to 0$!
+
+# %% [markdown]
+# Proof: 
+# 1. Fix a test example x, denote its NN as xNN. When $n \to \infty$, we have $xNN \to x$
+#
+# 2. Without loss of generality (WLOG) assume for x, the Bayes optimal predicts $y_b$ = $h_{opt}(x)$ = 1
+#
+# 3. Calculate the 1-NN’s prediction error:
+#    - Case 1 when yNN = 1 (it happens w/ prob P(1 | xNN ) = P(1 | x)):
+#      
+#      + The probability of making a mistake: $\epsilon = P(y \neq 1 | x) = P(y = -1 | x) = 1 - P(y_b | x)$
+#        
+#    - Case 2 when yNN = -1 (it happens w/ prob P(-1 | xNN ) = P(-1 | x)):
+#   
+#      + The probability of making a mistake: $\epsilon = P(y \neq -1 | x) = P(y = 1 | x) = P(y_b | x)$
+#
+# 4. Our prediction error at x:
+#    $$\begin{aligned}
+#    & P(1|x) (1 - P(y_b|x) + P(-1|x) P(y_b|x) \\
+#    & P(1|x) <= 1 \\
+#    & P(y_b|x) <= 1 \\
+#    & P(-1|x) = 1 - P(y_b|x) (\because y_b = 1) \\
+#    & \implies P(1|x)(1 - P(y_b|x) + P(-1|x) P(y_b|x) <= (1- P(y_b|x)) + (1- P(y_b|x)) \\
+#    & \because 1- P(y_b|x) = \epsilon_{opt} \\
+#    & \implies P(1|x)(1 - P(y_b|x) + P(-1|x) P(y_b|x) <= 2 \epsilon_{opt}
+#    \end{aligned}$$
+
 # %%
 allDone();
+
+# %%
