@@ -639,5 +639,32 @@ simulate_regression(mostly_non_linear_equation())
 # ![](Exercise7a.jpg)
 # ![](Exercise7b.jpg)
 
+# %% [markdown]
+# ### Standardized regression coefficients can be calculated from the original regression coefficients and the standard deviations of the original coefficients and the response variable.
+#
+# $$
+# \large b_k = b_{k^{'}} * \frac {s_{x_k}} {s_y}
+# $$
+
+# %% [markdown]
+# $$\begin{aligned} 
+# Y - \bar{y} & = a + b_1X_1 + b_2X_2 + e - \bar{y} \\
+# & = \bar{y} - b_1 \bar{X_1} - b_2 \bar{X_2} + b_1X_1 + b_2X_2 + e - \bar{y} \\
+# & = b_1(X1 - \bar{X_1}) + b_2(X2 - \bar{X 2}) + e \\
+# & = b_1 * s_1 * (X_1 - \bar{X_1})/s_1 + b_2 * s_2 * (X_2 - \bar{X_2})/s_2 + e \\
+# & = b_1 * s_1 * {X_1}^{'} + b_2 * s_2 * {X_2}^{'} + e 
+# \end{aligned}$$
+# $$\begin{aligned}
+# \implies \frac {(Y - y)} {s_y} = Y^{'} & = b_1 * s_1/s_y * {X_1}^{'} + b_2 * s_2/s_y * {X_2}^{'} + e/s_y \\
+# & = b_1^{'}X_1^{'} + b_2^{'}X_2^{'} + e^{'} 
+# \end{aligned}$$
+# $$\implies b_k^{'} = b_k * s_k/s_y$$
+
+# %% [markdown]
+# References:
+# 1. <https://www3.nd.edu/~rwilliam/stats1/x92.pdf>
+
 # %%
 allDone();
+
+# %%
