@@ -400,22 +400,23 @@ ax.scatter(x[~mask], y[~mask], z[~mask], c='b', alpha=0.1, label="Data")
 # Plot points within filter
 ax.scatter(x[mask], y[mask], z[mask], c='g', s=50, marker='x', alpha=1.0, label="Neighbours")
 
-print(f"Only {len(x[mask])} points fit the filter")
+ax.set_title(f"Only {len(x[mask])} points found in the search space")
 
 # Plot target point
 ax.scatter(target_x, target_y, target_z, c='r', s=100, marker='*', label="Target",alpha=0.5)
 
-# Plot smaller cube around filtered points
+# Plot larger cube around boundaries
 cube_vertices = np.array([
-    [filter_x_min, filter_y_min, filter_z_min],
-    [filter_x_max, filter_y_min, filter_z_min],
-    [filter_x_max, filter_y_max, filter_z_min],
-    [filter_x_min, filter_y_max, filter_z_min],
-    [filter_x_min, filter_y_min, filter_z_max],
-    [filter_x_max, filter_y_min, filter_z_max],
-    [filter_x_max, filter_y_max, filter_z_max],
-    [filter_x_min, filter_y_max, filter_z_max]
+    [0, 0, 0],
+    [1, 0, 0],
+    [1, 1, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+    [1, 0, 1],
+    [1, 1, 1],
+    [0, 1, 1]
 ])
+
 cube_edges = np.array([
     [0, 1],
     [1, 2],
@@ -430,10 +431,26 @@ cube_edges = np.array([
     [2, 6],
     [3, 7]
 ])
-for edge in cube_edges:
-    ax.plot3D(*zip(cube_vertices[edge[0]], cube_vertices[edge[1]]), c='black')
 
-ax.plot3D(0,0,0,c='black', label="Search Space")
+for edge in cube_edges:
+    ax.plot3D(*zip(cube_vertices[edge[0]], cube_vertices[edge[1]]), c='g')
+
+# Plot smaller cube around filtered points
+cube_vertices = np.array([
+    [filter_x_min, filter_y_min, filter_z_min],
+    [filter_x_max, filter_y_min, filter_z_min],
+    [filter_x_max, filter_y_max, filter_z_min],
+    [filter_x_min, filter_y_max, filter_z_min],
+    [filter_x_min, filter_y_min, filter_z_max],
+    [filter_x_max, filter_y_min, filter_z_max],
+    [filter_x_max, filter_y_max, filter_z_max],
+    [filter_x_min, filter_y_max, filter_z_max]
+])
+
+for edge in cube_edges:
+    ax.plot3D(*zip(cube_vertices[edge[0]], cube_vertices[edge[1]]), c='k')
+
+ax.plot3D(0,0,0,c='k', label="Search Space")
 
 # Set plot limits
 ax.set_xlim(0, 1)
@@ -932,6 +949,10 @@ odds_formula.subs(probability, prob_value)
 #    & \because 1- P(y_b|x) = \epsilon_{opt} \\
 #    & \implies P(1|x)(1 - P(y_b|x) + P(-1|x) P(y_b|x) <= 2 \epsilon_{opt}
 #    \end{aligned}$$
+
+# %% [markdown]
+# Reference:
+# 1. <https://www.cs.cornell.edu/courses/cs4780/2022fa/slides/KNN_annotated.pdf>
 
 # %%
 allDone();
