@@ -619,6 +619,15 @@ conditional_prob.subs([(mu_no, 0), (mu_yes, 10), (sigma,6), (pi_yes, 0.8), (pi_n
 # **Suppose that we take a data set, divide it into equally-sized training and test sets, and then try out two different classification procedures. First we use logistic regression and get an error rate of 20% on the training data and 30% on the test data. Next we use 1-nearest neighbors (i.e. K = 1) and get an average error rate (averaged over both test and training data sets) of 18%. Based on these results, which method should we prefer to use for classification of new observations? Why?**
 
 # %% [markdown]
+# Logistic Regression Training Error Rate  = 20%.
+# Logistic Regression Testing Error Rate = 30%.
+# 1-NN Average Error Rate = 18%.
+#
+# The 1-NN Average Error Rate seems better at first appearances. However, it's misleading since 1-NN training error rate is always zero. Thus, the test error rate for 1-NN is double the average error rate = 2 * 18% = 36%.
+#
+# Thus, we would prefer Logistic Regression for classification of new observations over 1-NN in this case since its test error rate is lower by 6 percentage points.
+
+# %% [markdown]
 # ## Exercise 9
 
 # %% [markdown]
