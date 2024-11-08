@@ -22,16 +22,69 @@
 from notebookfuncs import *
 
 # %% [markdown]
+# ## Import libraries
+
+# %%
+from ISLP import load_data
+from summarytools import dfSummary
+import numpy as np
+import klib
+
+# %% [markdown]
 # ## Exercise 13
 
 # %% [markdown]
 # This question should be answered using the Weekly data set, which is part of the ISLP package. This data is similar in nature to the Smarket data from this chapter's lab, except that it contains 1,089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010.
+
+# %%
+Weekly = load_data("Weekly")
+Weekly["LogVolume"] = np.log(Weekly["Volume"])
+Weekly = Weekly.drop(columns=["Volume"])
+Weekly = klib.convert_datatypes(Weekly)
+Weekly.head()
+
+# %% [markdown]
+# *We transform column Volume to LogVolume since this is the most symmetrical among the transformations sqrt, sqrt4 and log (as evidenced by its low skew value).*
+
+# %%
+Weekly.shape
 
 # %% [markdown]
 # ### (a)
 
 # %% [markdown]
 # Produce some numerical and graphical summaries of the Weekly data. Do there appear to be any patterns?
+
+# %%
+dfSummary(Weekly)
+
+# %%
+klib.corr_plot(Weekly);
+
+# %%
+klib.dist_plot(Weekly);
+
+# %% [markdown]
+# #### Skewness
+#
+# Skewness is a measure of asymmetry or distortion of symmetric distribution. It measures the deviation of the given distribution of a random variable from a symmetric distribution, such as normal distribution. A normal distribution is without any skewness, as it is symmetrical on both sides.
+
+# %% [markdown]
+# #### Kurtosis
+#
+# Negative kurtosis, also known as platykurtic, is a measure of a distribution's thin tails, meaning that outliers are infrequent:
+#
+# ##### Explanation
+# Kurtosis is a statistical measure that describes the shape of a distribution's tails in relation to its overall shape. It measures how often outliers occur, or the "tailedness" of the distribution.
+#
+# ##### Kurtosis types
+# A distribution with a kurtosis of 3 is considered mesokurtic, meaning it has a medium tail. A distribution with a kurtosis greater than 3 is leptokurtic, meaning it has a fat tail and a lot of outliers. A distribution with a kurtosis less than 3 is platykurtic, meaning it has a thin tail and infrequent outliers.
+#
+# ##### Kurtosis vs peakedness
+# Kurtosis measures "tailedness," not "peakedness". A distribution can have a lower peak with high kurtosis, or a sharply peaked distribution with low kurtosis.
+#
+# ##### Calculating kurtosis
+# Kurtosis is calculated mathematically as the standardized fourth moment of a distribution.
 
 # %% [markdown]
 # ### (b)
