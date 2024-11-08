@@ -18,7 +18,7 @@ from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "last_expr_or_assign"
 
 ## Import up sound alert dependencies
-from IPython.display import Audio, display, Markdown, Math
+from IPython.display import Audio, display, Markdown, Math, Latex
 
 
 def allDone():
@@ -28,3 +28,6 @@ def allDone():
 
 def printmd(string):
     display(Markdown(string))
+
+def printlatex(string):
+  display(Latex(string))
