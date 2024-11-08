@@ -53,31 +53,21 @@ def euclidean_distance(p1, p2):
   return torch.norm(p1 - p2, dim=-1)
 
 def plot_distance_histograms(distances_list, dimensions):
-  """Plots histograms of the Euclidean distances in a grid.
+  """Plots histograms of the Euclidean distances on a single plot.
 
   Args:
     distances_list: A list of lists, each containing distances for a specific dimension.
     dimensions: A list of dimensions.
   """
 
-  fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(12, 12))
-  fig.suptitle("Kernel Density Estimates of Euclidean Distances")
-
+  plt.figure(figsize=(12, 6))
   for i, (distances, n) in enumerate(zip(distances_list, dimensions)):
-    row = i // 2
-    col = i % 2
-    ax = axes[row, col]
-    sns.kdeplot(distances, fill=True, ax=ax)  # Use fill=True instead of shade=True
-    ax.set_xlabel("Euclidean Distance")
-    ax.set_ylabel("Density")
-    ax.set_title(f"n = {n}")
+    sns.kdeplot(distances, fill=True, label=f"n = {n}")
 
-    min_distance, max_distance = min(distances), max(distances)
-    ax.set_xlim(min_distance, max_distance)  # Set x-axis limits for each plot
-    ax.text(0.5, 0.9, f"Distance Range: [{min_distance:.4f}, {max_distance:.4f}]",
-            transform=ax.transAxes, ha='center', va='top')
-
-  plt.tight_layout()
+  plt.xlabel("Euclidean Distance")
+  plt.ylabel("Density")
+  plt.title("Kernel Density Estimates of Euclidean Distances")
+  plt.legend()
   plt.show()
 
 # Define the desired dimensions
@@ -99,7 +89,11 @@ for n in dimensions:
 plot_distance_histograms(distances_list, dimensions)
 
 # %%
-printlatex("$\\text{Thus we see as }n \\to \\infty, \\text{distances between points increase.}$")
+printlatex("$\\text{The Curse of Dimensionality } \\implies \\text{ As }n \\to \\infty, \\text{ distances between points increase.}$")
+
+# %% [markdown]
+# Reference:
+# 1. <https://www.cs.cornell.edu/courses/cs4780/2022fa/slides/KNN_annotated.pdf>
 
 # %%
 allDone();
