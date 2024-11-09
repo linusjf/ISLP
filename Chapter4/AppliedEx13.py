@@ -87,6 +87,12 @@ klib.dist_plot(Weekly);
 # Kurtosis is calculated mathematically as the standardized fourth moment of a distribution.
 
 # %% [markdown]
+# We can verify the above conclusion from kurtosis definition by plotting the boxplots for the continuous  variables, Lag1 - Lag5, Today and LogVolume.
+
+# %%
+Weekly.boxplot(column=["Lag1","Lag2","Lag3", "Lag4", "Lag5", "Today", "LogVolume"]);
+
+# %% [markdown]
 # ### (b)
 
 # %% [markdown]
