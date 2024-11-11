@@ -126,5 +126,27 @@ printmd(f"The error rates now are **{MSE[0]:0.2f}**, **{MSE[1]:0.2f}**, and **{M
 # %% [markdown]
 # ## Cross-Validation
 
+# %% [markdown]
+# The simplest way to cross-validate in Python is to use `sklearn`, which has a different interface or API than`statsmodels`.
+#
+# The `ISLP` package provides a wrapper, `sklearn_sm()`, that enables us to easily use the cross-validation tools of `sklearn` with models fit by `statsmodels
+#
+# The class `sklearn_sm()` has as its first argument a model from `statsmodels`. It can take two additional optional arguments: `model_str` which can be used to specify a formula, and `model_args` which should be a dictionary of additional arguments used when fitting the model. For example, to fit a logistic regression model we have to specify a family argument. This is passed as `model_args {'family':sm.families.Binomial()}`.
+
+# %%
+hp_model = sklearn_sm(sm.OLS, MS(['horsepower']))
+X, Y = Auto.drop(columns =['mpg']), Auto['mpg']
+cv_results = cross_validate(hp_model, X, Y, cv=Auto.shape[0])
+cv_err = np.mean(cv_results['test_score'])
+cv_err
+
+# %%
+printmd(f"The arguments to `cross_validate()` are as follows: an object with the appropriate `fit()`, `predict()`, and `score()` methods, an array of features X and a response Y. We also included an additional argument `cv` to `cross_validate()`; specifying an integer K results in K-fold cross-validation. We have provided a value corresponding to the total number of observations, which results in leave-one-out cross-validation (LOOCV). The `cross-validate()` function produces a dictionary with several components; we simply want the cross-validated test score here (MSE), which is estimated to be {cv_err:.2f}.");
+
+# %% [markdown]
+# We can repeat this procedure for increasingly complex polynomial fits. To automate the process, we again use a for loop which iteratively fits polynomial regressions of degree 1 to 5, computes the associated crossvalidation error, and stores it in the $i_{th}$ vector `cv_error`. The variable ``d in the for loop corresponds to the degree of the polynomial. We begin by initializing the vector. This command may take a couple of seconds to run.
+
 # %%
 allDone();
+
+# %%
