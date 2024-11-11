@@ -29,6 +29,7 @@ from ISLP import load_data
 from summarytools import dfSummary
 import numpy as np
 import klib
+import seaborn as sns
 
 # %% [markdown]
 # ## Exercise 13
@@ -91,6 +92,12 @@ klib.dist_plot(Weekly);
 
 # %%
 Weekly.boxplot(column=["Lag1","Lag2","Lag3", "Lag4", "Lag5", "Today", "LogVolume"]);
+
+# %%
+Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Direction");
+
+# %% [markdown]
+# - Thus, we see from the pie-chart, that if we classify all responses as 'Up', we would still achieve an accuracy level of 55.56%. This is the base level which we have to improve upon.
 
 # %% [markdown]
 # ### (b)
