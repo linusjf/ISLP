@@ -64,7 +64,7 @@ results = model.fit();
 
 
 # %% [markdown]
-# We now use the `predict()` method of results evaluated on the model matrix for this model created using the validation data set. We also calculate the validation MSE of our model.
+# We now use the `predict()` method of results evaluated on the model matrix for this model created using the validation data set. We also calculate the validation Mean Square Error (MSE) of our model.
 
 # %%
 X_valid = hp_mm.transform(Auto_valid)
@@ -73,7 +73,58 @@ valid_pred = results.predict(X_valid)
 mse = np.mean((y_valid - valid_pred)**2)
 
 # %%
-printmd(f"Hence our estimate for the validation MSE of the linear regression fit is {mse: 0.2f}.")
+printmd(f"Hence our estimate for the validation MSE of the linear regression fit is **{mse:0.2f}**.")
+
+
+# %% [markdown]
+# We can also estimate the validation error for higher-degree polynomial regressions. We first provide a function `evalMSE()` that takes a model string as well as a training and test set and returns the MSE on the test set.
+
+# %%
+def evalMSE(terms,response,train,test):
+
+  mm = MS(terms)
+  X_train = mm.fit_transform(train)
+  y_train = train[response]
+
+  X_test = mm.transform(test)
+  y_test = test[response]
+
+  results = sm.OLS(y_train , X_train).fit()
+  test_pred = results.predict(X_test)
+
+  return np.mean((y_test - test_pred)**2)
+
+
+# %% [markdown]
+# Let's use this function to estimate the validation MSE using linear, quadratic and cubic fits. We use the `enumerate()` function here, which gives both the values and indices of objects as one iterates over a for loop.
+
+# %%
+MSE = np.zeros(3)
+for idx, degree in enumerate(range(1, 4)):
+  MSE[idx] = evalMSE([poly('horsepower', degree)], 'mpg', Auto_train, Auto_valid)
+MSE
+
+# %%
+printmd(f"These error rates are **{MSE[0]:0.2f}**, **{MSE[1]:0.2f}**, and **{MSE[2]:0.2f}**, respectively.")
+
+# %% [markdown]
+# If we choose a different training/validation split instead, then we can expect somewhat different errors on the validation set.
+
+# %%
+Auto_train , Auto_valid = train_test_split(Auto , test_size = 196, random_state = 3)
+MSE = np.zeros(3)
+for idx, degree in enumerate(range(1, 4)):
+  MSE[idx] = evalMSE([poly('horsepower', degree)], 'mpg', Auto_train, Auto_valid)
+MSE
+
+# %%
+printmd(f"The error rates now are **{MSE[0]:0.2f}**, **{MSE[1]:0.2f}**, and **{MSE[2]:0.2f}**, respectively.")
+
+# %% [markdown]
+# These results are consistent with our previous findings: a model that predicts **mpg** using a quadratic function of **horsepower** performs better than a model that involves only a linear function of **horsepower**, and there is no evidence of an improvement in using a cubic function of **horsepower**.
+
+# %% [markdown]
+# ## Cross-Validation
 
 # %%
 allDone();
