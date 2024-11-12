@@ -256,12 +256,12 @@ def boot_SE(func, D, n=None, B=1000, seed=0):
   rng = np.random.default_rng(seed)
   first_ , second_ = 0, 0
   n = n or D.shape [0]
-  values = np.zeros(B)
   for i in range(B):
     idx = rng.choice(D.index, n, replace=True)
     value = func(D, idx)
-    values[i] = value
-  return np.std(values)
+    first_ += value
+    second_ += value **2
+  return np.sqrt(second_ / B - (first_ / B)**2)
 
 
 # %% [markdown]
@@ -273,6 +273,7 @@ alpha_SE
 
 # %%
 printmd(f"The final output shows that the bootstrap estimate for SE(α̂) is {alpha_SE:.4f}.")
+
 
 # %% [markdown]
 # ### Estimating the Accuracy of a Linear Regression Model
@@ -291,6 +292,45 @@ printmd(f"The final output shows that the bootstrap estimate for SE(α̂) is {al
 
 # %% [markdown]
 # We start by writing a generic function `boot_OLS()` for bootstrapping a regression model that takes a formula to define the corresponding regression. We use the `clone()` function to make a copy of the formula that can be refit to the new dataframe. This means that any derived features such as those defined by `poly()` (which we will see shortly), will be re-fit on the resampled data frame.
+
+# %%
+def boot_OLS(model_matrix , response , D, idx):
+  D_ = D.loc[idx]
+  Y_ = D_[response]
+  X_ = clone(model_matrix).fit_transform(D_)
+  return sm.OLS(Y_ , X_).fit().params
+
+
+# %% [markdown]
+# This is not quite what is needed as the first argument to `boot_SE()`. The first two arguments which specify the model will not change in the bootstrap process, and we would like to *freeze* them. The function `partial()` from the `functools` module does precisely this: it takes a function as an argument, and freezes some of its arguments, starting from the left. We use it to freeze the first two model-formula arguments of `boot_OLS()`.
+
+# %%
+hp_func = partial(boot_OLS , MS(['horsepower']), 'mpg')
+# hp_func?
+
+# %% [markdown]
+# Typing `hp_func?` will show that it has two arguments `D` and `idx` — it is a version of `boot_OLS()` with the first two arguments frozen &mdash; and hence is ideal as the first argument for `boot_SE()`.
+
+# %% [markdown]
+# The `hp_func()` function can now be used in order to create bootstrap estimates for the intercept and slope terms by randomly sampling from among the observations with replacement. We first demonstrate its utility on 10 bootstrap samples.
+
+# %%
+rng = np.random.default_rng(0)
+print(Auto.head())
+# reset index so that index has row index and not model names
+Auto.reset_index(drop=False, inplace=True)
+print(Auto.head())
+np.array([hp_func(Auto, rng.choice(392, 392, replace=True)) for _ in range(10)])
+
+# %% [markdown]
+# Next, we use the `boot_SE()` function to compute the standard errors of 1,000 bootstrap estimates for the intercept and slope terms.
+
+# %%
+hp_se = boot_SE(hp_func, Auto, B=1000, seed=10)
+hp_se
+
+# %%
+printmd(f"This indicates that the bootstrap estimate for $SE(\\beta_0)$ is {hp_se.intercept:.2f}, and that the bootstrap estimate for $SE(\\beta_1)$ is {hp_se.horsepower:.4f}.")
 
 # %%
 allDone();
