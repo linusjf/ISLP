@@ -144,9 +144,69 @@ cv_err
 printmd(f"The arguments to `cross_validate()` are as follows: an object with the appropriate `fit()`, `predict()`, and `score()` methods, an array of features X and a response Y. We also included an additional argument `cv` to `cross_validate()`; specifying an integer K results in K-fold cross-validation. We have provided a value corresponding to the total number of observations, which results in leave-one-out cross-validation (LOOCV). The `cross-validate()` function produces a dictionary with several components; we simply want the cross-validated test score here (MSE), which is estimated to be {cv_err:.2f}.");
 
 # %% [markdown]
-# We can repeat this procedure for increasingly complex polynomial fits. To automate the process, we again use a for loop which iteratively fits polynomial regressions of degree 1 to 5, computes the associated crossvalidation error, and stores it in the $i_{th}$ vector `cv_error`. The variable ``d in the for loop corresponds to the degree of the polynomial. We begin by initializing the vector. This command may take a couple of seconds to run.
+# We can repeat this procedure for increasingly complex polynomial fits. To automate the process, we again use a for loop which iteratively fits polynomial regressions of degree 1 to 5, computes the associated crossvalidation error, and stores it in the $i_{th}$ vector `cv_error`. The variable `d` in the for loop corresponds to the degree of the polynomial. We begin by initializing the vector. This command may take a couple of seconds to run.
+
+# %%
+cv_error = np.zeros (5)
+H = np.array(Auto['horsepower'])
+M = sklearn_sm(sm.OLS)
+for i, d in enumerate(range (1,6)):
+  # this sets up the polynomial features for horsepower
+  # such as 1, hp, hp**2, hp**3 till hp**5 in the final loop
+  X = np.power.outer(H, np.arange(d+1))
+  M_CV = cross_validate(M, X, Y, cv=Auto.shape[0])
+  cv_error[i] = np.mean(M_CV['test_score'])
+cv_error
+
+# %% [markdown]
+# We see a sharp drop in the estimated test MSE between the linear and quadratic fits, but then no clear improvement from using higher-degree polynomials.
+#
+# Above we introduced the `outer()` method of the `np.power()` function. The `outer()` method is applied to an operation that has two arguments, such as `add()`, `min()`, or `power()`. It has two arrays as arguments, and then forms a larger array where the operation is applied to each pair of elements of the two arrays.
+
+# %%
+A = np.array ([3, 5, 9])
+B = np.array ([2, 4])
+np.add.outer(A, B)
+
+# %% [markdown]
+# In the CV example above, we used K = n, but of course we can also use K < n. The code is very similar to the above (and is significantly faster). Here we use `KFold()` to partition the data into K = 10 random groups. We use `random_state` to set a random seed and initialize a vector `cv_error` in which we will store the CV errors corresponding to the polynomial fits of degrees one to five.
+
+# %%
+cv_error = np.zeros(5)
+# use same splits for each degree
+cv = KFold(n_splits=10, shuffle=True, random_state=0)
+for i, d in enumerate(range (1,6)):
+  X = np.power.outer(H, np.arange(d+1))
+  M_CV = cross_validate(M, X, Y, cv=cv)
+  cv_error[i] = np.mean(M_CV['test_score'])
+cv_error
+
+# %% [markdown]
+# Notice that the computation time is much shorter than that of LOOCV. (In principle, the computation time for LOOCV for a least squares linear model should be faster than for K-fold CV, due to the availability of the formula
+# $$\begin{aligned}
+# \large CV_{(n)} = \frac {1} {n} \sum_{i=1}^n \Big ( \frac {y_i - \hat{y_i}} {1 - h_i}\Big )^2 \\
+# \large \text { where } h_i = \frac {1} {n} + \frac {(x_i - \bar{x})^2} {\sum_{l=1}^n (x_l - \bar{x})^2 }
+# \end{aligned}$$
+# for LOOCV; however, the generic `cross_validate()` function does not make use of this formula.) We still see little evidence that using cubic or higher-degree polynomial terms leads to a lower test error than simply using a quadratic fit.
+
+# %% [markdown]
+# The `cross_validate()` function is flexible and can take different splitting mechanisms as an argument. For instance, one can use the `ShuffleSplit()` Shuffle function to implement the validation set approach just as easily as K-fold cross-validation.
+
+# %%
+validation = ShuffleSplit(n_splits =1, test_size =196, random_state =0)
+results = cross_validate(hp_model, Auto.drop (['mpg'], axis=1), Auto['mpg'], cv=validation);
+results['test_score'][0]
+
+# %% [markdown]
+# One can estimate the variability in the test error by running the following:
+
+# %%
+validation = ShuffleSplit(n_splits=10, test_size=196, random_state=0)
+results = cross_validate(hp_model, Auto.drop (['mpg'], axis=1), Auto['mpg'], cv=validation)
+results['test_score'].mean (), results['test_score'].std()
+
+# %% [markdown]
+# This standard deviation is not a valid estimate of the sampling variability of the mean test score or the individual scores, since the randomly-selected training samples overlap and hence introduce correlations. But it does give an idea of the Monte Carlo variation incurred by picking different random folds.
 
 # %%
 allDone();
-
-# %%
