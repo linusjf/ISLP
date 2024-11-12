@@ -208,5 +208,71 @@ results['test_score'].mean (), results['test_score'].std()
 # %% [markdown]
 # This standard deviation is not a valid estimate of the sampling variability of the mean test score or the individual scores, since the randomly-selected training samples overlap and hence introduce correlations. But it does give an idea of the Monte Carlo variation incurred by picking different random folds.
 
+# %% [markdown]
+# ## The Bootstrap
+
+# %% [markdown]
+# ### Estimating the Accuracy of a Statistic of Interest
+
+# %% [markdown]
+# The bootstrap approach can be applied in almost all situations. No complicated mathematical calculations are needed.
+#
+# To illustrate the bootstrap, we start with a simple example. The Portfolio data set in the `ISLP` package is described in Section 5.2 The Bootstrap. The goal is to estimate the sampling variance of the parameter $\alpha$ given in formula
+# $$
+# \large \hat{\alpha} = \frac {\hat{\sigma}_Y^2 - \hat{\sigma}_{XY}^2 } {\hat{\sigma}_X^2 + \hat{\sigma}_Y^2 - 2\hat{\sigma}_{XY}^2 }
+# $$
+#
+# We will create a function `alpha_func()`, which takes as input a dataframe `D` assumed to have columns `X`and `Y`, as well as a vector `idx` indicating which observations should be used to estimate $\alpha$. The function then outputs the estimate for $\alpha$ based on the selected observations.
+
+# %%
+Portfolio = load_data('Portfolio')
+print(Portfolio.head())
+print(len(Portfolio))
+
+def alpha_func(D, idx):
+  cov_ = np.cov(D[['X','Y']]. loc[idx], rowvar=False)
+  return (( cov_ [1,1] - cov_ [0 ,1]) / (cov_ [0 ,0]+ cov_ [1 ,1] -2* cov_ [0 ,1]))
+
+
+# %% [markdown]
+# This function returns an estimate for $\alpha$ based on applying the minimum variance formula (5.7) to the observations indexed by the argument `idx`. For instance, the following command estimates $\alpha$ using all 100 observations.
+
+# %%
+alpha_func(Portfolio , range(100))
+
+# %% [markdown]
+# Next we randomly select 100 observations from `range(100)`, with replacement. This is equivalent to constructing a new bootstrap data set and recomputing $\hat{\alpha}$ based on the new data set.
+
+# %%
+rng = np.random.default_rng(0)
+alpha_func(Portfolio, rng.choice(100, 100, replace=True))
+
+
+# %% [markdown]
+# This process can be generalized to create a simple function `boot_SE()` for computing the bootstrap standard error for arbitrary functions that take only a data frame as an argument.
+
+# %%
+def boot_SE(func, D, n=None, B=1000, seed=0):
+  rng = np.random.default_rng(seed)
+  first_ , second_ = 0, 0
+  n = n or D.shape [0]
+  values = np.zeros(B)
+  for i in range(B):
+    idx = rng.choice(D.index, n, replace=True)
+    value = func(D, idx)
+    values[i] = value
+  return np.std(values)
+
+
+# %% [markdown]
+# Let's use our function to evaluate the accuracy of our estimate of $\alpha$ using B = 1,000 bootstrap replications.
+
+# %%
+alpha_SE = boot_SE(alpha_func, Portfolio, B=1000, seed=0)
+alpha_SE
+
+# %%
+printmd(f"The final output shows that the bootstrap estimate for SE(α̂) is {alpha_SE:.4f}.")
+
 # %%
 allDone();
