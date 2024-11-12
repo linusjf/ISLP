@@ -274,5 +274,23 @@ alpha_SE
 # %%
 printmd(f"The final output shows that the bootstrap estimate for SE(α̂) is {alpha_SE:.4f}.")
 
+# %% [markdown]
+# ### Estimating the Accuracy of a Linear Regression Model
+#
+# The bootstrap approach can be used to assess the variability of the coefficient estimates and predictions from a statistical learning method. Here we use the bootstrap approach in order to assess the variability of the estimates for $\beta_0$ and $\beta_1$ ,the intercept and slope terms for the linear regression model that uses horsepower to predict *mpg* in the **Auto** data set. We will compare the estimates obtained using the bootstrap to those obtained using the formulas for $SE(\beta_0)$ and $SE(\beta_1$) described in Section 3.1.2., Assessing the Accuracy of the Coefficients.
+#
+# $$\begin{aligned}
+# \large & {SE(\hat{\beta_0})}^2 = \sigma^2 \Big [ \frac {1} {n} + \frac {{\bar{x}}^2}  {\sum_{i=1}^n(x_i - \bar{x})^2} \Big ] \\
+# \large & {SE(\hat{\beta_1})}^2 =  \frac {\sigma^2}  {\sum_{i=1}^n(x_i - \bar{x})^2} \\
+# \large & \text{ where } \sigma^2 = Var(\epsilon) \\
+# \large & \text{ and } \hat{\sigma} = RSE = \sqrt{\frac {RSS} {n-2}}
+# \end{aligned}$$
+
+# %% [markdown]
+# To use our `boot_SE()` function, we must write a function (its first argument) that takes a data frame `D` and indices `idx` as its only arguments. But here we want to bootstrap a specific regression model, specified by a model formula and data. We show how to do this in a few simple steps.
+
+# %% [markdown]
+# We start by writing a generic function `boot_OLS()` for bootstrapping a regression model that takes a formula to define the corresponding regression. We use the `clone()` function to make a copy of the formula that can be refit to the new dataframe. This means that any derived features such as those defined by `poly()` (which we will see shortly), will be re-fit on the resampled data frame.
+
 # %%
 allDone();
