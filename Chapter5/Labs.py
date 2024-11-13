@@ -346,7 +346,23 @@ printmd(f"The standard error estimates for $\\beta_0$ and $\\beta_1$ obtained us
 # %% [markdown]
 # Interestingly, these are somewhat different from the estimates obtained using the bootstrap. Does this indicate a problem with the bootstrap? In fact, it suggests the opposite.
 
-# %%
-allDone();
+# %% [markdown]
+# The standard formulas rely on certain assumptions. For example, they depend on the unknown parameter $\sigma^2$ , the noise variance. We then estimate $\sigma^2$ using the RSS. Now although the formula for the standard errors do not rely on the linear model being correct, the estimate for $\sigma^2$ does. We see that there is a non-linear relationship in the data, and so the residuals from a linear fit will be inflated, and so will $\sigma^2$ . Secondly, the standard formulas assume (somewhat unrealistically) that the $x_i$ are fixed, and all the variability comes from the variation in the errors $\epsilon_i$ . The bootstrap approach does not rely on any of these assumptions, and so it is likely giving a more accurate estimate of the standard errors of $\hat{\beta_0}$ and $\hat{\beta_1}$ than the results from `sm.OLS`.
+
+# %% [markdown]
+# Below we compute the bootstrap standard error estimates and the standard linear regression estimates that result from fitting the quadratic model to the data. Since this model provides a good fit to the data, there is now a better correspondence between the bootstrap estimates and the standard estimates of $SE(\hat{\beta_0}) \text{ , } SE(\hat{\beta_1}) \text { and } SE(\hat{\beta_2})$.
 
 # %%
+quad_model = MS([poly('horsepower', 2, raw=True)])
+quad_func = partial(boot_OLS, quad_model, 'mpg')
+boot_SE(quad_func, Auto, B=1000)
+
+# %% [markdown]
+# We compare the results to the standard errors computed using `sm.OLS()`.
+
+# %%
+M = sm.OLS(Auto['mpg'], quad_model.fit_transform(Auto))
+summarize(M.fit())['std err']
+
+# %%
+allDone();
