@@ -332,5 +332,21 @@ hp_se
 # %%
 printmd(f"This indicates that the bootstrap estimate for $SE(\\beta_0)$ is {hp_se.intercept:.2f}, and that the bootstrap estimate for $SE(\\beta_1)$ is {hp_se.horsepower:.4f}.")
 
+# %% [markdown]
+# Standard formulas can be used to compute the standard errors for the regression coefficients in a linear model. These can be obtained using the `summarize()` function from `ISLP.sm`.
+
+# %%
+hp_model.fit(Auto , Auto['mpg'])
+model_se = summarize(hp_model.results_)['std err']
+model_se
+
+# %%
+printmd(f"The standard error estimates for $\\beta_0$ and $\\beta_1$ obtained using the formulas are {model_se.intercept:.3f} for the intercept and {model_se.horsepower:.3f} for the slope.")
+
+# %% [markdown]
+# Interestingly, these are somewhat different from the estimates obtained using the bootstrap. Does this indicate a problem with the bootstrap? In fact, it suggests the opposite.
+
 # %%
 allDone();
+
+# %%
