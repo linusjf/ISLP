@@ -32,6 +32,29 @@ from notebookfuncs import *
 # **In other words, prove that $\alpha$ given by the equation above does indeed minimize $Var(\alpha X + (1 − \alpha)Y)$.**
 
 # %% [markdown]
+# By statistical properties of the variance, we have
+# $$\begin{aligned}
+# & Var(aX + bY) = Var(aX) + Var(bY) + 2Cov(aX, bY) \\
+# & = a^2Var(X) + b^2Var(Y) + 2abCov(X,Y) \\
+# & \therefore Var(\alpha X + (1 − \alpha)Y) \\
+# & = \alpha^2Var(X) + (1 - \alpha)^2Var(Y) + 2\alpha(1 - \alpha)Cov(X,Y) \\
+# & = \alpha^2Var(X) + Var(Y) + \alpha^2Var(Y) -2 \alpha Var(Y)  + 2 \alpha Cov(X.Y) - 2 \alpha^2Cov(X,Y) \\ 
+# & = \alpha^2Var(X) + \alpha^2Var(Y) - 2 \alpha^2Cov(X,Y) -2 \alpha Var(Y)  + 2 \alpha Cov(X.Y) + Var(Y) \\
+# & = \alpha^2(Var(X) + Var(Y) - 2 Cov(X,Y)) -2 \alpha (Var(Y) - Cov(X,Y)) + Var(Y)
+# \end{aligned}$$
+
+# %% [markdown]
+# Using single-variable calculus and differentiating the above equation w.r.t $\alpha$ and equating it to zero to discover the value of $\alpha$ that minimizes the variance, we have
+#
+# $$\begin{aligned}
+# & 2 \alpha (Var(X) + Var(Y) - 2 Cov(X,Y)) -2 (Var(Y) - Cov(X,Y)) = 0 \\
+# & \implies 2 \alpha (Var(X) + Var(Y) - 2 Cov(X,Y)) = 2 (Var(Y) - Cov(X,Y)) \\
+# & \implies \alpha (Var(X) + Var(Y) - 2 Cov(X,Y)) = Var(Y) - Cov(X,Y) \\
+# & \implies \alpha = \frac {Var(Y) - Cov(X,Y)} {Var(X) + Var(Y) - 2 Cov(X,Y)} \\
+# & \implies \alpha = \frac {\sigma_Y^2 - \sigma_{XY}^2} {\sigma_X^2 + \sigma_Y^2 - 2\sigma_{XY}^2}
+# \end{aligned}$$
+
+# %% [markdown]
 # ## Exercise 2
 #
 # **We will now derive the probability that a given observation is part of a bootstrap sample. Suppose that we obtain a bootstrap sample from a set of n observations.**
@@ -41,12 +64,21 @@ from notebookfuncs import *
 # **What is the probability that the first bootstrap observation is not the $j_{th}$ observation from the original sample? Justify your answer.**
 
 # %% [markdown]
+# We are obtaining an observation from a set of n observations. $\therefore$ the probability that the first bootstrap observation is the $j_{th}$ observation is $\frac {1} {n}$ . $\therefore$ the probability that it is not is $1 - \frac {1} {n}$.
+
+# %% [markdown]
 # ### (b) 
 # **What is the probability that the second bootstrap observation is not the $j_{th}$ observation from the original sample?**
 
 # %% [markdown]
+# We are sampling with replacement since bootstrap implies the same, the probability that the second observation is not the $j_{th}$ observation is $(1 - \frac{1} {n})^2$.
+
+# %% [markdown]
 # ### (c) 
 # **Argue that the probability that the $j_{th}$ observation is not in the bootstrap sample is $(1 − \frac {1} {n})^n$.**
+
+# %% [markdown]
+# Thus, the probability that the $j_{th}$ observation is not in the entire bootstrap sample of size n is $(1 − \frac {1} {n})^n$.
 
 # %% [markdown]
 # ### (d) 
