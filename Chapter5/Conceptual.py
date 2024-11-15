@@ -136,7 +136,7 @@ N(prob_j.subs(n, 10000))
 # We have
 # $$\begin{aligned}
 # \frac {d} {dn} \Big ( \ln{(1 - 1/n)} \Big ) \\
-# = \frac {1} { 1 - 1/n} (1 / n^2)
+# = \frac {1} { 1 - 1/n} (1 / n^2) = \frac {n} {n-1} (1 / n^2)
 # \end{aligned}$$
 # And 
 # $$\begin{aligned}
@@ -146,7 +146,7 @@ N(prob_j.subs(n, 10000))
 # Substituting and canceling, we have
 # $$\begin{aligned}
 # \lim_{n \to \infty} (-1) \frac {n} {n-1} \\
-# \text{Since } \lim_{n \to \infty} \frac  {n} {n-1} \text{ tends to 1 } \\
+# \text{Since } \lim_{n \to \infty} \frac  {n} {n-1} \text{ tends to 1 } \text{ (Again, by L'Hospital's rule) }\\
 # \implies \lim_{n \to \infty} \ln{y} = (-1) (1) = -1 \\
 # \implies y = e^{-1} = 1 / e
 # \end{aligned}$$
