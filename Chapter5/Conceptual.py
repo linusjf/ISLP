@@ -214,12 +214,26 @@ printmd(f"Thus, we see that the probability closely matches what we obtained the
 # **Explain how k-fold cross-validation is implemented.**
 
 # %% [markdown]
+# The purpose of cross-validation is to estimate a test statistic or metric. This is one of the methods utilized to estimate a test statistic when there is no test or validation dataset available to estimate the metric. The metric could be MSE or Accuracy or any other metric. It doesn't really matter.
+#
+# K-fold cross-validation involves splitting the input dataset into k folds (usually 5 or 10) of equal size. One of the folds is held out to be used as the validation dataset while the model is trained on the remaining k - 1 folds. This process is repeated k times and the test performance is recorded and averaged. This metric is the cross-validation or out-of-sample metric.
+
+# %% [markdown]
 # ### (b) 
 # **What are the advantages and disadvantages of k-fold cross-validation relative to:**
 #
 #  **i.  The validation set approach?**
+#
+# The validation set approach involves randomly dividing the available set of observations into two parts, a training set and a validation set or hold-out set. The model is fit on the training set, and the fitted model is used to predict the set responses for the observations in the validation set. The resulting validation hold-out set set error rate provides an estimate of the test error rate.
+#
+# *Advantages:*
+#
+# *Disadvantages:*
+#
 #  
 # **ii.  LOOCV?**
+#
+# Leave-one-out cross-validation (LOOCV) attempts to address the Validation Set  method's drawbacks. Here, a single observation is used as the validation dataset and the remaining observations make up the training dataset.The procedure is repeated n times leaving out one observation at a time. This process produces n metrics which are then averaged out.
 
 # %% [markdown]
 # ## Exercise 4
