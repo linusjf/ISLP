@@ -218,11 +218,18 @@ printmd(f"Thus, we see that the probability closely matches what we obtained the
 # **What are the advantages and disadvantages of k-fold cross-validation relative to:**
 #
 #  **i.  The validation set approach?**
+#  
 # **ii.  LOOCV?**
 
 # %% [markdown]
 # ## Exercise 4
 # **Suppose that we use some statistical learning method to make a prediction for the response Y for a particular value of the predictor X. Carefully describe how we might estimate the standard deviation of our prediction.**
+
+# %% [markdown]
+# The bootstrap is a widely applicable and extremely powerful statistical tool that can be used to quantify the uncertainty associated with a given estimator or statistical learning method. The bootstrap's power lies in the fact that it can be easily applied to a wide range of statistical learning methods, including some for which a measure of variability is otherwise difficult to obtain and is not automatically output by statistical software. 
+#
+# The bootstrap can be performed on a dataset with n observations. We randomly select n observations from this dataset with replacement. We can use this new dataset to make a prediction for a particular value of the predictor X. We can perform this several times, say B, a large number. The array of B values for the predictor is our result. We then calculate the standard deviation of these predictions. This is the standard deviation of our bootstrapped estimates for the prediction.
+# This serves as an estimate for the standard deviation of the prediction obtained from the original dataset.
 
 # %%
 allDone();
