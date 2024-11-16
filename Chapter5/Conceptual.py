@@ -228,12 +228,23 @@ printmd(f"Thus, we see that the probability closely matches what we obtained the
 #
 # *Advantages:*
 #
+# 1. The validation set approach estimate can be highly variable since it depends on which observations are selected in the training set. This compares unfavorably with the k-fold cross-validation approach where the test variance is smaller.
+# 2.  In the validation approach, only half the observations &mdash; those that are included in the training set rather than in the validation set &mdash; are used to fit the model. Statistical methods perform worse when trained on fewer observations. The validation set error rate thus overestimates the test error rate for the model fit on the entire data set.
+#
 # *Disadvantages:*
 #
+# 1. The validation set approach is conceptually simple and easier to explain as well as implement. The k-fold cross-validation approach is not as simple to explain or understand. 
+# 2. The validation set approach is computationally inexpensive and has to be performed just once. The k-fold approach depends on the value chosen for k, usually 5 or 10 &mdash; empirically proven to give the best results.
 #  
 # **ii.  LOOCV?**
 #
 # Leave-one-out cross-validation (LOOCV) attempts to address the Validation Set  method's drawbacks. Here, a single observation is used as the validation dataset and the remaining observations make up the training dataset.The procedure is repeated n times leaving out one observation at a time. This process produces n metrics which are then averaged out.
+#
+# *Advantages*
+#
+#
+# *Disadvantages*
+#
 
 # %% [markdown]
 # ## Exercise 4
