@@ -242,6 +242,10 @@ printmd(f"Thus, we see that the probability closely matches what we obtained the
 #
 # *Advantages*
 #
+# 1. Computationally less expensive than LOOCV. In 10-fold cross-validation, the model has to be fit only 10 times. In LOOCV, it would be n times where n is the dataset size.
+#
+# 2. While LOOCV would be less biased than K-fold, the trade-off is that there is less variability in the estimates from a k-fold cross-validation procedure. LOOCV has higher variance than does k-fold CV with k < n. When we perform LOOCV, we are averaging the outputs of n fitted models, each of which is trained on an almost identical set of observations; therefore, these outputs are highly (positively) correlated with each other. In contrast, when we perform k-fold CV with k < n, we are averaging the outputs of k fitted models that are somewhat less 
+# correlated with each other, since the overlap between the training sets in each model is smaller. Since the mean of many highly correlated quantities has higher variance than does the mean of many quantities that are not as highly correlated, the test error estimate resulting from LOOCV has higher variance than does the test error estimate resulting from k-fold CV.
 #
 # *Disadvantages*
 #
