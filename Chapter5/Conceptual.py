@@ -230,6 +230,7 @@ printmd(f"Thus, we see that the probability closely matches what we obtained the
 #
 # 1. The validation set approach estimate can be highly variable since it depends on which observations are selected in the training set. This compares unfavorably with the k-fold cross-validation approach where the test variance is smaller.
 # 2.  In the validation approach, only half the observations &mdash; those that are included in the training set rather than in the validation set &mdash; are used to fit the model. Statistical methods perform worse when trained on fewer observations. The validation set error rate thus overestimates the test error rate for the model fit on the entire data set.
+# 3.  All the data is used to train the models unlike as in the Validation set approach.
 #
 # *Disadvantages:*
 #
@@ -242,13 +243,23 @@ printmd(f"Thus, we see that the probability closely matches what we obtained the
 #
 # *Advantages*
 #
-# 1. Computationally less expensive than LOOCV. In 10-fold cross-validation, the model has to be fit only 10 times. In LOOCV, it would be n times where n is the dataset size.
+# 1. Computationally less expensive than LOOCV. In 10-fold cross-validation, the model has to be fit only 10 times. In LOOCV, it would be n times where n is the dataset size. 
 #
 # 2. While LOOCV would be less biased than K-fold, the trade-off is that there is less variability in the estimates from a k-fold cross-validation procedure. LOOCV has higher variance than does k-fold CV with k < n. When we perform LOOCV, we are averaging the outputs of n fitted models, each of which is trained on an almost identical set of observations; therefore, these outputs are highly (positively) correlated with each other. In contrast, when we perform k-fold CV with k < n, we are averaging the outputs of k fitted models that are somewhat less 
 # correlated with each other, since the overlap between the training sets in each model is smaller. Since the mean of many highly correlated quantities has higher variance than does the mean of many quantities that are not as highly correlated, the test error estimate resulting from LOOCV has higher variance than does the test error estimate resulting from k-fold CV.
 #
+# 3. The cross-validation approach tends to underestimate the the actual test error rate. However, sometimes we are more interested in the location of the minimum point in the estimated MSE curve. That's because we may perform cross-validation on a number of statistical learning methods or on a single method with varying degrees of flexibility. Hence, the location of the minimum point is important and not it's actual value.
+#
+#
 # *Disadvantages*
 #
+# 1. With least squares linear or polynomial regression, the cost of LOOCV is the same as that of a single fit when we use the following equation:
+#    $$
+#    CV_{(n)} = \frac {1} {n} \sum_{i=1}^n \Big ( \frac { y_i - \hat{yi}} { 1 - h_i} \Big )^2
+#    $$
+#    This relies on calculating the leverage for each point which reflects how much an observation influences its own fit. The leverage lies between 1/n and 1 and thus the high leverage points' residuals are inflated by exactly that amount in the equation above. This magic formula does not hold in general and hence LOOCV has to be computed n times for other statistical methods.
+#
+# 2. There is an *element of randomness* in the k-fold approach depending on how data is split into k-folds. LOOCV does not have this drawback.
 
 # %% [markdown]
 # ## Exercise 4
