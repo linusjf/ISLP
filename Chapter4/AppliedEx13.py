@@ -30,6 +30,7 @@ from summarytools import dfSummary
 import numpy as np
 import klib
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 # %% [markdown]
 # ## Exercise 13
@@ -61,6 +62,17 @@ dfSummary(Weekly)
 
 # %%
 klib.corr_plot(Weekly);
+
+# %% [markdown]
+# We can see that the correlation between Year and LogVolume is 0.98 which is much higher than the correlation between Year and Volume which is 0.84. That's because log transformation is non-linear and the original relation was non-linear as seen from the plot below.
+
+# %%
+plt.subplot(1,2,1)
+plt.plot(np.exp(Weekly["LogVolume"]), label="Volume", c="r");
+plt.legend();
+plt.subplot(1,2,2)
+plt.plot(Weekly["LogVolume"], label="LogVolume");
+plt.legend();
 
 # %%
 klib.dist_plot(Weekly);
