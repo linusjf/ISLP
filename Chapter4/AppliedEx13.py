@@ -26,11 +26,13 @@ from notebookfuncs import *
 
 # %%
 from ISLP import load_data
+from ISLP.models import (ModelSpec as MS , summarize)
 from summarytools import dfSummary
 import numpy as np
 import klib
 import seaborn as sns
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 
 # %% [markdown]
 # ## Exercise 13
@@ -116,6 +118,25 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 
 # %% [markdown]
 # Use the full data set to perform a logistic regression with Direction as the response and the five lag variables plus Volume as predictors. Use the summary function to print the results. Do any of the predictors appear to be statistically significant? If so, which ones?
+
+# %%
+allvars = Weekly.columns.drop(['Today', 'Year', 'Direction'])
+design = MS(allvars)
+X = design.fit_transform(Weekly)
+y = Weekly.Direction == 'Up'
+family = sm.families.Binomial()
+glm = sm.GLM(y, X, family=family)
+results = glm.fit()
+summarize(results)
+
+# %%
+results.params
+
+# %%
+results.pvalues[results.pvalues < 0.05]
+
+# %% [markdown]
+# From the above, it can be deduced that *Lag2* is the only significant variable that predicts Direction. The positive coefficient for *Lag2* suggests that if the market had a positive return today, it is more likely that the market will rise once more in two days.
 
 # %% [markdown]
 # ## (c)
