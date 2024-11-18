@@ -36,6 +36,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import pandas as pd
 from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import ConfusionMatrixDisplay
 
 # %% [markdown]
 # ## Exercise 13
@@ -176,15 +177,30 @@ np.mean(labels == Weekly.Direction), (553+59) /len(Weekly)
 # This accuracy of 56.2% is not much better than the no information classifier's (NIC)  accuracy of 55.56% when we just guess that the market will go up all the time and achieve an accuracy level of 55.56%.
 
 # %% [markdown]
-#
-
-# %% [markdown]
 # 100 - 56.2 = 43.8% is the training error rate. As we have seen previously, the training error rate is often overly optimistic &mdash; it tends to underestimate the test error rate. In order to better assess the accuracy of the logistic regression model in this setting, we can fit the model using part of the data, and then examine how well it predicts the held out data. This will yield a more realistic error rate, in the sense that in practice we will be interested in our model's performance not on the data that we used to fit the model, but rather on days in the future for which the market's movements are unknown.
 
 # %%
 print(classification_report(Weekly["Direction"],
                             labels,
                             digits = 3))
+
+disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix(Weekly["Direction"],
+                       labels),
+                      display_labels=["Down", "Up"])
+disp.plot();
+
+# %%
+support_up = np.sum(Weekly["Direction"] == "Up")
+support_down = np.sum(Weekly["Direction"] == "Down")
+predicted_up = np.sum(labels == "Up")
+predicted_down = np.sum(labels == "Down")
+predicted_correctly_up = np.sum((labels == Weekly["Direction"] ) & (labels == "Up"))
+precision_up = predicted_correctly_up / predicted_up
+predicted_correctly_down = np.sum((labels == Weekly["Direction"] ) & (labels == "Down"))
+precision_down = predicted_correctly_down / predicted_down
+print(f"Precision values (Up, Down): {precision_up}, {precision_down}")
+print(f"Precision macro average: {(precision_up + precision_down)/2}")
+print(f"Precision weighted average: {(precision_up * support_up + precision_down * support_down)/(predicted_up + predicted_down)}")
 
 # %% [markdown]
 # ### (d)
