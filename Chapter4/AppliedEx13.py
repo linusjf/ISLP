@@ -26,6 +26,7 @@ from notebookfuncs import *
 
 # %%
 from ISLP import load_data
+from ISLP import confusion_table
 from ISLP.models import (ModelSpec as MS , summarize)
 from summarytools import dfSummary
 import numpy as np
@@ -33,8 +34,8 @@ import klib
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
-import statsmodels.formula.api as smf
 import pandas as pd
+from sklearn.metrics import confusion_matrix, classification_report
 
 # %% [markdown]
 # ## Exercise 13
@@ -123,9 +124,12 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 # Use the full data set to perform a logistic regression with Direction as the response and the five lag variables plus Volume as predictors. Use the summary function to print the results. Do any of the predictors appear to be statistically significant? If so, which ones?
 
 # %%
+allvars = Weekly.columns.drop(['Today', 'Direction', 'Year'])
+design = MS(allvars)
+X = design.fit_transform(Weekly)
+y = Weekly.Direction == 'Up'
 family = sm.families.Binomial()
-formula = 'Direction ~ Lag1+Lag2+Lag3+Lag4+Lag5+LogVolume'
-glm = smf.glm(formula = formula, data=Weekly, family=family)
+glm = sm.GLM(y, X, family=family)
 results = glm.fit()
 summarize(results)
 
@@ -134,9 +138,6 @@ results.summary()
 
 # %%
 results.model.endog_names
-
-# %% [markdown]
-# *Note that the dependent variable has been converted from nominal into two dummy variables: ['Direction[Down]', 'Direction[Up]'].*
 
 # %%
 results.params
@@ -152,6 +153,38 @@ results.pvalues[results.pvalues < 0.05]
 
 # %% [markdown]
 # Compute the confusion matrix and overall fraction of correct predictions. Explain what the confusion matrix is telling you about the types of mistakes made by logistic regression.
+
+# %%
+predictions = results.predict()
+
+# %%
+labels = np.array(['Down']*len(Weekly))
+labels[predictions > 0.5] = "Up"
+
+# %%
+ct = confusion_table(Weekly["Direction"],
+                       labels)
+ct
+
+# %% [markdown]
+# The diagonal elements of the confusion matrix indicate correct predictions, while the off-diagonals represent incorrect predictions. Hence our model correctly predicted that the market would go up on 553 days and that it would go down on 59 days, for a total of 553 + 59 = 612 correct predictions. The `np.mean()` function can be used to compute the fraction of days for which the prediction was correct. In this case, logistic regression correctly predicted the movement of the market 56.2% of the time.
+
+# %%
+np.mean(labels == Weekly.Direction), (553+59) /len(Weekly)
+
+# %% [markdown]
+# This accuracy of 56.2% is not much better than the no information classifier's (NIC)  accuracy of 55.56% when we just guess that the market will go up all the time and achieve an accuracy level of 55.56%.
+
+# %% [markdown]
+#
+
+# %% [markdown]
+# 100 - 56.2 = 43.8% is the training error rate. As we have seen previously, the training error rate is often overly optimistic &mdash; it tends to underestimate the test error rate. In order to better assess the accuracy of the logistic regression model in this setting, we can fit the model using part of the data, and then examine how well it predicts the held out data. This will yield a more realistic error rate, in the sense that in practice we will be interested in our model's performance not on the data that we used to fit the model, but rather on days in the future for which the market's movements are unknown.
+
+# %%
+print(classification_report(Weekly["Direction"],
+                            labels,
+                            digits = 3))
 
 # %% [markdown]
 # ### (d)
