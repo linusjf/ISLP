@@ -33,6 +33,8 @@ import klib
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import pandas as pd
 
 # %% [markdown]
 # ## Exercise 13
@@ -45,6 +47,7 @@ Weekly = load_data("Weekly")
 Weekly["LogVolume"] = np.log(Weekly["Volume"])
 Weekly = Weekly.drop(columns=["Volume"])
 Weekly = klib.convert_datatypes(Weekly)
+print(Weekly.dtypes)
 Weekly.head()
 
 # %% [markdown]
@@ -120,14 +123,20 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 # Use the full data set to perform a logistic regression with Direction as the response and the five lag variables plus Volume as predictors. Use the summary function to print the results. Do any of the predictors appear to be statistically significant? If so, which ones?
 
 # %%
-allvars = Weekly.columns.drop(['Today', 'Year', 'Direction'])
-design = MS(allvars)
-X = design.fit_transform(Weekly)
-y = Weekly.Direction == 'Up'
 family = sm.families.Binomial()
-glm = sm.GLM(y, X, family=family)
+formula = 'Direction ~ Lag1+Lag2+Lag3+Lag4+Lag5+LogVolume'
+glm = smf.glm(formula = formula, data=Weekly, family=family)
 results = glm.fit()
 summarize(results)
+
+# %%
+results.summary()
+
+# %%
+results.model.endog_names
+
+# %% [markdown]
+# *Note that the dependent variable has been converted from nominal into two dummy variables: ['Direction[Down]', 'Direction[Up]'].*
 
 # %%
 results.params
@@ -136,7 +145,7 @@ results.params
 results.pvalues[results.pvalues < 0.05]
 
 # %% [markdown]
-# From the above, it can be deduced that *Lag2* is the only significant variable that predicts Direction. The positive coefficient for *Lag2* suggests that if the market had a positive return today, it is more likely that the market will rise once more in two days.
+# From the above, it can be deduced that `Lag2` is the only significant variable that predicts `Direction`. The positive coefficient for `Lag2` suggests that if the market had a positive return today, it is more likely that the market will rise once more in two days and vice versa. We can also see that the confidence intervals of the other parameters `Lag1, Lag3, Lag4, Lag5 and LogVolume` span the value 0 and thus are not significant.
 
 # %% [markdown]
 # ## (c)
