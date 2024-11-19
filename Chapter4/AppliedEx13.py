@@ -240,6 +240,9 @@ Weekly_test.shape
 
 # %%
 X_train , X_test = Weekly_train["Lag2"], Weekly_test["Lag2"]
+# add constant term of 1s
+X_train = add_constant(X_train)
+X_test = add_constant(X_test)
 y_train , y_test = Weekly_train["Direction"] == "Up", Weekly_test["Direction"] == "Up"
 glm_train = sm.GLM(y_train , X_train, family=sm.families.Binomial())
 results = glm_train.fit()
