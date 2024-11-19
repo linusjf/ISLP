@@ -202,7 +202,7 @@ true_negatives, false_positives, false_negatives, true_positives = cm.ravel()
 
 # %%
 support_up = np.sum(Weekly["Direction"] == "Up")
-support_down = len(Weekly) - support_up
+support_down = Weekly.shape[0] - support_up
 predicted_up = np.sum(labels == "Up")
 predicted_down = np.sum(labels == "Down")
 predicted_correctly_up = true_positives
@@ -211,24 +211,61 @@ predicted_correctly_down = true_negatives
 precision_down = predicted_correctly_down / predicted_down
 print(f"Support (Up, Down): {support_up}, {support_down}")
 print(f"Precision (Up, Down): {precision_up:.3f}, {precision_down:.3f}")
-print(f"Precision macro average: {(precision_up + precision_down)/2:.3f}")
-print(f"Precision weighted average: {(precision_up * support_up + precision_down * support_down)/(support_up + support_down):.3f}")
+print(f"Precision Average (Macro, Weighted): {(precision_up + precision_down)/2:.3f}, {(precision_up * support_up + precision_down * support_down)/(support_up + support_down):.3f}")
 recall_up = true_positives / support_up
 recall_down = true_negatives / support_down
 print(f"Recall (Up, Down): {recall_up:.3f}, {recall_down:.3f}")
-print(f"Recall macro average: {(recall_up + recall_down)/2:.3f}")
-print(f"Recall weighted average: {(recall_up * support_up + recall_down * support_down)/(support_up + support_down):.3f}")
+print(f"Recall Average (Macro, Weighted): {(recall_up + recall_down)/2:.3f},{(recall_up * support_up + recall_down * support_down)/(support_up + support_down):.3f}")
 f1_score_up = 2 * precision_up * recall_up/ (precision_up + recall_up)
 f1_score_down = 2 * precision_down * recall_down/ (precision_down + recall_down)
 print(f"F1 score (Up, Down): {f1_score_up:.3f}, {f1_score_down:.3f}")
-print(f"F1 score macro average: {(f1_score_up + f1_score_down)/2:.3f}")
-print(f"F1 score weighted average: {(f1_score_up * support_up + f1_score_down * support_down)/(support_up + support_down):.3f}")
+print(f"F1 score Average (Macro, Weighted): {(f1_score_up + f1_score_down)/2:.3f},{(f1_score_up * support_up + f1_score_down * support_down)/(support_up + support_down):.3f}")
 
 # %% [markdown]
 # ### (d)
 
 # %% [markdown]
 # Now fit the logistic regression model using a training data period from 1990 to 2008, with Lag2 as the only predictor. Compute the confusion matrix and the overall fraction of correct predictions for the held out data (that is, the data from 2009 and 2010).
+
+# %%
+train = (Weekly.Year <= 2008)
+Weekly_train = Weekly.loc[train]
+Weekly_test = Weekly.loc[~train];
+
+# %%
+Weekly_train.shape
+
+# %%
+Weekly_test.shape
+
+# %%
+X_train , X_test = Weekly_train["Lag2"], Weekly_test["Lag2"]
+y_train , y_test = Weekly_train["Direction"] == "Up", Weekly_test["Direction"] == "Up"
+glm_train = sm.GLM(y_train , X_train, family=sm.families.Binomial())
+results = glm_train.fit()
+probs = results.predict(exog=X_test);
+
+# %%
+D = Weekly.Direction
+L_train , L_test = D.loc[train], D.loc[~train]
+
+# %%
+labels = np.array(['Down']*L_test.shape[0])
+labels[probs > 0.5] = 'Up'
+confusion_table(labels , L_test)
+
+# %%
+np.mean(labels == L_test), np.mean(labels != L_test)
+
+# %%
+print(classification_report(Weekly_test["Direction"],
+                            labels,
+                            digits = 3))
+cm = confusion_matrix(Weekly_test["Direction"],
+                       labels)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                      display_labels=["Down", "Up"])
+disp.plot();
 
 # %% [markdown]
 # ### (e)
