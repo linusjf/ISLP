@@ -209,9 +209,20 @@ predicted_correctly_up = true_positives
 precision_up = predicted_correctly_up / predicted_up
 predicted_correctly_down = true_negatives
 precision_down = predicted_correctly_down / predicted_down
-print(f"Precision (Up, Down): {precision_up}, {precision_down}")
-print(f"Precision macro average: {(precision_up + precision_down)/2}")
-print(f"Precision weighted average: {(precision_up * support_up + precision_down * support_down)/(predicted_up + predicted_down)}")
+print(f"Support (Up, Down): {support_up}, {support_down}")
+print(f"Precision (Up, Down): {precision_up:.3f}, {precision_down:.3f}")
+print(f"Precision macro average: {(precision_up + precision_down)/2:.3f}")
+print(f"Precision weighted average: {(precision_up * support_up + precision_down * support_down)/(support_up + support_down):.3f}")
+recall_up = true_positives / support_up
+recall_down = true_negatives / support_down
+print(f"Recall (Up, Down): {recall_up:.3f}, {recall_down:.3f}")
+print(f"Recall macro average: {(recall_up + recall_down)/2:.3f}")
+print(f"Recall weighted average: {(recall_up * support_up + recall_down * support_down)/(support_up + support_down):.3f}")
+f1_score_up = 2 * precision_up * recall_up/ (precision_up + recall_up)
+f1_score_down = 2 * precision_down * recall_down/ (precision_down + recall_down)
+print(f"F1 score (Up, Down): {f1_score_up:.3f}, {f1_score_down:.3f}")
+print(f"F1 score macro average: {(f1_score_up + f1_score_down)/2:.3f}")
+print(f"F1 score weighted average: {(f1_score_up * support_up + f1_score_down * support_down)/(support_up + support_down):.3f}")
 
 # %% [markdown]
 # ### (d)
