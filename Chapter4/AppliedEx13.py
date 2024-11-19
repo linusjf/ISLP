@@ -34,6 +34,7 @@ import klib
 import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
+from statsmodels.tools.tools import add_constant
 import pandas as pd
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -125,10 +126,15 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 # Use the full data set to perform a logistic regression with Direction as the response and the five lag variables plus Volume as predictors. Use the summary function to print the results. Do any of the predictors appear to be statistically significant? If so, which ones?
 
 # %%
-allvars = Weekly.columns.drop(['Today', 'Direction', 'Year'])
-design = MS(allvars)
-X = design.fit_transform(Weekly)
+# Try to avoid using ISLP classes for anything else but to load data since it may not transfer well to
+# actual usage in data analysis projects
+# drop columns Today, Direction, Year
+allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year'])]
+# add constant term of 1s
+X = add_constant(allvars)
+# Convert 'Down' and 'Up' to 0s and 1s respectively
 y = Weekly.Direction == 'Up'
+# Use Binomial family for Logistic Regression
 family = sm.families.Binomial()
 glm = sm.GLM(y, X, family=family)
 results = glm.fit()
@@ -183,22 +189,27 @@ np.mean(labels == Weekly.Direction), (553+59) /len(Weekly)
 print(classification_report(Weekly["Direction"],
                             labels,
                             digits = 3))
+cm = confusion_matrix(Weekly["Direction"],
+                       labels)
 
-disp = ConfusionMatrixDisplay(confusion_matrix=confusion_matrix(Weekly["Direction"],
-                       labels),
+disp = ConfusionMatrixDisplay(confusion_matrix=cm,
                       display_labels=["Down", "Up"])
 disp.plot();
 
 # %%
+# Getting individual values for
+true_negatives, false_positives, false_negatives, true_positives = cm.ravel()
+
+# %%
 support_up = np.sum(Weekly["Direction"] == "Up")
-support_down = np.sum(Weekly["Direction"] == "Down")
+support_down = len(Weekly) - support_up
 predicted_up = np.sum(labels == "Up")
 predicted_down = np.sum(labels == "Down")
-predicted_correctly_up = np.sum((labels == Weekly["Direction"] ) & (labels == "Up"))
+predicted_correctly_up = true_positives
 precision_up = predicted_correctly_up / predicted_up
-predicted_correctly_down = np.sum((labels == Weekly["Direction"] ) & (labels == "Down"))
+predicted_correctly_down = true_negatives
 precision_down = predicted_correctly_down / predicted_down
-print(f"Precision values (Up, Down): {precision_up}, {precision_down}")
+print(f"Precision (Up, Down): {precision_up}, {precision_down}")
 print(f"Precision macro average: {(precision_up + precision_down)/2}")
 print(f"Precision weighted average: {(precision_up * support_up + precision_down * support_down)/(predicted_up + predicted_down)}")
 
