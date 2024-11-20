@@ -163,8 +163,6 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 bar_df = Weekly.groupby(["Year", "Direction"]).size().reset_index(name="Counts")
 downs = bar_df[bar_df.Direction == "Down"].Counts.values
 ups = bar_df[bar_df.Direction == "Up"].Counts.values
-print(ups, downs)
-print(np.add(downs,ups))
 downs_pct = np.divide(downs,np.add(downs,ups))
 ups_pct = np.divide(ups,np.add(downs,ups))
 years = bar_df["Year"].unique()
@@ -174,6 +172,7 @@ fig, ax = plt.subplots()
 ax.bar(years, downs_pct)
 ax.bar(years,ups_pct, bottom=downs_pct);
 ax.axhline(y=0.5, color="k", linestyle="--");
+ax.yaxis.set_major_formatter(mtick.PercentFormatter())
 
 # %% [markdown]
 # ### (b)
