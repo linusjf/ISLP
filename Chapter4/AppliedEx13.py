@@ -109,12 +109,18 @@ y_new = cubic_objective(Weekly["Week"], a , b, c, d)
 plt.plot(Weekly["Week"], y_new, "--", color="red", label="Curve Fit")
 plt.legend();
 
+# %% [markdown]
+# Here, we can see from the curve fit where we specified a cubic objective function, the Volume chart displays non-linearity but the LogVolume fit is a straight line.
+
 # %%
 plt.figure(figsize=(16, 8))
 plt.plot(Weekly["Week"],Weekly["Today"])
 plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index)
 plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
 plt.axhline(y=0, color="k", linestyle="--");
+
+# %% [markdown]
+# Here, we can see that the market go through periods of low and high volatility. Events such as market crashes exhibit high variance/volatility.
 
 # %%
 klib.dist_plot(Weekly);
@@ -152,6 +158,22 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 
 # %% [markdown]
 # - Thus, we see from the pie-chart, that if we classify all responses as 'Up', we would still achieve an accuracy level of 55.56%. This is the base level which we have to improve upon.
+
+# %%
+bar_df = Weekly.groupby(["Year", "Direction"]).size().reset_index(name="Counts")
+downs = bar_df[bar_df.Direction == "Down"].Counts.values
+ups = bar_df[bar_df.Direction == "Up"].Counts.values
+print(ups, downs)
+print(np.add(downs,ups))
+downs_pct = np.divide(downs,np.add(downs,ups))
+ups_pct = np.divide(ups,np.add(downs,ups))
+years = bar_df["Year"].unique()
+
+# %%
+fig, ax = plt.subplots()
+ax.bar(years, downs_pct)
+ax.bar(years,ups_pct, bottom=downs_pct);
+ax.axhline(y=0.5, color="k", linestyle="--");
 
 # %% [markdown]
 # ### (b)
