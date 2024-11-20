@@ -30,9 +30,11 @@ from ISLP import confusion_table
 from ISLP.models import (ModelSpec as MS , summarize)
 from summarytools import dfSummary
 import numpy as np
+from scipy.optimize import curve_fit
 import klib
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import statsmodels.api as sm
 from statsmodels.tools.tools import add_constant
 import pandas as pd
@@ -78,12 +80,41 @@ klib.corr_plot(Weekly);
 # We can see that the correlation between Year and LogVolume is 0.98 which is much higher than the correlation between Year and Volume which is 0.84. That's because log transformation is non-linear and the original relation was non-linear as seen from the plot below.
 
 # %%
-plt.subplot(1,2,1)
+Weekly["Week"] = np.arange(1, Weekly.shape[0] + 1)
+Years_Break = Weekly.groupby("Year").first()
+plt.figure(figsize=(16, 16))
+plt.subplot(2,1,1)
 plt.plot(np.exp(Weekly["LogVolume"]), label="Volume", c="r");
+plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
+plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
+
+# objective function
+def cubic_objective(x, a, b, c, d):
+	return a * x + b * x ** 2 + c * x ** 3 + d
+
+# fit curve
+popt, _ = curve_fit(cubic_objective, Weekly["Week"],np.exp(Weekly["LogVolume"]))  
+a, b, c, d = popt
+y_new = cubic_objective(Weekly["Week"], a , b, c, d)
+plt.plot(Weekly["Week"], y_new, "--", color="blue", label="Curve Fit")
 plt.legend();
-plt.subplot(1,2,2)
+
+plt.subplot(2,1,2)
 plt.plot(Weekly["LogVolume"], label="LogVolume");
+plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
+plt.axhline(y=0, color="black", linestyle="--")
+popt, _ = curve_fit(cubic_objective, Weekly["Week"],Weekly["LogVolume"])  
+a, b, c, d = popt
+y_new = cubic_objective(Weekly["Week"], a , b, c, d)
+plt.plot(Weekly["Week"], y_new, "--", color="red", label="Curve Fit")
 plt.legend();
+
+# %%
+plt.figure(figsize=(16, 8))
+plt.plot(Weekly["Week"],Weekly["Today"])
+plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index)
+plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
+plt.axhline(y=0, color="k", linestyle="--");
 
 # %%
 klib.dist_plot(Weekly);
@@ -132,7 +163,7 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 # Try to avoid using ISLP classes for anything else but to load data since it may not transfer well to
 # actual usage in data analysis projects
 # drop columns Today, Direction, Year
-allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year'])]
+allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year', "Week"])]
 # add constant term of 1s
 X = add_constant(allvars)
 # Convert 'Down' and 'Up' to 0s and 1s respectively
