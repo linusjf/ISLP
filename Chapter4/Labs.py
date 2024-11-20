@@ -48,7 +48,7 @@ from ISLP.models import (ModelSpec as MS , summarize)
 # %%
 from ISLP import confusion_table
 from ISLP.models import contrast
-from sklearn. discriminant_analysis import (LinearDiscriminantAnalysis as LDA , QuadraticDiscriminantAnalysis as QDA)
+from sklearn.discriminant_analysis import (LinearDiscriminantAnalysis as LDA , QuadraticDiscriminantAnalysis as QDA)
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
@@ -256,7 +256,7 @@ lda.means_
 lda.classes_
 
 # %% [markdown]
-# The LDA output indicates that π̂Down = 0.492 and π̂Up = 0.508.
+# The LDA output indicates that $\hat{\pi}_{Down}$ = 0.492 and $\hat{\pi}_{Up}$ = 0.508.
 
 # %%
 lda.priors_
@@ -268,7 +268,11 @@ lda.priors_
 lda.scalings_
 
 # %% [markdown]
-# These values provide the linear combination of Lag1 and Lag2 that are used to form the LDA decision rule. In other words, these are the multipliers of the elements of X = x in (4.24). If −0.64 × Lag1 − 0.51 × Lag2 is large, then the LDA classifier will predict a market increase, and if it is small, then the LDA classifier will predict a market decline.
+# These values provide the linear combination of Lag1 and Lag2 that are used to form the LDA decision rule. In other words, these are the multipliers of the elements of X = x in (4.24). 
+# $$
+# {\large \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k) }
+# $$
+# If −0.64 × Lag1 − 0.51 × Lag2 is large, then the LDA classifier will predict a market increase, and if it is small, then the LDA classifier will predict a market decline.
 
 # %%
 lda_pred = lda.predict(X_test)
@@ -308,7 +312,7 @@ np.sum(lda_prob [:,0] > 0.9)
 # ### Fit a QDA model to the Smarket data.
 
 # %%
-qda = QDA( store_covariance=True)
+qda = QDA(store_covariance=True)
 qda.fit(X_train , L_train)
 
 # %% [markdown]

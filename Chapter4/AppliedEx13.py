@@ -38,6 +38,9 @@ from statsmodels.tools.tools import add_constant
 import pandas as pd
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.discriminant_analysis import (LinearDiscriminantAnalysis as LDA , QuadraticDiscriminantAnalysis as QDA)
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
 
 # %% [markdown]
 # ## Exercise 13
@@ -258,12 +261,17 @@ labels[probs > 0.5] = 'Up'
 confusion_table(labels , L_test)
 
 # %%
-np.mean(labels == L_test), np.mean(labels != L_test)
+accuracy = np.mean(labels == L_test)
+test_error = np.mean(labels != L_test)
+
+# %%
+print(f"Here we see the accuracy is {accuracy * 100:g}%")
+print(f"The test error is {test_error * 100:g}%")
 
 # %%
 print(classification_report(Weekly_test["Direction"],
                             labels,
-                            digits = 3))
+                            digits = 3, output_dict=False))
 cm = confusion_matrix(Weekly_test["Direction"],
                        labels)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm,
@@ -275,6 +283,67 @@ disp.plot();
 
 # %% [markdown]
 # Repeat (d) using LDA.
+
+# %%
+lda = LDA(store_covariance=True)
+
+# %% [markdown]
+# Since the LDA estimator automatically adds an intercept, we should remove the column corresponding to the intercept in both X_train and X_test. We can also directly use the labels rather than the Boolean vectors y_train.
+
+# %%
+X_train , X_test = [M.drop(columns =['const']) for M in [X_train , X_test ]]
+
+# %%
+lda.fit(X_train , L_train)
+lda.means_
+
+# %% [markdown]
+# The above means indicate that when `Lag2` is negative, the market direction is Down two days later and vice versa.
+
+# %% [markdown]
+# The estimated prior probabilities are stored in the priors_ attribute. The package `sklearn` typically uses this trailing `_` to denote a quantity estimated when using the fit() method. We can be sure of which entry corresponds to which label by looking at the classes_ attribute.
+
+# %%
+lda.classes_
+
+# %%
+priors = lda.priors_
+
+# %%
+str_down = f"{priors[0]:.3f}"
+str_up = f"{priors[1]:.3f}"
+print(str_down, str_up)
+
+# %%
+printmd("The LDA output indicates that $\\hat{\\pi}_{Down}$ = " + str_down + " and $\\hat{\\pi}_{Up}$ = " + str_up)
+
+# %% [markdown]
+# The linear discriminant vectors can be found in the scalings_ attribute:
+
+# %%
+lda.scalings_
+
+# %% [markdown]
+# These values provide the linear combination of `Lag2` that are used to form the LDA decision rule. In other words, these are the multipliers of the elements of X = x in (4.24). 
+# $$
+# {\large \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k) }
+# $$
+# If −0.44 × Lag2 is large, then the LDA classifier will predict a market increase, and if it is small, then the LDA classifier will predict a market decline.
+
+# %%
+lda.xbar_
+
+# %%
+lda_pred = lda.predict(X_test)
+
+# %%
+np.all(lda_pred == labels)
+
+# %% [markdown]
+# As we observed in our comparison of classification methods (Section 4.5), the LDA and logistic regression predictions are almost identical.
+
+# %%
+confusion_table(lda_pred, L_test)
 
 # %% [markdown]
 # ### (f)
