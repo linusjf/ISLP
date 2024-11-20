@@ -343,7 +343,17 @@ np.all(lda_pred == labels)
 # As we observed in our comparison of classification methods (Section 4.5), the LDA and logistic regression predictions are almost identical.
 
 # %%
-confusion_table(lda_pred, L_test)
+confusion_table(L_test, lda_pred)
+
+# %%
+print(classification_report(L_test,
+                            lda_pred,
+                            digits = 3, output_dict=False))
+cm = confusion_matrix(L_test,
+                       lda_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                      display_labels=["Down", "Up"])
+disp.plot();
 
 # %% [markdown]
 # ### (f)
