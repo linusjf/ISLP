@@ -53,7 +53,6 @@ from sklearn.neighbors import KNeighborsClassifier
 # %%
 Weekly = load_data("Weekly")
 Weekly["LogVolume"] = np.log(Weekly["Volume"])
-Weekly = Weekly.drop(columns=["Volume"])
 Weekly = klib.convert_datatypes(Weekly)
 print(Weekly.dtypes)
 Weekly.head()
@@ -84,18 +83,18 @@ Weekly["Week"] = np.arange(1, Weekly.shape[0] + 1)
 Years_Break = Weekly.groupby("Year").first()
 plt.figure(figsize=(16, 16))
 plt.subplot(2,1,1)
-plt.plot(np.exp(Weekly["LogVolume"]), label="Volume", c="r");
+plt.plot(Weekly["Volume"], label="Volume", c="r");
 plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
 plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
 
 # objective function
-def cubic_objective(x, a, b, c, d):
-	return a * x + b * x ** 2 + c * x ** 3 + d
+def objective(x, a, b, c, d, e):
+	return a * x + b * x ** 2 + c * x ** 3 + d * x ** 4 + e
 
 # fit curve
-popt, _ = curve_fit(cubic_objective, Weekly["Week"],np.exp(Weekly["LogVolume"]))  
-a, b, c, d = popt
-y_new = cubic_objective(Weekly["Week"], a , b, c, d)
+popt, _ = curve_fit(objective, Weekly["Week"],Weekly["Volume"])  
+a, b, c, d, e = popt
+y_new = objective(Weekly["Week"], a , b, c, d, e)
 plt.plot(Weekly["Week"], y_new, "--", color="blue", label="Curve Fit")
 plt.legend();
 
@@ -103,9 +102,9 @@ plt.subplot(2,1,2)
 plt.plot(Weekly["LogVolume"], label="LogVolume");
 plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
 plt.axhline(y=0, color="black", linestyle="--")
-popt, _ = curve_fit(cubic_objective, Weekly["Week"],Weekly["LogVolume"])  
-a, b, c, d = popt
-y_new = cubic_objective(Weekly["Week"], a , b, c, d)
+popt, _ = curve_fit(objective, Weekly["Week"],Weekly["LogVolume"])  
+a, b, c, d, e = popt
+y_new = objective(Weekly["Week"], a , b, c, d, e)
 plt.plot(Weekly["Week"], y_new, "--", color="red", label="Curve Fit")
 plt.legend();
 
@@ -165,14 +164,18 @@ downs = bar_df[bar_df.Direction == "Down"].Counts.values
 ups = bar_df[bar_df.Direction == "Up"].Counts.values
 downs_pct = np.divide(downs,np.add(downs,ups))
 ups_pct = np.divide(ups,np.add(downs,ups))
-years = bar_df["Year"].unique()
+years = bar_df["Year"].unique();
 
 # %%
 fig, ax = plt.subplots()
-ax.bar(years, downs_pct)
-ax.bar(years,ups_pct, bottom=downs_pct);
-ax.axhline(y=0.5, color="k", linestyle="--");
+ax.bar(years, downs_pct, label="Down")
+ax.bar(years,ups_pct, bottom=downs_pct, label="Up");
+ax.axhline(y=0.5, color="k", linestyle="--", label="50% line");
 ax.yaxis.set_major_formatter(mtick.PercentFormatter())
+ax.legend();
+
+# %% [markdown]
+# The bar-chart displays the percentage of Ups and Downs in a year from 1990 &ndash; 2010. The Ups dominate for most years except four.
 
 # %% [markdown]
 # ### (b)
@@ -184,7 +187,7 @@ ax.yaxis.set_major_formatter(mtick.PercentFormatter())
 # Try to avoid using ISLP classes for anything else but to load data since it may not transfer well to
 # actual usage in data analysis projects
 # drop columns Today, Direction, Year
-allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year', "Week"])]
+allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year', "Week", "Volume"])]
 # add constant term of 1s
 X = add_constant(allvars)
 # Convert 'Down' and 'Up' to 0s and 1s respectively
@@ -317,8 +320,8 @@ accuracy = np.mean(labels == L_test)
 test_error = np.mean(labels != L_test)
 
 # %%
-print(f"Here we see the accuracy is {accuracy * 100:g}%")
-print(f"The test error is {test_error * 100:g}%")
+print(f"Here we see the accuracy is {accuracy * 100:g}%.")
+print(f"The test error is {test_error * 100:g}%.")
 
 # %%
 print(classification_report(Weekly_test["Direction"],
@@ -343,10 +346,10 @@ lda = LDA(store_covariance=True)
 # Since the LDA estimator automatically adds an intercept, we should remove the column corresponding to the intercept in both X_train and X_test. We can also directly use the labels rather than the Boolean vectors y_train.
 
 # %%
-X_train , X_test = [M.drop(columns =['const']) for M in [X_train , X_test ]]
+X_lda_train , X_lda_test = [M.drop(columns =['const']) for M in [X_train , X_test ]]
 
 # %%
-lda.fit(X_train , L_train)
+lda.fit(X_lda_train , L_train)
 lda.means_
 
 # %% [markdown]
@@ -385,7 +388,7 @@ lda.scalings_
 lda.xbar_
 
 # %%
-lda_pred = lda.predict(X_test)
+lda_pred = lda.predict(X_lda_test)
 
 # %%
 np.all(lda_pred == labels)
@@ -402,9 +405,8 @@ print(classification_report(L_test,
                             digits = 3, output_dict=False))
 cm = confusion_matrix(L_test,
                        lda_pred)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm,
-                      display_labels=["Down", "Up"])
-disp.plot();
+ConfusionMatrixDisplay(confusion_matrix=cm,
+                      display_labels=["Down", "Up"]).plot();
 
 # %% [markdown]
 # ### (f)
