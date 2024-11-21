@@ -364,7 +364,6 @@ priors = lda.priors_
 # %%
 str_down = f"{priors[0]:.3f}"
 str_up = f"{priors[1]:.3f}"
-print(str_down, str_up)
 
 # %%
 printmd("The LDA output indicates that $\\hat{\\pi}_{Down}$ = " + str_down + " and $\\hat{\\pi}_{Up}$ = " + str_up)
