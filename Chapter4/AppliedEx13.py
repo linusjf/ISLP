@@ -31,6 +31,7 @@ from ISLP.models import (ModelSpec as MS , summarize)
 from summarytools import dfSummary
 import numpy as np
 from scipy.stats import skew
+from scipy.stats import boxcox
 from scipy.optimize import curve_fit
 import klib
 import seaborn as sns
@@ -69,6 +70,18 @@ print("Skew for Volume ** 2: ", skew(Weekly["Volume"] ** 2, axis=0, bias=True))
 # %% [markdown]
 # *We transform column Volume to LogVolume since this is the most symmetrical among the transformations sqrt, sqrt4 and log (as evidenced by its low skew value).*
 
+# %% [markdown]
+# Alternatively, we could use the [Box-Cox series of transformations to convert Volume to a normally distributed variable](https://stats.stackexchange.com/questions/266219/logistic-regression-and-normality-testing). 
+
+# %%
+Weekly["BoxCoxVolume"], lambda_vol = boxcox(Weekly["Volume"])
+print("lambda: :",lambda_vol)
+print("Skew for BoxCoxVolume: ", skew(Weekly["BoxCoxVolume"], axis=0, bias=True))
+
+
+# %% [markdown]
+# Here, we see that the value of lambda_vol is almost zero and hence, the BoxCox transformation is the log transformation approximately. 
+
 # %%
 Weekly.shape
 
@@ -85,13 +98,13 @@ dfSummary(Weekly)
 klib.corr_plot(Weekly);
 
 # %% [markdown]
-# We can see that the correlation between Year and LogVolume is 0.98 which is much higher than the correlation between Year and Volume which is 0.84. That's because log transformation is non-linear and the original relation was non-linear as seen from the plot below.
+# We can see that the correlation between Year and LogVolume is 0.98 which is much higher than the correlation between Year and Volume which is 0.84. That's because log transformation is non-linear and the original relation was non-linear as seen from the plot below. The same applies for BoxCoxVolume since it is approximately the log transformation of Volume.
 
 # %%
 Weekly["Week"] = np.arange(1, Weekly.shape[0] + 1)
 Years_Break = Weekly.groupby("Year").first()
 plt.figure(figsize=(16, 16))
-plt.subplot(2,1,1)
+plt.subplot(3,1,1)
 plt.plot(Weekly["Volume"], label="Volume", c="r");
 plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
 plt.gca().yaxis.set_major_formatter(mtick.PercentFormatter())
@@ -107,7 +120,7 @@ y_new = objective(Weekly["Week"], a , b, c, d, e)
 plt.plot(Weekly["Week"], y_new, "--", color="blue", label="Curve Fit")
 plt.legend();
 
-plt.subplot(2,1,2)
+plt.subplot(3,1,2)
 plt.plot(Weekly["LogVolume"], label="LogVolume");
 plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
 plt.axhline(y=0, color="black", linestyle="--")
@@ -117,8 +130,18 @@ y_new = objective(Weekly["Week"], a , b, c, d, e)
 plt.plot(Weekly["Week"], y_new, "--", color="red", label="Curve Fit")
 plt.legend();
 
+plt.subplot(3,1,3)
+plt.plot(Weekly["BoxCoxVolume"], label="BoxCoxVolume");
+plt.xticks(ticks=Years_Break.Week,labels=Years_Break.index);
+plt.axhline(y=0, color="black", linestyle="--")
+popt, _ = curve_fit(objective, Weekly["Week"],Weekly["BoxCoxVolume"])  
+a, b, c, d, e = popt
+y_new = objective(Weekly["Week"], a , b, c, d, e)
+plt.plot(Weekly["Week"], y_new, "--", color="pink", label="Curve Fit")
+plt.legend();
+
 # %% [markdown]
-# Here, we can see from the curve fit where we specified a cubic objective function, the Volume chart displays non-linearity but the LogVolume fit is a straight line.
+# Here, we can see from the curve fit where we specified a cubic objective function, the Volume chart displays non-linearity but the LogVolume and BoxCoxVolume fits are straight lines.
 
 # %%
 plt.figure(figsize=(16, 8))
@@ -159,10 +182,13 @@ klib.dist_plot(Weekly);
 # We can verify the above conclusion from kurtosis definition by plotting the boxplots for the continuous  variables, Lag1 - Lag5, Today and LogVolume.
 
 # %%
-Weekly.boxplot(column=["Lag1","Lag2","Lag3", "Lag4", "Lag5", "Today", "LogVolume"]);
+Weekly.boxplot(column=["Lag1","Lag2","Lag3", "Lag4", "Lag5", "Today", "Volume" ,"LogVolume", "BoxCoxVolume"], rot=45);
 
 # %%
 Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Direction");
+
+# %%
+nic_classifier_pct = Weekly["Direction"].value_counts()[0] / len(Weekly)
 
 # %% [markdown]
 # - Thus, we see from the pie-chart, that if we classify all responses as 'Up', we would still achieve an accuracy level of 55.56%. This is the base level which we have to improve upon.
@@ -195,8 +221,9 @@ ax.legend();
 # %%
 # Try to avoid using ISLP classes for anything else but to load data since it may not transfer well to
 # actual usage in data analysis projects
-# drop columns Today, Direction, Year
-allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year', "Week", "Volume"])]
+# drop columns Today, Direction, Year, Week , Volume, LogVolume
+# We use BoxCoxVolume to regress against since it has the lowest skew value amongst all the transformations of the feature Volume
+allvars = Weekly[Weekly.columns.difference(['Today', 'Direction', 'Year', "Week", "Volume", "LogVolume"])]
 # add constant term of 1s
 X = add_constant(allvars)
 # Convert 'Down' and 'Up' to 0s and 1s respectively
@@ -230,27 +257,39 @@ results.pvalues[results.pvalues < 0.05]
 
 # %%
 predictions = results.predict()
+predictions.shape
 
 # %%
 labels = np.array(['Down']*len(Weekly))
+print(labels.shape)
 labels[predictions > 0.5] = "Up"
 
 # %%
 ct = confusion_table(Weekly["Direction"],
                        labels)
-ct
+print(ct)
 
 # %% [markdown]
-# The diagonal elements of the confusion matrix indicate correct predictions, while the off-diagonals represent incorrect predictions. Hence our model correctly predicted that the market would go up on 553 days and that it would go down on 59 days, for a total of 553 + 59 = 612 correct predictions. The `np.mean()` function can be used to compute the fraction of days for which the prediction was correct. In this case, logistic regression correctly predicted the movement of the market 56.2% of the time.
+# The diagonal elements of the confusion matrix indicate correct predictions, while the off-diagonals represent incorrect predictions. 
 
 # %%
-np.mean(labels == Weekly.Direction), (553+59) /len(Weekly)
+correct_up_preds = ct["Up"]["Up"]
+correct_down_preds = ct["Down"]["Down"]
+print(f"Hence our model correctly predicted that the market would go up on {correct_up_preds} days and that it would go down on {correct_down_preds} days, for a total of {ct["Up"]["Up"]} + {ct["Down"]["Down"]} = {ct["Up"]["Up"] + ct["Down"]["Down"]} correct predictions. The np.mean() function can be used to compute the fraction of days for which the prediction was correct.")
+correct_pred_perc = (ct["Up"]["Up"] + ct["Down"]["Down"]) * 100 / (ct["Up"]["Up"] + ct["Down"]["Down"] + ct["Down"]["Up"] + ct["Up"]["Down"])
+print(f"In this case, logistic regression correctly predicted the movement of the market {correct_pred_perc:.1f}% of the time.")
+
+# %%
+accuracy = np.mean(labels == Weekly.Direction), (correct_up_preds+correct_down_preds) /len(Weekly)
+
+# %%
+print(f"This accuracy of {accuracy[0]*100:.2f}% is not much better than the no information classifier's (NIC) accuracy of {nic_classifier_pct *100:.2f}% when we just guess that the market will go up all the time and achieve an accuracy level of {nic_classifier_pct*100:.2f}%.")
+
+# %%
+print(f"100 - {accuracy[0]*100:.1f} = {100 - accuracy[0]*100:.1f}% is the training error rate.")
 
 # %% [markdown]
-# This accuracy of 56.2% is not much better than the no information classifier's (NIC)  accuracy of 55.56% when we just guess that the market will go up all the time and achieve an accuracy level of 55.56%.
-
-# %% [markdown]
-# 100 - 56.2 = 43.8% is the training error rate. As we have seen previously, the training error rate is often overly optimistic &mdash; it tends to underestimate the test error rate. In order to better assess the accuracy of the logistic regression model in this setting, we can fit the model using part of the data, and then examine how well it predicts the held out data. This will yield a more realistic error rate, in the sense that in practice we will be interested in our model's performance not on the data that we used to fit the model, but rather on days in the future for which the market's movements are unknown.
+# As we have seen previously, the training error rate is often overly optimistic &mdash; it tends to underestimate the test error rate. In order to better assess the accuracy of the logistic regression model in this setting, we can fit the model using part of the data, and then examine how well it predicts the held out data. This will yield a more realistic error rate, in the sense that in practice we will be interested in our model's performance not on the data that we used to fit the model, but rather on days in the future for which the market's movements are unknown.
 
 # %%
 print(classification_report(Weekly["Direction"],
