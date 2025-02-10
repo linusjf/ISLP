@@ -30,6 +30,7 @@ from ISLP import confusion_table
 from ISLP.models import (ModelSpec as MS , summarize)
 from summarytools import dfSummary
 import numpy as np
+from scipy.stats import skew
 from scipy.optimize import curve_fit
 import klib
 import seaborn as sns
@@ -56,6 +57,14 @@ Weekly["LogVolume"] = np.log(Weekly["Volume"])
 Weekly = klib.convert_datatypes(Weekly)
 print(Weekly.dtypes)
 Weekly.head()
+
+# %%
+# Calculate skew for Volume, LogVolume, sqrt(Volume), sqrt4(Volume), Volume ^ 2
+print("Skew for Volume: ", skew(Weekly["Volume"], axis=0, bias=True))
+print("Skew for LogVolume: ", skew(Weekly["LogVolume"], axis=0, bias=True))
+print("Skew for Sqrt(Volume): ", skew(np.sqrt(Weekly["Volume"]), axis=0, bias=True))
+print("Skew for Sqrt4(Volume): ", skew(np.sqrt(np.sqrt(Weekly["Volume"])), axis=0, bias=True))
+print("Skew for Volume ** 2: ", skew(Weekly["Volume"] ** 2, axis=0, bias=True))
 
 # %% [markdown]
 # *We transform column Volume to LogVolume since this is the most symmetrical among the transformations sqrt, sqrt4 and log (as evidenced by its low skew value).*
@@ -159,7 +168,7 @@ Weekly["Direction"].value_counts().plot(kind="pie",autopct="%.2f",title="Directi
 # - Thus, we see from the pie-chart, that if we classify all responses as 'Up', we would still achieve an accuracy level of 55.56%. This is the base level which we have to improve upon.
 
 # %%
-bar_df = Weekly.groupby(["Year", "Direction"]).size().reset_index(name="Counts")
+bar_df = Weekly.groupby(["Year", "Direction"], observed=False).size().reset_index(name="Counts")
 downs = bar_df[bar_df.Direction == "Down"].Counts.values
 ups = bar_df[bar_df.Direction == "Up"].Counts.values
 downs_pct = np.divide(downs,np.add(downs,ups))
