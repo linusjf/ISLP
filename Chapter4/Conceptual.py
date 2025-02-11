@@ -355,7 +355,7 @@ print(f"{(0.0975 ** 100) * 100}% which is close to zero.")
 
 # %% [markdown]
 # ### (e)
-# **Now suppose that we wish to make a prediction for a test observation by creating a p-dimensional hypercube segment, when p = 2 it is a square, and when p = 100 it is abe centered around the test observation that contains, on average, 10 % of the training observations. For p = 1, 2, and 100, what is the length of each side of the hypercube? Comment on your answer.**
+# **Now suppose that we wish to make a prediction for a test observation by creating a p-dimensional hypercube segment, centered around the test observation that contains, on average, 10 % of the training observations. For p = 1, 2, and 100, what is the length of each side of the hypercube? Comment on your answer.**
 #
 # *Note: A hypercube is a generalization of a cube to an arbitrary number of dimensions. When p = 1, a hypercube is simply a line segment, when p = 2 it is a square, and when p = 100 it is a 100-dimensional cube.*
 
@@ -527,7 +527,7 @@ l = [(0.0975) ** (1/p) for p in no_of_parameters]
 # ### (d)
 # **True or False: Even if the Bayes decision boundary for a given problem is linear, we will probably achieve a superior test error rate using QDA rather than LDA because QDA is flexible enough to model a linear decision boundary. Justify your answer.**
 #
-# False. The QDA may overfit on the training data when the Bayes decision boundary is linear but the variance will increase when exposed to out-of-sample test data. This will cause a decline in the test error rate where the LDA will prove superior since it actually matches the linear decision boundary more closely.
+# False. The QDA may overfit on the training data when the Bayes decision boundary is linear but the variance will increase when exposed to out-of-sample test data. This will increase the test error rate where LDA will prove superior since it actually matches the linear decision boundary more closely.
 
 # %% [markdown]
 # ## Exercise 6

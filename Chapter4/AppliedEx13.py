@@ -365,6 +365,8 @@ confusion_table(labels , L_test)
 
 # %%
 accuracy = np.mean(labels == L_test)
+
+# %%
 test_error = np.mean(labels != L_test)
 
 # %%
