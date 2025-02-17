@@ -893,7 +893,7 @@ odds_formula.subs(probability, prob_value)
 # - Assume we know P(y | x) for now
 # - Q: What label you would predict?
 # - A: We will simply predict the most-likely label,
-# - Bayes Optimal Predictor is $h_{opt}(x)$ = $arg max P(y | x)  y \in [-1,1]$
+# - Bayes Optimal Predictor is $h_{opt}(x)$ = $arg max P(y | x) \     y \in [-1,1]$
 #
 # Example:
 # $$\left\{
