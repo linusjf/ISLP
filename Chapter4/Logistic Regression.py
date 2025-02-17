@@ -208,6 +208,220 @@
 # ### How does Logistic Regression handle categorical variables?
 
 # %% [markdown]
+# Logistic Regression can handle categorical variables through a process called one-hot encoding or dummy coding.
+#
+# #### One-Hot Encoding
+#
+# One-hot encoding is a technique where each category of a categorical variable is represented as a binary vector.
+# For example, suppose we have a categorical variable "Color" with three categories: Red, Green, and Blue.
+#
+# | Color	 | One-Hot Encoding |
+#  | -- | ------ | 
+# | Red	 | 1, 0, 0 |
+# | Green |	0, 1, 0 |
+# | Blue |	0, 0, 1 |
+#
+# In this example, each category is represented as a binary vector with three elements. The first element represents Red, the second element represents Green, and the third element represents Blue.
+#
+# #### Dummy Coding
+#
+# Dummy coding is similar to one-hot encoding, but it drops one category to avoid multicollinearity.
+#
+# For example, suppose we have a categorical variable "Color" with three categories: Red, Green, and Blue.
+#
+# | Color	 | Dummy Coding |
+# | -- | ---- |
+# | Red |	1, 0 |
+# | Green |	0, 1 |
+# | Blue |	0, 0  |
+#
+# In this example, Blue is the reference category, and Red and Green are represented as binary vectors.
+#
+# Handling Categorical Variables in Logistic Regression
+#
+# When handling categorical variables in Logistic Regression:
+#
+# One-hot encoding or dummy coding: Convert the categorical variable into a numerical representation using one-hot encoding or dummy coding.
+#
+# Create new features: Create new features for each category, except for the reference category (if using dummy coding).
+#
+# Include new features in the model: Include the new features in the Logistic Regression model.
+#
+# By handling categorical variables in this way, Logistic Regression can effectively model the relationships between categorical variables and the binary outcome variable.
+
+# %% [markdown]
+# #### Are there alternatives to Dummy Coding?
+
+# %% [markdown]
+# Yes, there are alternatives to dummy coding for handling categorical variables in Logistic Regression and other machine learning models. Some of these alternatives include:
+#
+# 1. One-Hot Encoding (OHE)
+#
+# One-hot encoding is a technique where each category of a categorical variable is represented as a binary vector. This is similar to dummy coding, but it does not drop one category.
+#
+# 2. Label Encoding
+#
+# Label encoding is a technique where each category of a categorical variable is assigned a unique integer value. This can be useful when the categorical variable has a natural order or hierarchy.
+#
+# 3. Ordinal Encoding
+#
+# Ordinal encoding is a technique where each category of a categorical variable is assigned a unique integer value, taking into account the natural order or hierarchy of the categories.
+#
+# 4. Hashing Vectorizer
+#
+# Hashing vectorizer is a technique where each category of a categorical variable is represented as a vector using a hash function. This can be useful when dealing with high-cardinality categorical variables.
+#
+# 5. Category Embeddings
+#
+# Category embeddings are a technique where each category of a categorical variable is represented as a dense vector, similar to word embeddings. This can be useful when dealing with high-cardinality categorical variables.
+#
+# 6. Helmert Coding
+#
+# Helmert coding is a technique where each category of a categorical variable is compared to the mean of the previous categories. This can be useful when dealing with ordinal categorical variables.
+#
+# 7. Polynomial Coding
+#
+# Polynomial coding is a technique where each category of a categorical variable is represented as a polynomial function of the category's integer value. This can be useful when dealing with ordinal categorical variables.
+# Each of these alternatives has its own strengths and weaknesses, and the choice of which one to use depends on the specific problem and data.
+
+# %% [markdown]
+# #### Provide an example of each except One-hot encoding.
+
+# %% [markdown]
+# Here are examples of each of the alternatives to dummy coding, except one-hot encoding:
+#
+# ##### Label Encoding
+#
+# Suppose we have a categorical variable "Color" with three categories: Red, Green, and Blue.
+#
+# | Color	Label | Encoding |
+# | -- | ---- |
+# | Red |	0 |
+# | Green |	1 |
+# | Blue |	2 |
+#
+# In label encoding, each category is assigned a unique integer value.
+#
+# ##### Ordinal Encoding
+#
+# Suppose we have a categorical variable "Size" with three categories: Small, Medium, and Large.
+#
+# | Size |	Ordinal Encoding |
+# | -- | ---- |
+# | Small |	0 |
+# | Medium | 	1 |
+# | Large | 2 |
+#
+# In ordinal encoding, each category is assigned a unique integer value that preserves the natural order or hierarchy of the categories.
+#
+# ##### Hashing Vectorizer
+#
+# Suppose we have a categorical variable "Color" with three categories: Red, Green, and Blue.
+#
+# | Color |	Hashing Vectorizer |
+# | -- | ---- |
+# | Red	| [0.1, 0.2, 0.3] |
+# | Green |	[0.4, 0.5, 0.6] |
+# | Blue	| [0.7, 0.8, 0.9] |
+#
+# In hashing vectorizer, each category is represented as a vector using a hash function.
+#
+# ##### Category Embeddings
+#
+# Suppose we have a categorical variable "Color" with three categories: Red, Green, and Blue.
+#
+# | Color |	Category Embeddings |
+# | -- | ---- |
+# | Red	| [0.1, 0.2, 0.3, 0.4] |
+# | Green |	[0.5, 0.6, 0.7, 0.8] |
+# | Blue |	[0.9, 0.1, 0.2, 0.3] |
+#
+# In category embeddings, each category is represented as a dense vector, similar to word embeddings.
+#
+# ##### Helmert Coding
+#
+# Suppose we have a categorical variable "Size" with three categories: Small, Medium, and Large.
+#
+# | Size |	Helmert Coding |
+# | -- | ---- |
+# | Small	| [-1, -1] |
+# | Medium	| [1, 0] |
+# | Large |	[0, 1] |
+#
+# In Helmert coding, each category is compared to the mean of the previous categories.
+#
+# ##### Polynomial Coding
+# Suppose we have a categorical variable "Size" with three categories: Small, Medium, and Large.
+#
+# | Size |	Polynomial Coding |
+# | -- | ---- |
+# | Small	| [1, 0, 0] |
+# | Medium |	[1, 1, 0] |
+# | Large	| [1, 0, 1] |
+#
+# In polynomial coding, each category is represented as a polynomial function of the category's integer value.
+#
+# These examples illustrate how each of these alternatives can be used to represent categorical variables in a machine learning model.
+
+# %% [markdown]
+# #### Explain Hashing Vectorizer in detail.
+
+# %% [markdown]
+# Hashing Vectorizer is a technique used to transform categorical variables into numerical representations that can be fed into machine learning algorithms.
+#
+# How Hashing Vectorizer Works
+#
+# Hashing Vectorizer works by using a hash function to map each category of a categorical variable to a numerical vector. The hash function takes the category as input and generates a fixed-size numerical vector.
+#
+# Here's a step-by-step overview of the Hashing Vectorizer process:
+#
+# Category Hashing: Each category of the categorical variable is passed through a hash function, which generates a numerical hash value.
+#
+# Vector Generation: The hash value is then used to generate a numerical vector of a fixed size (e.g., 128 or 256 dimensions).
+#
+# Vector Normalization: The generated vector is then normalized to have a length of 1, which helps to prevent feature dominance.
+#
+# Properties of Hashing Vectorizer
+#
+# Hashing Vectorizer has several properties that make it useful for transforming categorical variables:
+#
+# Fixed-size vectors: Hashing Vectorizer generates fixed-size vectors, which makes it easy to integrate with machine learning algorithms.
+#
+# Efficient computation: Hashing Vectorizer uses a hash function to generate vectors, which makes it computationally efficient.
+#
+# Handling high-cardinality variables: Hashing Vectorizer can handle categorical variables with a large number of categories (high-cardinality variables).
+#
+# Advantages of Hashing Vectorizer
+#
+# Hashing Vectorizer has several advantages that make it a popular choice for transforming categorical variables:
+#
+# Fast and efficient: Hashing Vectorizer is computationally efficient and can handle large datasets.
+#
+# Scalable: Hashing Vectorizer can handle high-cardinality variables and large datasets.
+#
+# Easy to implement: Hashing Vectorizer is easy to implement and integrate with machine learning algorithms.
+#
+# Disadvantages of Hashing Vectorizer
+#
+# Hashing Vectorizer also has some disadvantages:
+#
+# Collision risk: There is a risk of collision, where two different categories hash to the same vector.
+#
+# Loss of information: Hashing Vectorizer can lose information about the categorical variable, especially if the hash function is not well-designed.
+#
+# Real-World Applications of Hashing Vectorizer
+#
+# Hashing Vectorizer has several real-world applications:
+#
+# Natural Language Processing (NLP): Hashing Vectorizer can be used to transform text data into numerical representations.
+#
+# Recommendation Systems: Hashing Vectorizer can be used to transform categorical variables into numerical representations for recommendation systems.
+#
+# Image Classification: Hashing Vectorizer can be used to transform categorical variables into numerical representations for image classification tasks.
+#
+# In summary, Hashing Vectorizer is a powerful technique for transforming categorical variables into numerical representations. It has several advantages, including fast computation, scalability, and ease of implementation. However, it also has some disadvantages, including collision risk and loss of information.
+
+# %% [markdown]
 # ### What is the difference between a logit and a probability?
 
 # %% [markdown]
