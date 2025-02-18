@@ -466,6 +466,54 @@ print(X_size.toarray())
 # This example demonstrates how `HashingVectorizer` can be used to transform categorical data into numerical features that can be used in machine learning models.
 
 # %% [markdown]
+# ##### What are category embeddings? What are word embeddings? How do they differ from each other?
+
+# %% [markdown]
+# Category embeddings and word embeddings are both techniques used in natural language processing (NLP) and machine learning to represent categorical variables and words as numerical vectors.
+#
+# **Category Embeddings**
+#   
+# Category embeddings are a technique used to represent categorical variables as numerical vectors. The idea is to map each category to a unique vector in a high-dimensional space, such that categories with similar properties or meanings are closer together.
+#
+# Category embeddings can be learned using various techniques, such as:
+#
+# Neural networks
+#
+# Matrix factorization
+#
+# Word2Vec (adapted for categorical variables)
+#
+# Category embeddings are useful when dealing with high-cardinality categorical variables, where traditional encoding methods like one-hot encoding may not be effective.
+#
+# **Word Embeddings**
+#
+# Word embeddings are a technique used to represent words as numerical vectors. The idea is to map each word to a unique vector in a high-dimensional space, such that words with similar meanings or contexts are closer together.
+#
+# Word embeddings can be learned using various techniques, such as:
+#
+# Word2Vec
+#
+# GloVe
+#
+# FastText
+#
+# Word embeddings are useful in NLP tasks like text classification, sentiment analysis, and language modeling.
+#
+# **Key Differences**
+#
+# Here are the key differences between category embeddings and word embeddings:
+#
+# Input data: Category embeddings are used for categorical variables, while word embeddings are used for words or text data.
+#
+# Learning objectives: Category embeddings aim to capture the relationships between categories, while word embeddings aim to capture the semantic relationships between words.
+#
+# Vector space: Category embeddings typically exist in a lower-dimensional vector space compared to word embeddings.
+#
+# Interpretability: Word embeddings are often more interpretable than category embeddings, as the vector dimensions can be related to specific semantic features.
+#
+# In summary, category embeddings and word embeddings are both used to represent data as numerical vectors, but they differ in their input data, learning objectives, vector space, and interpretability.
+
+# %% [markdown]
 # ### What is the difference between a logit and a probability?
 
 # %% [markdown]
