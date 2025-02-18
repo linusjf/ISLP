@@ -514,6 +514,117 @@ print(X_size.toarray())
 # In summary, category embeddings and word embeddings are both used to represent data as numerical vectors, but they differ in their input data, learning objectives, vector space, and interpretability.
 
 # %% [markdown]
+# ##### What are high-cardinality variables?
+
+# %% [markdown]
+# High-cardinality variables are categorical variables that have a large number of unique categories or levels. In other words, they are variables that can take on many different values.
+#
+# **Characteristics of High-Cardinality Variables**
+#   
+# High-cardinality variables typically have the following characteristics:
+#   
+# Large number of unique values: High-cardinality variables have many unique categories or levels, often exceeding hundreds or thousands.
+#   
+# Low frequency of each value: Each unique value in a high-cardinality variable may appear only a few times in the dataset.
+#   
+# High dimensionality: High-cardinality variables can lead to high-dimensional data, making it challenging to analyze and model.
+#   
+# **Examples of High-Cardinality Variables**
+#   
+# Here are some examples of high-cardinality variables:
+#   
+# Product IDs: In an e-commerce dataset, the product ID variable can have thousands or millions of unique values.
+#
+# Customer IDs: In a customer database, the customer ID variable can have millions of unique values.
+#
+# Geographic locations: In a dataset with geographic locations, the city or zip code variable can have thousands of unique values.
+#
+# Text data: In a text dataset, the words or phrases variable can have tens of thousands of unique values.
+#
+# **Challenges with High-Cardinality Variables**
+#
+# High-cardinality variables can pose several challenges:
+#
+# Dimensionality curse: High-cardinality variables can lead to high-dimensional data, making it difficult to analyze and model.
+#
+# Overfitting: Models can overfit to the unique values in high-cardinality variables, leading to poor generalization performance.
+#
+# Computational complexity: High-cardinality variables can increase computational complexity, making it challenging to train models.
+#
+# **Techniques for Handling High-Cardinality Variables**
+#
+# Several techniques can be used to handle high-cardinality variables:
+#
+# Dimensionality reduction: Techniques like PCA, t-SNE, or autoencoders can reduce the dimensionality of high-cardinality variables.
+#
+# Feature hashing: Feature hashing can be used to reduce the dimensionality of high-cardinality variables by hashing the unique values into a fixed-size vector.
+#
+# Embeddings: Embeddings can be used to represent high-cardinality variables as dense vectors, reducing the dimensionality and improving model performance.
+#
+# Grouping or binning: Grouping or binning can be used to reduce the number of unique values in high-cardinality variables.
+
+# %% [markdown]
+# ##### Explain Helmert Coding in detail.
+
+# %% [markdown]
+# With Helmert coding, each level of the variable is compared to "later" levels of the variable.
+#
+# The weights depend on the number of levels of the variable.
+#
+# If there are L levels then the first comparison is of level vs. (L−1) other levels. The weights are then (L−1)/L for the first level and −1/L for each of the other levels.
+#
+# The next comparison has only L−1 levels (the first level is no longer part of the comparisons), so now the weights are (L−2)/(L−1) for the first level and −1/(L−1) for the others. And so on.
+#
+# ![Helmert Coding Example](cyaJM.png)
+#
+# Helmert coding and its inverse, difference coding, really only make sense when the variable is ordinal.
+#
+# This system is useful when the levels of the categorical variable are ordered in a meaningful way. For example, if we had a categorical variable in which work-related stress was coded as low, medium or high, then comparing the means of the previous levels of the variable would make more sense.
+#
+# References:
+#
+# 1. [How to calculate Helmert encoding](https://stats.stackexchange.com/questions/411134/how-to-calculate-helmert-coding)
+#
+# **Properties of Helmert Coding**
+#
+# Helmert coding has several properties that make it useful:
+#
+# Orthogonality: The resulting variables are orthogonal to each other, which means that they are uncorrelated.
+#
+# Comparisons: Helmert coding allows for comparisons between each level of the categorical variable and the mean of the previous levels.
+#
+# Reduced dimensionality: Helmert coding can reduce the dimensionality of the categorical variable, making it easier to analyze and model.
+#
+# **Advantages of Helmert Coding**
+#
+# Helmert coding has several advantages:
+#
+# Easy to interpret: The resulting variables are easy to interpret, as they represent comparisons between each level of the categorical variable and the mean of the previous levels.
+#
+# Reduced multicollinearity: Helmert coding can reduce multicollinearity between the levels of the categorical variable.
+#
+# Improved model performance: Helmert coding can improve the performance of machine learning models by reducing the dimensionality of the categorical variable.
+#
+# **Disadvantages of Helmert Coding**
+#
+# Helmert coding also has some disadvantages:
+#
+# Assumes ordinality: Helmert coding assumes that the levels of the categorical variable have an ordinal relationship, which may not always be the case.
+#
+# Can be sensitive to ordering: The resulting variables can be sensitive to the ordering of the levels of the categorical variable.
+#
+# **Real-World Applications of Helmert Coding**
+#
+# Helmert coding has several real-world applications:
+#
+# Marketing research: Helmert coding can be used to analyze the effect of different marketing campaigns on customer behavior.
+#
+# Medical research: Helmert coding can be used to analyze the effect of different treatments on patient outcomes.
+#
+# Social sciences: Helmert coding can be used to analyze the effect of different social factors on behavior and outcomes.
+#
+
+# %% [markdown]
 # ### What is the difference between a logit and a probability?
 
 # %% [markdown]
