@@ -50,15 +50,15 @@
 #
 # ##### Key differences:
 #
-# Outcome variable type: Logistic Regression predicts binary outcomes, while Linear Regression predicts continuous outcomes.
+# **Outcome variable type**: Logistic Regression predicts binary outcomes, while Linear Regression predicts continuous outcomes.
 #
-# Mathematical approach: Logistic Regression uses a logistic function (sigmoid curve) to predict probabilities, while Linear Regression uses a linear equation to predict actual values.
+# **Mathematical approach**: Logistic Regression uses a logistic function (sigmoid curve) to predict probabilities, while Linear Regression uses a linear equation to predict actual values.
 #
 # To illustrate the difference, consider the following examples:
 #
-# Logistic Regression: Predicting whether a person will buy a car (yes/no) based on their age, income, and credit score.
+# **Logistic Regression**: Predicting whether a person will buy a car (yes/no) based on their age, income, and credit score.
 #
-# Linear Regression: Predicting the price of a house based on its size, number of bedrooms, and location.
+# **Linear Regression**: Predicting the price of a house based on its size, number of bedrooms, and location.
 #
 # In summary, Logistic Regression is suitable for binary classification problems, while Linear Regression is suitable for continuous outcome variables.
 #
@@ -66,31 +66,31 @@
 #
 # A sigmoid curve, also known as a logistic curve or S-curve, is a mathematical curve that has an "S" shape. It is a continuous, smooth curve that starts at 0, increases gradually, and then levels off at 1.
 #
-# Characteristics:
+# **Characteristics**:
 #
-# Range: The curve ranges from 0 to 1, making it ideal for modeling probabilities.
+# **Range**: The curve ranges from 0 to 1, making it ideal for modeling probabilities.
 #
-# Shape: The curve has an "S" shape, where the rate of change is slow at the extremes and rapid in the middle.
+# **Shape**: The curve has an "S" shape, where the rate of change is slow at the extremes and rapid in the middle.
 #
-# Asymptotes: The curve has horizontal asymptotes at 0 and 1, meaning it approaches these values but never reaches them.
+# **Asymptotes**: The curve has horizontal asymptotes at 0 and 1, meaning it approaches these values but never reaches them.
 #
-# Sigmoid function:
+# **Sigmoid function:**
 #
 # The sigmoid function is a mathematical function that maps any real-valued number to a value between 0 and 1. The most common sigmoid function is the logistic function:
-# σ(x) = 1 / (1 + e^(-x))
+# $\sigma(x) = 1 / (1 + e^{-x})$
 # where e is the base of the natural logarithm (approximately 2.718).
 #
-# Applications:
+# **Applications:**
 #
 # Sigmoid curves have numerous applications in:
 #
-# Logistic Regression: Modeling probabilities of binary outcomes.
+# **Logistic Regression:** Modeling probabilities of binary outcomes.
 #
-# Neural Networks: Introducing non-linearity in activation functions.
+# **Neural Networks:** Introducing non-linearity in activation functions.
 #
-# Probability theory: Modeling cumulative distribution functions.
+# **Probability theory:** Modeling cumulative distribution functions.
 #
-# Biology: Modeling population growth, chemical reactions, and more.
+# **Biology:** Modeling population growth, chemical reactions, and more.
 #
 # The sigmoid curve's unique shape and properties make it a powerful tool for modeling and analyzing complex phenomena.
 #
@@ -119,7 +119,7 @@
 # In Logistic Regression, the logistic function is used to model the probability of a binary outcome (0 or 1, yes or no, etc.) based on one or more input features.
 # The logistic function is used to transform the linear combination of input features into a probability value between 0 and 1.
 #
-# Logistic Regression Equation
+# **Logistic Regression Equation**
 #
 # The logistic regression equation is:
 #
@@ -139,7 +139,7 @@
 #
 # The logistic function is used to ensure that the predicted probabilities are between 0 and 1, which is essential for binary classification problems.
 #
-# Interpretation
+# **Interpretation**
 #
 # The output of the logistic function can be interpreted as:
 #
@@ -165,7 +165,7 @@
 #
 # where p is the probability of the positive outcome.
 #
-# Odds Ratio
+# **Odds Ratio**
 #
 # The odds ratio (OR) is a measure of the change in odds associated with a one-unit change in a predictor variable, while holding all other predictor variables constant.
 #
@@ -179,7 +179,7 @@
 #
 # where e is the base of the natural logarithm.
 #
-# Interpretation of Odds Ratio
+# **Interpretation of Odds Ratio**
 #
 # The odds ratio has a simple and intuitive interpretation:
 #
@@ -237,13 +237,13 @@
 #
 # In this example, Blue is the reference category, and Red and Green are represented as binary vectors.
 #
-# Handling Categorical Variables in Logistic Regression
+# **Handling Categorical Variables in Logistic Regression**
 #
 # When handling categorical variables in Logistic Regression:
 #
 # One-hot encoding or dummy coding: Convert the categorical variable into a numerical representation using one-hot encoding or dummy coding.
 #
-# Create new features: Create new features for each category, except for the reference category (if using dummy coding).
+# **Create new features:** Create new features for each category, except for the reference category (if using dummy coding).
 #
 # Include new features in the model: Include the new features in the Logistic Regression model.
 #
@@ -369,57 +369,101 @@
 # %% [markdown]
 # Hashing Vectorizer is a technique used to transform categorical variables into numerical representations that can be fed into machine learning algorithms.
 #
-# How Hashing Vectorizer Works
+# **How Hashing Vectorizer Works**
 #
 # Hashing Vectorizer works by using a hash function to map each category of a categorical variable to a numerical vector. The hash function takes the category as input and generates a fixed-size numerical vector.
 #
 # Here's a step-by-step overview of the Hashing Vectorizer process:
 #
-# Category Hashing: Each category of the categorical variable is passed through a hash function, which generates a numerical hash value.
+# **Category Hashing**: Each category of the categorical variable is passed through a hash function, which generates a numerical hash value.
 #
-# Vector Generation: The hash value is then used to generate a numerical vector of a fixed size (e.g., 128 or 256 dimensions).
+# **Vector Generation**: The hash value is then used to generate a numerical vector of a fixed size (e.g., 128 or 256 dimensions).
 #
-# Vector Normalization: The generated vector is then normalized to have a length of 1, which helps to prevent feature dominance.
+# **Vector Normalization**: The generated vector is then normalized to have a length of 1, which helps to prevent feature dominance.
 #
-# Properties of Hashing Vectorizer
+# **Properties of Hashing Vectorizer**
 #
 # Hashing Vectorizer has several properties that make it useful for transforming categorical variables:
 #
-# Fixed-size vectors: Hashing Vectorizer generates fixed-size vectors, which makes it easy to integrate with machine learning algorithms.
+# **Fixed-size vectors**: Hashing Vectorizer generates fixed-size vectors, which makes it easy to integrate with machine learning algorithms.
 #
-# Efficient computation: Hashing Vectorizer uses a hash function to generate vectors, which makes it computationally efficient.
+# **Efficient computation**: Hashing Vectorizer uses a hash function to generate vectors, which makes it computationally efficient.
 #
-# Handling high-cardinality variables: Hashing Vectorizer can handle categorical variables with a large number of categories (high-cardinality variables).
+# **Handling high-cardinality variables:** Hashing Vectorizer can handle categorical variables with a large number of categories (high-cardinality variables).
 #
-# Advantages of Hashing Vectorizer
+# **Advantages of Hashing Vectorizer**
 #
 # Hashing Vectorizer has several advantages that make it a popular choice for transforming categorical variables:
 #
-# Fast and efficient: Hashing Vectorizer is computationally efficient and can handle large datasets.
+# **Fast and efficient:** Hashing Vectorizer is computationally efficient and can handle large datasets.
 #
-# Scalable: Hashing Vectorizer can handle high-cardinality variables and large datasets.
+# **Scalable:** Hashing Vectorizer can handle high-cardinality variables and large datasets.
 #
-# Easy to implement: Hashing Vectorizer is easy to implement and integrate with machine learning algorithms.
+# **Easy to implement:** Hashing Vectorizer is easy to implement and integrate with machine learning algorithms.
 #
-# Disadvantages of Hashing Vectorizer
+# **Disadvantages of Hashing Vectorizer**
 #
 # Hashing Vectorizer also has some disadvantages:
 #
-# Collision risk: There is a risk of collision, where two different categories hash to the same vector.
+# **Collision risk:** There is a risk of collision, where two different categories hash to the same vector.
 #
 # Loss of information: Hashing Vectorizer can lose information about the categorical variable, especially if the hash function is not well-designed.
 #
-# Real-World Applications of Hashing Vectorizer
+# **Real-World Applications of Hashing Vectorizer**
 #
-# Hashing Vectorizer has several real-world applications:
+# **Hashing Vectorizer has several real-world applications:**
 #
-# Natural Language Processing (NLP): Hashing Vectorizer can be used to transform text data into numerical representations.
+# **Natural Language Processing (NLP):** Hashing Vectorizer can be used to transform text data into numerical representations.
 #
-# Recommendation Systems: Hashing Vectorizer can be used to transform categorical variables into numerical representations for recommendation systems.
+# **Recommendation Systems:** Hashing Vectorizer can be used to transform categorical variables into numerical representations for recommendation systems.
 #
-# Image Classification: Hashing Vectorizer can be used to transform categorical variables into numerical representations for image classification tasks.
+# **Image Classification:** Hashing Vectorizer can be used to transform categorical variables into numerical representations for image classification tasks.
 #
 # In summary, Hashing Vectorizer is a powerful technique for transforming categorical variables into numerical representations. It has several advantages, including fast computation, scalability, and ease of implementation. However, it also has some disadvantages, including collision risk and loss of information.
+
+# %% [markdown]
+# ##### Provide python example code for Hashing Vectorizer
+
+# %%
+# Here's an example of using HashingVectorizer with categorical data:
+
+from sklearn.feature_extraction.text import HashingVectorizer
+import numpy as np
+import pandas as pd
+
+# Create a sample dataframe with categorical data
+data = pd.DataFrame({
+    'Color': ['Red', 'Green', 'Blue', 'Red', 'Green', 'Blue'],
+    'Size': ['Small', 'Medium', 'Large', 'Small', 'Medium', 'Large']
+})
+
+# Create a HashingVectorizer object
+vectorizer = HashingVectorizer(n_features=10)
+
+# Fit and transform the data
+X_color = vectorizer.fit_transform(data['Color'])
+X_size = vectorizer.fit_transform(data['Size'])
+
+# Print the transformed data
+print("Color Features:")
+print(X_color.toarray())
+print("\nSize Features:")
+print(X_size.toarray())
+
+# %% [markdown]
+# In this example:
+#
+# We create a sample dataframe data with two categorical columns: `Color` and `Size`.
+#
+# We create a `HashingVectorizer` object with `n_features=10`.
+#
+# We fit and transform the `Color` and `Size` columns separately using the `fit_transform` method.
+#
+# We print the transformed data as `NumPy` arrays.
+#
+# The output will show the transformed categorical data as numerical features. Note that the actual output will depend on the hash function used by the `HashingVectorizer`, so your output may differ from the example output.
+#
+# This example demonstrates how `HashingVectorizer` can be used to transform categorical data into numerical features that can be used in machine learning models.
 
 # %% [markdown]
 # ### What is the difference between a logit and a probability?
