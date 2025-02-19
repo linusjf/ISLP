@@ -1,8 +1,9 @@
+category_encoders==2.8.0
 numpy==1.26.4
 scipy==1.11.4
 pandas==2.2.2
 lxml==5.2.2
-scikit-learn==1.5.0
+scikit-learn==1.6.0
 joblib==1.4.2
 statsmodels==0.14.2
 lifelines==0.28.0
