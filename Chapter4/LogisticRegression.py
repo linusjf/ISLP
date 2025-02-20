@@ -883,7 +883,93 @@ plt.show()
 # %% [markdown] editable=true slideshow={"slide_type": ""}
 # ### What is the concept of pseudo-R-squared in Logistic Regression?
 
-# %% [markdown]
+# %% [markdown] editable=true slideshow={"slide_type": ""}
+# **Pseudo-R-squared** is a measure of goodness of fit for Logistic Regression models, which is analogous to the R-squared measure used in linear regression. However, unlike R-squared, pseudo-R-squared is not a direct measure of the proportion of variance explained by the model.
+#
+# **Why do we need pseudo-R-squared?**
+#
+# In Logistic Regression, the response variable is binary (0/1, yes/no, etc.), and the model estimates probabilities rather than continuous values. As a result, the traditional R-squared measure is not applicable.
+#
+# Types of pseudo-R-squared
+#
+# There are several types of pseudo-R-squared measures, each with its own strengths and limitations:
+#
+# *Cox-Snell R-squared*: This measure is based on the likelihood ratio statistic and can be interpreted similarly to traditional R-squared.
+#
+# *Nagelkerke R-squared*: This measure is an extension of the Cox-Snell R-squared and provides a more accurate estimate of the model's explanatory power.
+#
+# *McFadden R-squared*: This measure is based on the likelihood ratio statistic and is often used in econometrics.
+#
+# *Tjur R-squared*: This measure is based on the difference between the predicted probabilities and the actual outcomes.
+#
+# **Interpretation of pseudo-R-squared**
+#
+# Pseudo-R-squared values range from 0 to 1, where:
+#
+# 0: The model does not explain any variation in the response variable.
+#
+# 1: The model explains all variation in the response variable.
+#
+# In general, pseudo-R-squared values can be interpreted as follows:
+#
+# 0.2 or less: Weak model fit
+#
+# 0.2-0.4: Moderate model fit
+#
+# 0.4-0.6: Strong model fit
+#
+# 0.6 or higher: Excellent model fit
+#
+# Keep in mind that pseudo-R-squared values should be used in conjunction with other model evaluation metrics, such as accuracy, precision, recall, and F1-score.
+#
+# Here's some sample Python code to calculate pseudo-R-squared using `scikit-learn`:
+
+# %% editable=true slideshow={"slide_type": ""}
+from sklearn.metrics import roc_auc_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import numpy as np
+import pandas as pd
+
+# Set the seed for reproducibility
+np.random.seed(42)
+
+# Generate X values (features)
+n_samples = 1000
+n_features = 5
+
+X = np.random.normal(loc=0, scale=1, size=(n_samples, n_features))
+
+# Generate y values (response variable)
+# Let's assume the response variable is binary (0/1)
+# We'll use a simple logistic function to generate y values
+z = np.dot(X, np.array([1, 2, -1, 0.5, -0.5])) + np.random.normal(loc=0, scale=1, size=n_samples)
+y = (1 / (1 + np.exp(-z))) > 0.5
+y = y.astype(int)
+
+# Create a Pandas DataFrame
+df = pd.DataFrame(X, columns=[f'Feature {i+1}' for i in range(n_features)])
+df['Target'] = y
+
+print(df.head())
+
+# Assume X is your feature matrix and y is your response variable
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+logreg = LogisticRegression()
+logreg.fit(X_train, y_train)
+
+y_pred_proba = logreg.predict_proba(X_test)[:, 1]
+
+auc = roc_auc_score(y_test, y_pred_proba)
+
+# Calculate Cox-Snell R-squared
+r2_cs = 1 - (np.log(y_test.shape[0]) - np.sum(y_test * np.log(y_pred_proba) + (1-y_test) * np.log(1-y_pred_proba))) / y_test.shape[0]
+
+print("Cox-Snell R-squared:", r2_cs)
+
+# %% [markdown] editable=true slideshow={"slide_type": ""}
 # ### How do you evaluate the performance of a Logistic Regression model?
 
 # %% [markdown] editable=true slideshow={"slide_type": ""}
