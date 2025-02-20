@@ -729,6 +729,64 @@ polynomial_encoded = poly_features.fit_transform(encoded_categories)
 print(polynomial_encoded)
 
 # %% [markdown]
+# ##### Can you plot example curves for linear, quadratic and cubic polynomial codings?
+
+# %%
+# Here's an example code that plots the curves for linear, quadratic, and cubic polynomial codings:
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the number of levels
+k = 4
+
+# Define the levels (e.g., dosage levels)
+levels = np.arange(1, k + 1)
+
+# Compute linear coding
+linear_coding = np.array([-3/2, -1/2, 1/2, 3/2])
+
+# Compute quadratic coding
+quadratic_coding = np.array([1, -1, -1, 1])
+
+# Compute cubic coding
+cubic_coding = np.array([-1, 3, -3, 1])
+
+# Create a range of x values for plotting
+x = np.linspace(1, k, 100)
+
+# Plot the curves
+plt.figure(figsize=(10, 6))
+
+plt.subplot(1, 3, 1)
+plt.plot(x, (x - (k + 1) / 2) * 3 / (k - 1), label='Linear')
+plt.title('Linear Polynomial Coding')
+plt.xlabel('Level')
+plt.ylabel('Coding Value')
+plt.legend()
+
+plt.subplot(1, 3, 2)
+plt.plot(x, 3 * (x - (k + 1) / 2) ** 2 - (k ** 2 - 1) / 4, label='Quadratic')
+plt.title('Quadratic Polynomial Coding')
+plt.xlabel('Level')
+plt.ylabel('Coding Value')
+plt.legend()
+
+plt.subplot(1, 3, 3)
+plt.plot(x, 5 * (x - (k + 1) / 2) ** 3 - 3 * (x - (k + 1) / 2) * (k ** 2 - 1) / 4, label='Cubic')
+plt.title('Cubic Polynomial Coding')
+plt.xlabel('Level')
+plt.ylabel('Coding Value')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+
+# %% [markdown]
+# This code will generate three plots, one for each type of polynomial coding. Each plot shows the curve of the polynomial coding values as a function of the level.
+# Note that the x-axis represents the levels, and the y-axis represents the corresponding polynomial coding values. The curves are plotted using a range of x values to provide a smooth representation of the polynomial coding curves.
+
+# %% [markdown]
 # ### What is the difference between a logit and a probability?
 
 # %% [markdown]
