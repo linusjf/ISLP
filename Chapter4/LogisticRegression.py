@@ -923,6 +923,12 @@ plt.show()
 # Keep in mind that pseudo-R-squared values should be used in conjunction with other model evaluation metrics, such as accuracy, precision, recall, and F1-score.
 #
 # Here's some sample Python code to calculate pseudo-R-squared using `scikit-learn`:
+#
+# We generate 1000 samples with 5 features each using a normal distribution.
+#
+# We generate the response variable y using a logistic function, which takes the dot product of the features and a set of coefficients, adds some noise, and then applies the logistic function to obtain probabilities. We then threshold these probabilities to obtain binary values (0/1).
+#
+# We use this generated data as input to the Logistic Regression model.
 
 # %% editable=true slideshow={"slide_type": ""}
 from sklearn.metrics import roc_auc_score
