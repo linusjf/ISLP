@@ -12,6 +12,11 @@
 #     name: islpenv
 # ---
 
+# %% language="html"
+# <style>
+# table {align:left; display:block}
+# </style>
+
 # %% [markdown]
 # # Logistic Regression
 
@@ -862,10 +867,8 @@ plt.show()
 # Suppose we have a Logistic Regression model that predicts the probability of a person being admitted to a university based on their GPA.
 #
 # | Predictor |	Coefficient |
-# | -- | ---- |
+# | :- | -: |
 # | GPA |	2.5 |
-#
-# In this example:
 #
 # The coefficient for GPA is 2.5, which is positive. This means that an increase in GPA is associated with an increase in the log-odds of being admitted to the university.
 #
