@@ -787,6 +787,21 @@ plt.show()
 # Note that the x-axis represents the levels, and the y-axis represents the corresponding polynomial coding values. The curves are plotted using a range of x values to provide a smooth representation of the polynomial coding curves.
 
 # %% [markdown]
+# ##### Flowchart for Categorical Encoding
+
+# %% [markdown]
+# ![Categorical Encoding Flowchart](categoricalencodingflowchart.png)
+
+# %% [markdown]
+# #### Further Reading for Categorical Encoding
+#
+# 1. <https://github.com/alteryx/categorical_encoding/blob/main/guides/notebooks/categorical-encoding-guide.ipynb>
+# 2. <https://www.kaggle.com/code/ptfrwrd/different-approaches-for-categorical-encoding>
+# 3. <https://www.linkedin.com/pulse/encode-categorical-features-revanth-yadama/>
+# 4. <https://www.kaggle.com/code/discdiver/category-encoders-examples>
+# 5. <https://www.kaggle.com/code/paulrohan2020/tutorial-encoding-categorical-variables>
+
+# %% [markdown]
 # ### What is the difference between a logit and a probability?
 
 # %% [markdown]
