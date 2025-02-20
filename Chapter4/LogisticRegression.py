@@ -26,7 +26,7 @@
 # %% [markdown]
 # ### What is Logistic Regression, and how does it differ from Linear Regression?
 
-# %% [markdown]
+# %% [markdown] editable=true slideshow={"slide_type": ""}
 # Logistic Regression and Linear Regression are both supervised learning algorithms used for predicting outcomes, but they differ in the type of outcome they predict and the mathematical approach used:
 #
 # #### Logistic Regression
@@ -99,9 +99,9 @@
 #
 # The sigmoid curve's unique shape and properties make it a powerful tool for modeling and analyzing complex phenomena.
 #
-# ![Sigmoid Curve](Logistic-curve.svg)
+# ![Sigmoid Curve](Logistic-curve.png)
 
-# %% [markdown]
+# %% [markdown] editable=true slideshow={"slide_type": ""}
 # ### What is the logistic function, and how is it used in Logistic Regression?
 
 # %% [markdown]
@@ -880,13 +880,13 @@ plt.show()
 #
 # This means that for every one-unit increase in GPA, the odds of being admitted to the university increase by a factor of approximately 12.18.
 
-# %% [markdown]
+# %% [markdown] editable=true slideshow={"slide_type": ""}
 # ### What is the concept of pseudo-R-squared in Logistic Regression?
 
 # %% [markdown]
 # ### How do you evaluate the performance of a Logistic Regression model?
 
-# %% [markdown]
+# %% [markdown] editable=true slideshow={"slide_type": ""}
 # ### What is the difference between accuracy, precision, recall, and F1-score in Logistic Regression?
 
 # %% [markdown]
