@@ -805,12 +805,89 @@ plt.show()
 # ### What is the difference between a logit and a probability?
 
 # %% [markdown]
+# A logit and a probability are two related but distinct concepts in statistics and machine learning:
+#
+# **Probability**
+#
+# A probability is a value between 0 and 1 that represents the likelihood or chance of an event occurring. Probabilities are often denoted as P(event) or p.
+# Example: The probability of flipping a coin and getting heads is 0.5.
+#
+# **Logit**
+#
+# A logit, also known as a log-odds, is the logarithm of the odds of an event occurring. Logits are often denoted as log(p/(1-p)).
+#
+# Example: The logit of the probability 0.5 is log(0.5/(1-0.5)) = 0.
+#
+# **Key differences**:
+#
+# Range: Probabilities range from 0 to 1, while logits range from negative infinity to positive infinity.
+#
+# Interpretation: Probabilities represent the likelihood of an event, while logits represent the logarithm of the odds of an event.
+#
+# Relationship: The logit function maps probabilities to logits, and the inverse logit function (also known as the sigmoid function) maps logits back to probabilities.
+#
+# The logit function is often used in logistic regression and other machine learning models to model binary outcomes, as it provides a convenient and interpretable way to represent probabilities.
+
+# %% [markdown]
 # ## Model Interpretation and Evaluation
-# 1. How do you interpret the coefficients of a Logistic Regression model?
-# 2. What is the concept of pseudo-R-squared in Logistic Regression?
-# 3. How do you evaluate the performance of a Logistic Regression model?
-# 4. What is the difference between accuracy, precision, recall, and F1-score in Logistic Regression?
-# 5. How do you handle class imbalance in Logistic Regression?
+
+# %% [markdown]
+# ### How do you interpret the coefficients of a Logistic Regression model?
+
+# %% [markdown]
+# **Coefficient Interpretation**
+#
+# In Logistic Regression, the coefficients represent the change in the log-odds of the outcome variable for a one-unit change in the predictor variable, while holding all other predictor variables constant.
+#
+# **Log-Odds**
+#
+# The log-odds are the logarithm of the odds of the outcome variable. The odds are the ratio of the probability of the outcome variable being 1 (e.g., success, yes, etc.) to the probability of it being 0 (e.g., failure, no, etc.).
+#
+# **Coefficient Sign**
+#
+# Positive coefficient: Indicates that an increase in the predictor variable is associated with an increase in the log-odds of the outcome variable. This means that the predictor variable is positively related to the outcome variable.
+#
+# Negative coefficient: Indicates that an increase in the predictor variable is associated with a decrease in the log-odds of the outcome variable. This means that the predictor variable is negatively related to the outcome variable.
+#
+# **Coefficient Magnitude**
+#
+# The magnitude of the coefficient represents the strength of the relationship between the predictor variable and the outcome variable.
+#
+# Large coefficient: Indicates a strong relationship between the predictor variable and the outcome variable.
+#
+# Small coefficient: Indicates a weak relationship between the predictor variable and the outcome variable.
+#
+# Example
+#
+# Suppose we have a Logistic Regression model that predicts the probability of a person being admitted to a university based on their GPA.
+#
+# | Predictor |	Coefficient |
+# | -- | ---- |
+# | GPA |	2.5 |
+#
+# In this example:
+#
+# The coefficient for GPA is 2.5, which is positive. This means that an increase in GPA is associated with an increase in the log-odds of being admitted to the university.
+#
+# The magnitude of the coefficient is 2.5, which indicates a strong relationship between GPA and the probability of being admitted.
+#
+# To make the interpretation more concrete, we can calculate the odds ratio (OR) for a one-unit change in GPA:
+#
+# $OR = e^{2.5} ≈ 12.18$
+#
+# This means that for every one-unit increase in GPA, the odds of being admitted to the university increase by a factor of approximately 12.18.
+
+# %% [markdown]
+# ### What is the concept of pseudo-R-squared in Logistic Regression?
+
+# %% [markdown]
+# ### How do you evaluate the performance of a Logistic Regression model?
+
+# %% [markdown]
+# ### What is the difference between accuracy, precision, recall, and F1-score in Logistic Regression?
+
+# %% [markdown]
+# ### How do you handle class imbalance in Logistic Regression?
 
 # %% [markdown]
 # ## Model Building and Assumptions
