@@ -166,7 +166,7 @@ cython_debug/
 # Images
 *.jpg
 *.png
-*.pdf
+#*.pdf
 
 # ignore ipynb files
 *.ipynb
@@ -176,3 +176,6 @@ cython_debug/
 
 # HTML files
 *.html
+
+# Output files
+*.out
