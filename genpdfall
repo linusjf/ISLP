@@ -9,14 +9,35 @@ piprequire() {
     done
   fi
 }
+
+# Set default value for changed_only
+changed_only=false
+
+# Parse command line options
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -c | --changed-only)
+      changed_only=true
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
 rm -f genpdfall.out
 require find git
 piprequire nbconvert jupyter
 declare -i exitcode=0
+nbfiles=()
 
-# readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' 'BEGIN {FILTER=".py$" } {if match(tolower($2)) {print $2}}' | sed 's/\.py$/.ipynb$/')
-
-readarray -t nbfiles < <(find . -maxdepth 2 -name "*.ipynb" -not -path "./.ipynb_checkpoints/*")
+if [ "$changed_only" = true ]; then
+  readarray -t nbfiles < <(git status -s "$@" | awk -F " " 'BEGIN {FILTER=".py$"} {if (match(tolower($2), FILTER)) {print $2}}' | sed 's/\.py$/.ipynb$/')
+else
+  readarray -t nbfiles < <(find . -maxdepth 2 -name "*.ipynb" -not -path "./.ipynb_checkpoints/*")
+fi
 
 if [ ${#nbfiles[@]} -eq 0 ]; then
   echo "No files found."
