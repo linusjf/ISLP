@@ -179,3 +179,4 @@ cython_debug/
 
 # Output files
 *.out
+**/libs/**
