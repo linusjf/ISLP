@@ -43,7 +43,6 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-rm -f genpdfall.out
 require find git quarto
 declare -i exitcode=0
 nbfiles=()
