@@ -1,0 +1,1034 @@
+[NbConvertApp] Converting notebook ./userfuncs.ipynb to pdf
+Executing <Task pending name='Task-1' coro=<NotebookClient.async_start_new_kernel() running at /home/linus/userpythonenv/lib/python3.12/site-packages/nbclient/client.py:550> wait_for=<Future pending cb=[Task.task_wakeup()] created at /usr/lib/python3.12/asyncio/base_events.py:449> cb=[_run_until_complete_cb() at /usr/lib/python3.12/asyncio/base_events.py:182] created at /usr/lib/python3.12/asyncio/tasks.py:695> took 0.361 seconds
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-3' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 20.414 seconds
+[NbConvertApp] Writing 60574 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 53226 bytes to userfuncs.pdf
+[NbConvertApp] Converting notebook ./Chapter3/userfuncs.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-64' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 5.796 seconds
+[NbConvertApp] Writing 60574 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 53225 bytes to Chapter3/userfuncs.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Exercise14.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-125' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 17.050 seconds
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['text/html']) is not able to be represented.
+  ((*- endblock -*))
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['application/vnd.plotly.v1+json', 'text/html']) is not able to be represented.
+  ((*- endblock -*))
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['application/vnd.plotly.v1+json', 'text/html']) is not able to be represented.
+  ((*- endblock -*))
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['application/vnd.plotly.v1+json', 'text/html']) is not able to be represented.
+  ((*- endblock -*))
+[NbConvertApp] Support files will be in Exercise14_files/
+[NbConvertApp] Making directory ./Exercise14_files
+[NbConvertApp] Writing 69112 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 269358 bytes to Chapter3/Exercise14.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Marketing.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-290' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 12.438 seconds
+[NbConvertApp] Support files will be in Marketing_files/
+[NbConvertApp] Making directory ./Marketing_files
+[NbConvertApp] Writing 76537 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 176496 bytes to Chapter3/Marketing.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Boston.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-490' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 7.563 seconds
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['text/html']) is not able to be represented.
+  ((*- endblock -*))
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['application/vnd.plotly.v1+json', 'text/html']) is not able to be represented.
+  ((*- endblock -*))
+[NbConvertApp] Support files will be in Boston_files/
+[NbConvertApp] Making directory ./Boston_files
+[NbConvertApp] Writing 48545 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 127499 bytes to Chapter3/Boston.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Exercise11.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-576' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 7.691 seconds
+[NbConvertApp] Support files will be in Exercise11_files/
+[NbConvertApp] Making directory ./Exercise11_files
+[NbConvertApp] Writing 69511 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 2647408 bytes to Chapter3/Exercise11.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Exercise12.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-744' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 3.345 seconds
+[NbConvertApp] Writing 23650 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 32021 bytes to Chapter3/Exercise12.pdf
+[NbConvertApp] Converting notebook ./Chapter3/ExercisesAutoMulti.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-767' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 16.056 seconds
+[NbConvertApp] Support files will be in ExercisesAutoMulti_files/
+[NbConvertApp] Making directory ./ExercisesAutoMulti_files
+[NbConvertApp] Writing 284106 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 988979 bytes to Chapter3/ExercisesAutoMulti.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Exercise13.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-1147' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 6.753 seconds
+[NbConvertApp] Support files will be in Exercise13_files/
+[NbConvertApp] Making directory ./Exercise13_files
+[NbConvertApp] Writing 54859 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 162195 bytes to Chapter3/Exercise13.pdf
+[NbConvertApp] Converting notebook ./Chapter3/CarSeats.ipynb to pdf
+IOStream.flush timed out
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-1278' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 17.211 seconds
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['text/html']) is not able to be represented.
+  ((*- endblock -*))
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['application/vnd.plotly.v1+json', 'text/html']) is not able to be represented.
+  ((*- endblock -*))
+[NbConvertApp] Support files will be in CarSeats_files/
+[NbConvertApp] Making directory ./CarSeats_files
+[NbConvertApp] Writing 53245 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 504836 bytes to Chapter3/CarSeats.pdf
+[NbConvertApp] Converting notebook ./Chapter3/notebookfuncs.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-1422' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 3.258 seconds
+[NbConvertApp] Writing 21214 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 20994 bytes to Chapter3/notebookfuncs.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Labs.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-1431' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 11.195 seconds
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['text/html']) is not able to be represented.
+  ((*- endblock -*))
+/home/linus/userpythonenv/share/jupyter/nbconvert/templates/latex/display_priority.j2:32: UserWarning: Your element with mimetype(s) dict_keys(['application/vnd.plotly.v1+json', 'text/html']) is not able to be represented.
+  ((*- endblock -*))
+[NbConvertApp] Support files will be in Labs_files/
+[NbConvertApp] Making directory ./Labs_files
+[NbConvertApp] Writing 107441 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] Running bibtex 1 time: ['bibtex', 'notebook']
+[NbConvertApp] WARNING | bibtex had problems, most likely because there were no citations
+[NbConvertApp] PDF successfully created
+[NbConvertApp] Writing 680571 bytes to Chapter3/Labs.pdf
+[NbConvertApp] Converting notebook ./Chapter3/Conceptual.ipynb to pdf
+[IPKernelApp] ERROR | Exception in control handler:
+Traceback (most recent call last):
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 362, in process_control
+    await result
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/kernelbase.py", line 989, in shutdown_request
+    content = self.do_shutdown(parent["content"]["restart"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/ipkernel.py", line 643, in do_shutdown
+    self.shell.exit_now = True
+    ^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 716, in __set__
+    self.set(obj, value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 706, in set
+    obj._notify_trait(self.name, old_value, new_value)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1513, in _notify_trait
+    self.notify_change(
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1525, in notify_change
+    return self._notify_observers(change)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/traitlets/traitlets.py", line 1568, in _notify_observers
+    c(event)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/ipykernel/zmqshell.py", line 476, in _update_exit_now
+    loop.call_later(0.1, loop.stop)
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/ioloop.py", line 609, in call_later
+    return self.call_at(self.time() + delay, callback, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/ISLP/islpenv/lib/python3.12/site-packages/tornado/platform/asyncio.py", line 216, in call_at
+    return self.asyncio_loop.call_later(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 761, in call_later
+    timer = self.call_at(self.time() + delay, callback, *args,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 776, in call_at
+    self._check_thread()
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 834, in _check_thread
+    raise RuntimeError(
+RuntimeError: Non-thread-safe operation invoked on an event loop other than the current one
+Executing <Task finished name='Task-1755' coro=<HBChannel._async_run() done, defined at /home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_client/channels.py:111> result=None created at /usr/lib/python3.12/asyncio/tasks.py:695> took 6.239 seconds
+[NbConvertApp] Support files will be in Conceptual_files/
+[NbConvertApp] Making directory ./Conceptual_files
+[NbConvertApp] Writing 87083 bytes to notebook.tex
+[NbConvertApp] Building PDF
+[NbConvertApp] Running xelatex 3 times: ['xelatex', 'notebook.tex', '-quiet']
+[NbConvertApp] CRITICAL | xelatex failed: ['xelatex', 'notebook.tex', '-quiet']
+b"This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex)\n restricted \\write18 enabled.\nentering extended mode\n(./notebook.tex\nLaTeX2e <2023-11-01> patch level 1\nL3 programming layer <2024-01-22>\n(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls\nDocument Class: article 2023/05/17 v1.4n Standard LaTeX document class\n(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo))\n(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty\n(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty\n(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))\n(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty\n(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty\n(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty\n(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)\n(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))\n(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered\n.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.def\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx.def\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de\nf))))\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.\ntex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.\ntex)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty\n(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)\n(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code\n.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet\nric.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod\ne.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison\n.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.\ntex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code\n.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.\ntex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari\nthmetics.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te\nx)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.\ncode.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code\n.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te\nx)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c\node.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation\ns.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex\n)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t\nex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing\n.code.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te\nx)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex\n)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex\n)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.\ntex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te\nx)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c\node.tex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.\ntex)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))\n)\n(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex\n) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex\n)\n(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65\n.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18\n.sty)) (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty\n(/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex\nLibrary (tcolorbox): 'tcbbreakable.code.tex' version '6.2.0'\n(/usr/share/texlive/texmf-dist/tex/latex/pdfcol/pdfcol.sty\n(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty))))\n(/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty\n(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty\n(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)))\n(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty\n(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty\n(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty\nFor additional information on amsmath, use the `?' option.\n(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty\n(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty\n(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty\n(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty\n(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty\n(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)))\n(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty\n(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))\n(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math.sty\n(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-xetex.sty\n(/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/base/fix-cm.sty\n(/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def))\n(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))\n(/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty\n(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty\n(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex\n(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))\n(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty\n(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-xetex.def))\n(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty\n(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty\n(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty\n(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)\n(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)\n(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty\n(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def\n(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty\n(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))\n(/usr/share/texlive/texmf-dist/tex/latex/titling/titling.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)\n(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/ulem/ulem.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/soul/soul.sty\n(/usr/share/texlive/texmf-dist/tex/generic/soul/soul-ori.sty)\n(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty))\n(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)\nNo file notebook.aux.\n(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty)\n*geometry* driver: auto-detecting\n*geometry* detected driver: xetex\n*geometry* verbose mode - [ preamble ] result:\n* driver: xetex\n* paper: <default>\n* layout: <same size as paper>\n* layoutoffset:(h,v)=(0.0pt,0.0pt)\n* modes: \n* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)\n* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)\n* \\paperwidth=614.295pt\n* \\paperheight=794.96999pt\n* \\textwidth=469.75502pt\n* \\textheight=650.43001pt\n* \\oddsidemargin=0.0pt\n* \\evensidemargin=0.0pt\n* \\topmargin=-37.0pt\n* \\headheight=12.0pt\n* \\headsep=25.0pt\n* \\topskip=11.0pt\n* \\footskip=30.0pt\n* \\marginparwidth=59.0pt\n* \\marginparsep=10.0pt\n* \\columnsep=10.0pt\n* \\skip\\footins=10.0pt plus 4.0pt minus 2.0pt\n* \\hoffset=0.0pt\n* \\voffset=0.0pt\n* \\mag=1000\n* \\@twocolumnfalse\n* \\@twosidefalse\n* \\@mparswitchfalse\n* \\@reversemarginfalse\n* (1in=72.27pt=25.4mm, 1cm=28.453pt)\n\n\nPackage hyperref Warning: Rerun to get /PageLabels entry.\n\n(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)\n(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)\n(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)\n\nLaTeX Warning: No \\author given.\n\n\nPackage longtable Warning: Column widths have changed\n(longtable)                in table 1 on input line 456.\n\n\nLaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.475> not available\n(Font)              size <5> substituted on input line 463.\n\n[1] [2]\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 689.\n\n[3]\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 711.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 730.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 748.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 767.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 770.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 773.\n\n[4]\nUnderfull \\hbox (badness 10000) in paragraph at lines 793--798\n[]\\TU/lmr/m/n/10.95 References: 1. [][]$[][][][][] [] [] [] [][][][][] [] [][][\n][][][][][][][][][][] [] [][][] [] [][][][][][][][][] [] [][][][][][] []\n\nUnderfull \\hbox (badness 3701) in paragraph at lines 793--798\n[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][\n][][][][][][][][][][][][][][]$[][] \\TU/lmr/m/n/10.95 2. [][]$[][][][][] [] [] [\n] [][][][][][][][][][][][][] [] [][][] []\n\nOverfull \\hbox (45.88362pt too wide) in paragraph at lines 793--798\n[][][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][][][][][][][\n][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]\n[][][][][][][][][][][][][][][][][][][][]$[][]\n[5] [6] [7]\nUnderfull \\hbox (badness 10000) in paragraph at lines 1055--1056\n\nMissing character: There is no \xce\xb5 (U+03B5) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb5 (U+03B5) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb5 (U+03B5) in font [lmroman10-regular]:mapping=t\nex-text;!\n[8]\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb5 (U+03B5) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\nMissing character: There is no \xce\xb2 (U+03B2) in font [lmroman10-regular]:mapping=t\nex-text;!\n[9]\n\nPackage longtable Warning: Column widths have changed\n(longtable)                in table 2 on input line 1234.\n\n[10] [11] [12] [13] [14] [15]\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1574.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1578.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1578.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1578.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1578.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1578.\n\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1583.\n\n[16] [17]\nUnderfull \\hbox (badness 10000) in paragraph at lines 1611--1612\n[]\n[18] [19]\nOverfull \\vbox (345.45569pt too high) has occurred while \\output is active\n[20]\n\nLaTeX Font Warning: Command \\large invalid in math mode on input line 1620.\n\n\nOverfull \\hbox (8.4259pt too wide) in paragraph at lines 1636--1640\n[]|$[][]$|  \n! Missing $ inserted.\n<inserted text> \n                $\nl.1644 ... * s\\_1 * \\frac {(X_1 - \\bar{X_1})}{s_1}\n                                                   + b\\_2 * s\\_2 *\n? \n! Emergency stop.\n<inserted text> \n                $\nl.1644 ... * s\\_1 * \\frac {(X_1 - \\bar{X_1})}{s_1}\n                                                   + b\\_2 * s\\_2 *\nOutput written on notebook.pdf (20 pages).\nTranscript written on notebook.log.\n"
+Traceback (most recent call last):
+  File "/home/linus/userpythonenv/bin/jupyter-nbconvert", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/jupyter_core/application.py", line 283, in launch_instance
+    super().launch_instance(argv=argv, **kwargs)
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/traitlets/config/application.py", line 1075, in launch_instance
+    app.start()
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 420, in start
+    self.convert_notebooks()
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 597, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 563, in convert_single_notebook
+    output, resources = self.export_single_notebook(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/nbconvertapp.py", line 487, in export_single_notebook
+    output, resources = self.exporter.from_filename(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/templateexporter.py", line 386, in from_filename
+    return super().from_filename(filename, resources, **kw)  # type:ignore[return-value]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/exporter.py", line 201, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/templateexporter.py", line 392, in from_file
+    return super().from_file(file_stream, resources, **kw)  # type:ignore[return-value]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/exporter.py", line 220, in from_file
+    return self.from_notebook_node(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/pdf.py", line 197, in from_notebook_node
+    self.run_latex(tex_file)
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/pdf.py", line 166, in run_latex
+    return self.run_command(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/linus/userpythonenv/lib/python3.12/site-packages/nbconvert/exporters/pdf.py", line 156, in run_command
+    raise raise_on_failure(msg)
+nbconvert.exporters.pdf.LatexFailed: PDF creating failed, captured latex output:
+Failed to run "['xelatex', 'notebook.tex', '-quiet']" command:
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./notebook.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered
+.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-xetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-dvipdfmx.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f))))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
+.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
+.sty)) (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
+(/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcbbreakable.code.tex
+Library (tcolorbox): 'tcbbreakable.code.tex' version '6.2.0'
+(/usr/share/texlive/texmf-dist/tex/latex/pdfcol/pdfcol.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/parskip/parskip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/upquote/upquote.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-xetex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math.sty
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-xetex.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fix-cm.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.def))
+(/usr/share/texlive/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex)))
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+(/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-xetex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hxetex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/titling/titling.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/ulem/ulem.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/soul/soul.sty
+(/usr/share/texlive/texmf-dist/tex/generic/soul/soul-ori.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+No file notebook.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty)
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes:
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+
+LaTeX Warning: No \author given.
+
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 1 on input line 456.
+
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <5.475> not available
+(Font)              size <5> substituted on input line 463.
+
+[1] [2]
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 689.
+
+[3]
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 711.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 730.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 748.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 767.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 770.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 773.
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 793--798
+[]\TU/lmr/m/n/10.95 References: 1. [][]$[][][][][] [] [] [] [][][][][] [] [][][
+][][][][][][][][][][] [] [][][] [] [][][][][][][][][] [] [][][][][][] []
+
+Underfull \hbox (badness 3701) in paragraph at lines 793--798
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][]$[][] \TU/lmr/m/n/10.95 2. [][]$[][][][][] [] [] [
+] [][][][][][][][][][][][][] [] [][][] []
+
+Overfull \hbox (45.88362pt too wide) in paragraph at lines 793--798
+[][][][][][][][][] [] [][][][][][][][] [] [][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][]$[][]
+[5] [6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 1055--1056
+
+Missing character: There is no ε (U+03B5) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ε (U+03B5) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ε (U+03B5) in font [lmroman10-regular]:mapping=t
+ex-text;!
+[8]
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no ε (U+03B5) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+[9]
+
+Package longtable Warning: Column widths have changed
+(longtable)                in table 2 on input line 1234.
+
+[10] [11] [12] [13] [14] [15]
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1574.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1578.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1578.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1578.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1578.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1578.
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1583.
+
+[16] [17]
+Underfull \hbox (badness 10000) in paragraph at lines 1611--1612
+[]
+[18] [19]
+Overfull \vbox (345.45569pt too high) has occurred while \output is active
+[20]
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 1620.
+
+
+Overfull \hbox (8.4259pt too wide) in paragraph at lines 1636--1640
+[]|$[][]$|
+! Missing $ inserted.
+<inserted text>
+                $
+l.1644 ... * s\_1 * \frac {(X_1 - \bar{X_1})}{s_1}
+                                                   + b\_2 * s\_2 *
+?
+! Emergency stop.
+<inserted text>
+                $
+l.1644 ... * s\_1 * \frac {(X_1 - \bar{X_1})}{s_1}
+                                                   + b\_2 * s\_2 *
+Output written on notebook.pdf (20 pages).
+Transcript written on notebook.log.

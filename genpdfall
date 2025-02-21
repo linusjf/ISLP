@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+require() {
+  hash "$@" || exit 127
+}
+piprequire() {
+  if [ $# -gt 0 ]; then
+    for pkg in "$@"; do
+      python -c "import $pkg" || exit 127
+    done
+  fi
+}
+rm -f genpdfall.out
+require find git
+piprequire nbconvert jupyter
+declare -i exitcode=0
+
+# readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' 'BEGIN {FILTER=".py$" } {if match(tolower($2)) {print $2}}' | sed 's/\.py$/.ipynb$/')
+
+readarray -t nbfiles < <(find . -maxdepth 2 -name "*.ipynb" -not -path "./.ipynb_checkpoints/*")
+
+if [ ${#nbfiles[@]} -eq 0 ]; then
+  echo "No files found."
+else
+  python -m jupyter nbconvert --to pdf "${nbfiles[@]}" --execute --allow-errors 2>&1 | tee genpdfall.out
+  exitcode=$?
+fi
+
+if [ "$exitcode" -gt 0 ]; then
+  echo "Errors generating pdf files. Check genpdfall.out for errors"
+fi
+exit "$exitcode"
