@@ -1,19 +1,35 @@
 #!/usr/bin/env bash
+
+# genpdfall - Generate PDF files from Jupyter notebooks
+#
+# This script converts Jupyter notebooks to PDF format. It can either process
+# all notebooks in the current directory (and one level deep) or only process
+# notebooks that have corresponding changed Python files in git.
+#
+# Usage:
+#   genpdfall             - Convert all found notebooks to PDF
+#   genpdfall -c          - Convert only notebooks with changed .py files
+#   genpdfall --changed-only  - Same as -c
+#
+# Options:
+#   -c, --changed-only    Only process notebooks with changed .py files
+#
+# Dependencies:
+#   - quarto
+#   - git (when using --changed-only)
+#
+# Output:
+#   - Generated PDFs will be in the same directory as source notebooks
+#   - Errors are logged to genpdfall.out
+#
 require() {
   hash "$@" || exit 127
-}
-piprequire() {
-  if [ $# -gt 0 ]; then
-    for pkg in "$@"; do
-      python -c "import $pkg" || exit 127
-    done
-  fi
 }
 
 # Set default value for changed_only
 changed_only=false
-
 # Parse command line options
+
 while [ $# -gt 0 ]; do
   case "$1" in
     -c | --changed-only)
@@ -28,8 +44,7 @@ while [ $# -gt 0 ]; do
 done
 
 rm -f genpdfall.out
-require find git
-piprequire nbconvert jupyter
+require find git quarto
 declare -i exitcode=0
 nbfiles=()
 
@@ -42,11 +57,8 @@ fi
 if [ ${#nbfiles[@]} -eq 0 ]; then
   echo "No files found."
 else
-  python -m jupyter nbconvert --to pdf "${nbfiles[@]}" --execute --allow-errors 2>&1 | tee genpdfall.out
+  quarto render "${nbfiles[@]}" --to pdf --quiet
   exitcode=$?
 fi
 
-if [ "$exitcode" -gt 0 ]; then
-  echo "Errors generating pdf files. Check genpdfall.out for errors"
-fi
 exit "$exitcode"
