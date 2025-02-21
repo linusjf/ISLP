@@ -48,7 +48,7 @@ declare -i exitcode=0
 nbfiles=()
 
 if [ "$changed_only" = true ]; then
-  readarray -t nbfiles < <(git status -s "$@" | awk -F " " 'BEGIN {FILTER=".py$"} {if (match(tolower($2), FILTER)) {print $2}}' | sed 's/\.py$/.ipynb$/')
+  readarray -t nbfiles < <(git status -s "$@" | awk -F " " 'BEGIN {FILTER=".py$"} {if (match(tolower($2), FILTER)) {print $2}}' | sed 's/\.py$/.ipynb/')
 else
   readarray -t nbfiles < <(find . -maxdepth 2 -name "*.ipynb" -not -path "./.ipynb_checkpoints/*")
 fi
