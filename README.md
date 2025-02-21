@@ -26,7 +26,9 @@ python -m ipykernel install --user --name=islpenv
 
 ## Convert ipynb files to pdf
 
-./genpdf
+./genpdf  # convert all ipynb files to pdf
+
+./genpdf -c or ./genpdf --changed-only # convert only changed files (as per git) to pdf
 
 ## Install jupyterlab_templates extension
 jupyter labextension install jupyterlab_templates

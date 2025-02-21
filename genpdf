@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-# genpdfall - Generate PDF files from Jupyter notebooks
+# genpdf - Generate PDF files from Jupyter notebooks
 #
 # This script converts Jupyter notebooks to PDF format. It can either process
 # all notebooks in the current directory (and one level deep) or only process
 # notebooks that have corresponding changed Python files in git.
 #
 # Usage:
-#   genpdfall             - Convert all found notebooks to PDF
-#   genpdfall -c          - Convert only notebooks with changed .py files
-#   genpdfall --changed-only  - Same as -c
+#   genpdf             - Convert all found notebooks to PDF
+#   genpdf -c          - Convert only notebooks with changed .py files
+#   genpdf --changed-only  - Same as -c
 #
 # Options:
 #   -c, --changed-only    Only process notebooks with changed .py files
