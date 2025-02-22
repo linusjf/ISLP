@@ -43,7 +43,11 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-require find git quarto
+require find git quarto tee
+rm -f genpdf.out || {
+  echo "File permissions problem"
+  exit 1
+}
 declare -i exitcode=0
 nbfiles=()
 
@@ -56,8 +60,11 @@ fi
 if [ ${#nbfiles[@]} -eq 0 ]; then
   echo "No files found."
 else
-  quarto render "${nbfiles[@]}" --to pdf --quiet
+  quarto render "${nbfiles[@]}" --to pdf 2>&1 | tee genpdf.out
   exitcode=$?
 fi
 
+if [ "$exitcode" -gt 0 ]; then
+  echo "Errors generating pdf files. Check genpdf.out for errors."
+fi
 exit "$exitcode"

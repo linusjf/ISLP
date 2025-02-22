@@ -649,17 +649,13 @@ simulate_regression(mostly_non_linear_equation())
 # %% [markdown]
 # | Step | Rationale |
 # | ----- | -------- |
-# | $$\begin{aligned}
-# Y = a + b_1X_1 + b_2X_2 + e \\
-# \implies Y - \bar{y} = a + b_1X_1 + b_2X_2 + e - \bar{y}
-# \end{aligned}
-# $$ | Subtract $\bar{y}$ from both sides |
-# | $= \bar{y} - b_1 \bar{X_1} - b_2 \bar{X_2} + b_1X_1 + b_2X_2 + e - \bar{y}$  | Substitute for a |
-# | $= b_1(X1 - \bar{X_1}) + b_2(X2 - \bar{X 2}) + e$ | Rearrange terms |
-# | $= b_1 * s_1 * \frac {(X_1 - \bar{X_1})}{s_1} + b_2 * s_2 * \frac {(X_2 - \bar{X_2})}{s_2} + e $ | Multiply and divide by s.d's |
-# | $= b_1 * s_1 * {X_1}^{'} + b_2 * s_2 * {X_2}^{'} + e $ | Substitute standardized X's |
+# | $Y = a + b_1X_1 + b_2X_2 + e  \implies Y - \bar{y} = a + b_1X_1 + b_2X_2 + e - \bar{y}$ | Subtract $\bar{y}$ from both sides |
+# | = $\bar{y} - b_1 \bar{X_1} - b_2 \bar{X_2} + b_1X_1 + b_2X_2 + e - \bar{y}$  | Substitute for a |
+# | = $b_1(X1 - \bar{X_1}) + b_2(X2 - \bar{X 2}) + e$ | Rearrange terms |
+# | = $b_1 * s_1 * \frac {(X_1 - \bar{X_1})}{s_1} + b_2 * s_2 * \frac {(X_2 - \bar{X_2})}{s_2} + e$ | Multiply and divide by s.d\'s |
+# | = $b_1 * s_1 * {X_1}^{'} + b_2 * s_2 * {X_2}^{'} + e$ | Substitute standardized X\'s |
 # | $\implies \frac {(Y - \bar{y})} {s_y} = Y^{'} = b_1 * \frac {s_1}{s_y} * {X_1}^{'} + b_2 * \frac {s_2}{s_y} * {X_2}^{'} + \frac {e}{s_y}$ | Divide both sides by $s_y$ |
-# | $= b_1^{'}X_1^{'} + b_2^{'}X_2^{'} + e^{'}$ | Substitute standardized coefficients |
+# | = $b_1^{'}X_1^{'} + b_2^{'}X_2^{'} + e^{'}$ | Substitute standardized coefficients |
 # | $\implies b_k^{'} = b_k * \frac {s_k}{s_y}$ | Q.E.D (that which was to be shown) |
 
 # %% [markdown]
