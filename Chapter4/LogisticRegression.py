@@ -178,7 +178,7 @@
 #
 # OR = (Odds of event occurring with predictor) / (Odds of event occurring without predictor)
 #
-# In Logistic Regression, the odds ratio is calculated using the coefficient (β) of the predictor variable:
+# In Logistic Regression, the odds ratio is calculated using the coefficient $(\beta)$ of the predictor variable:
 #
 # $OR = e^{\beta}$
 #
