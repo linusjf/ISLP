@@ -60,7 +60,7 @@ fi
 if [ ${#nbfiles[@]} -eq 0 ]; then
   echo "No files found."
 else
-  quarto render "${nbfiles[@]}" --to pdf 2>&1 | tee genpdf.out
+  quarto render "${nbfiles[@]}" --to pdf -- -V code-block-wrap=true 2>&1 | tee genpdf.out
   exitcode=$?
 fi
 
