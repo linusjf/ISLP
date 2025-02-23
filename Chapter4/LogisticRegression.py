@@ -815,6 +815,7 @@ plt.show()
 # **Probability**
 #
 # A probability is a value between 0 and 1 that represents the likelihood or chance of an event occurring. Probabilities are often denoted as P(event) or p.
+#
 # Example: The probability of flipping a coin and getting heads is 0.5.
 #
 # **Logit**
