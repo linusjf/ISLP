@@ -1,4 +1,3 @@
-jupyterlab-quarto==0.3.5
 category_encoders==2.8.0
 numpy==1.26.4
 scipy==1.11.4
