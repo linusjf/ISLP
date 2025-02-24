@@ -182,3 +182,4 @@ cython_debug/
 **/libs/**
 *.aux
 **/*_files/**
+**/_freeze/**
