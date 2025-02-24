@@ -1,0 +1,566 @@
+---
+title: Count of private and public colleges
+jupyter: islpenv
+---
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:05.728417Z', iopub.status.busy: '2024-10-22T07:25:05.727696Z', iopub.status.idle: '2024-10-22T07:25:05.743423Z', shell.execute_reply: '2024-10-22T07:25:05.740867Z', shell.execute_reply.started: '2024-10-22T07:25:05.728372Z'}
+from notebookfuncs import *
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:05.749945Z', iopub.status.busy: '2024-10-22T07:25:05.749240Z', iopub.status.idle: '2024-10-22T07:25:07.516499Z', shell.execute_reply: '2024-10-22T07:25:07.515410Z', shell.execute_reply.started: '2024-10-22T07:25:05.749877Z'}
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.pyplot import subplots
+import pandas as pd
+from ISLP import load_data
+import seaborn as sns
+from numpy import median
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:07.518575Z', iopub.status.busy: '2024-10-22T07:25:07.518154Z', iopub.status.idle: '2024-10-22T07:25:07.551958Z', shell.execute_reply: '2024-10-22T07:25:07.550671Z', shell.execute_reply.started: '2024-10-22T07:25:07.518552Z'}
+College = pd.read_csv("College.csv")
+College
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:07.553998Z', iopub.status.busy: '2024-10-22T07:25:07.553635Z', iopub.status.idle: '2024-10-22T07:25:07.626798Z', shell.execute_reply: '2024-10-22T07:25:07.625538Z', shell.execute_reply.started: '2024-10-22T07:25:07.553962Z'}
+college2 = pd.read_csv("College.csv", index_col=0)
+college2
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:07.629079Z', iopub.status.busy: '2024-10-22T07:25:07.628643Z', iopub.status.idle: '2024-10-22T07:25:07.703049Z', shell.execute_reply: '2024-10-22T07:25:07.702023Z', shell.execute_reply.started: '2024-10-22T07:25:07.629031Z'}
+College3 = College.rename({"Unnamed: 0": "College"}, axis=1)
+College3.set_index("College")
+College3
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:07.716614Z', iopub.status.busy: '2024-10-22T07:25:07.715825Z', iopub.status.idle: '2024-10-22T07:25:07.822978Z', shell.execute_reply: '2024-10-22T07:25:07.821672Z', shell.execute_reply.started: '2024-10-22T07:25:07.716576Z'}
+College = College3
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:07.824695Z', iopub.status.busy: '2024-10-22T07:25:07.824424Z', iopub.status.idle: '2024-10-22T07:25:07.950893Z', shell.execute_reply: '2024-10-22T07:25:07.949815Z', shell.execute_reply.started: '2024-10-22T07:25:07.824673Z'}
+College.describe()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:07.952963Z', iopub.status.busy: '2024-10-22T07:25:07.952632Z', iopub.status.idle: '2024-10-22T07:25:08.518958Z', shell.execute_reply: '2024-10-22T07:25:08.517907Z', shell.execute_reply.started: '2024-10-22T07:25:07.952939Z'}
+pd.plotting.scatter_matrix(College[["Top10perc", "Apps", "Enroll"]]);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:08.521046Z', iopub.status.busy: '2024-10-22T07:25:08.520753Z', iopub.status.idle: '2024-10-22T07:25:18.672029Z', shell.execute_reply: '2024-10-22T07:25:18.670267Z', shell.execute_reply.started: '2024-10-22T07:25:08.521023Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Outstate", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:18.673987Z', iopub.status.busy: '2024-10-22T07:25:18.673710Z', iopub.status.idle: '2024-10-22T07:25:18.682061Z', shell.execute_reply: '2024-10-22T07:25:18.681174Z', shell.execute_reply.started: '2024-10-22T07:25:18.673964Z'}
+College["Top10perc"]
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:18.684556Z', iopub.status.busy: '2024-10-22T07:25:18.684257Z', iopub.status.idle: '2024-10-22T07:25:18.784640Z', shell.execute_reply: '2024-10-22T07:25:18.783600Z', shell.execute_reply.started: '2024-10-22T07:25:18.684532Z'}
+#| lines_to_next_cell: 2
+College["Elite"] = pd.cut(College["Top10perc"], [0, 50, 100], labels=["No", "Yes"])
+College["Elite"].value_counts()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:18.786686Z', iopub.status.busy: '2024-10-22T07:25:18.786358Z', iopub.status.idle: '2024-10-22T07:25:19.119303Z', shell.execute_reply: '2024-10-22T07:25:19.118020Z', shell.execute_reply.started: '2024-10-22T07:25:18.786661Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Outstate", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:19.121147Z', iopub.status.busy: '2024-10-22T07:25:19.120824Z', iopub.status.idle: '2024-10-22T07:25:19.692104Z', shell.execute_reply: '2024-10-22T07:25:19.690980Z', shell.execute_reply.started: '2024-10-22T07:25:19.121108Z'}
+College.plot.hist();
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:19.694087Z', iopub.status.busy: '2024-10-22T07:25:19.693767Z', iopub.status.idle: '2024-10-22T07:25:19.893537Z', shell.execute_reply: '2024-10-22T07:25:19.892303Z', shell.execute_reply.started: '2024-10-22T07:25:19.694063Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.hist("Apps", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:19.895698Z', iopub.status.busy: '2024-10-22T07:25:19.895352Z', iopub.status.idle: '2024-10-22T07:25:19.906259Z', shell.execute_reply: '2024-10-22T07:25:19.904147Z', shell.execute_reply.started: '2024-10-22T07:25:19.895674Z'}
+numeric_columns = College.select_dtypes(include="number").columns.tolist()
+numeric_columns
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:19.908972Z', iopub.status.busy: '2024-10-22T07:25:19.908599Z', iopub.status.idle: '2024-10-22T07:25:22.518266Z', shell.execute_reply: '2024-10-22T07:25:22.517022Z', shell.execute_reply.started: '2024-10-22T07:25:19.908927Z'}
+#| lines_to_next_cell: 0
+fig, axs = subplots(4, 4, figsize=(16, 16))
+for row in range(0, 4):
+    for column in range(0, 4):
+        College.hist(numeric_columns[row * 4 + column], ax=axs[row, column])
+```
+
+
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:22.519922Z', iopub.status.busy: '2024-10-22T07:25:22.519655Z', iopub.status.idle: '2024-10-22T07:25:22.530154Z', shell.execute_reply: '2024-10-22T07:25:22.528297Z', shell.execute_reply.started: '2024-10-22T07:25:22.519901Z'}
+College["Private"].value_counts()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:22.533886Z', iopub.status.busy: '2024-10-22T07:25:22.532806Z', iopub.status.idle: '2024-10-22T07:25:22.638306Z', shell.execute_reply: '2024-10-22T07:25:22.637152Z', shell.execute_reply.started: '2024-10-22T07:25:22.533839Z'}
+College["AcceptanceRate"] = round(College["Accept"] / College["Apps"] * 100, 2)
+College["AcceptanceRate"]
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:22.640658Z', iopub.status.busy: '2024-10-22T07:25:22.640260Z', iopub.status.idle: '2024-10-22T07:25:22.710921Z', shell.execute_reply: '2024-10-22T07:25:22.709842Z', shell.execute_reply.started: '2024-10-22T07:25:22.640626Z'}
+### Plot boxplot for acceptance rate by College Type : Elite or not
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:22.713389Z', iopub.status.busy: '2024-10-22T07:25:22.712992Z', iopub.status.idle: '2024-10-22T07:25:22.921726Z', shell.execute_reply: '2024-10-22T07:25:22.920567Z', shell.execute_reply.started: '2024-10-22T07:25:22.713355Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("AcceptanceRate", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:22.941236Z', iopub.status.busy: '2024-10-22T07:25:22.940916Z', iopub.status.idle: '2024-10-22T07:25:22.946433Z', shell.execute_reply: '2024-10-22T07:25:22.945382Z', shell.execute_reply.started: '2024-10-22T07:25:22.941214Z'}
+### Plot boxplot for acceptance rate for Private colleges or not
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:22.949223Z', iopub.status.busy: '2024-10-22T07:25:22.948817Z', iopub.status.idle: '2024-10-22T07:25:23.168346Z', shell.execute_reply: '2024-10-22T07:25:23.167289Z', shell.execute_reply.started: '2024-10-22T07:25:22.949188Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("AcceptanceRate", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.171150Z', iopub.status.busy: '2024-10-22T07:25:23.170736Z', iopub.status.idle: '2024-10-22T07:25:23.183850Z', shell.execute_reply: '2024-10-22T07:25:23.182673Z', shell.execute_reply.started: '2024-10-22T07:25:23.171092Z'}
+College["EnrollmentRate"] = round(College["Enroll"] / College["Accept"] * 100, 2)
+College["EnrollmentRate"]
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.186965Z', iopub.status.busy: '2024-10-22T07:25:23.186375Z', iopub.status.idle: '2024-10-22T07:25:23.416775Z', shell.execute_reply: '2024-10-22T07:25:23.415630Z', shell.execute_reply.started: '2024-10-22T07:25:23.186930Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("EnrollmentRate", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.419057Z', iopub.status.busy: '2024-10-22T07:25:23.418593Z', iopub.status.idle: '2024-10-22T07:25:23.588832Z', shell.execute_reply: '2024-10-22T07:25:23.587420Z', shell.execute_reply.started: '2024-10-22T07:25:23.419025Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("EnrollmentRate", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.590860Z', iopub.status.busy: '2024-10-22T07:25:23.590456Z', iopub.status.idle: '2024-10-22T07:25:23.599195Z', shell.execute_reply: '2024-10-22T07:25:23.598009Z', shell.execute_reply.started: '2024-10-22T07:25:23.590828Z'}
+College["StudentCosts"] = (
+    College["Outstate"] + College["Room.Board"] + College["Books"] + College["Personal"]
+)
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.601822Z', iopub.status.busy: '2024-10-22T07:25:23.601448Z', iopub.status.idle: '2024-10-22T07:25:23.810943Z', shell.execute_reply: '2024-10-22T07:25:23.809907Z', shell.execute_reply.started: '2024-10-22T07:25:23.601789Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("StudentCosts", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.812975Z', iopub.status.busy: '2024-10-22T07:25:23.812585Z', iopub.status.idle: '2024-10-22T07:25:23.976993Z', shell.execute_reply: '2024-10-22T07:25:23.975917Z', shell.execute_reply.started: '2024-10-22T07:25:23.812949Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("StudentCosts", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:23.979054Z', iopub.status.busy: '2024-10-22T07:25:23.978774Z', iopub.status.idle: '2024-10-22T07:25:24.144194Z', shell.execute_reply: '2024-10-22T07:25:24.143135Z', shell.execute_reply.started: '2024-10-22T07:25:23.979032Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("PhD", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:24.146089Z', iopub.status.busy: '2024-10-22T07:25:24.145813Z', iopub.status.idle: '2024-10-22T07:25:24.306573Z', shell.execute_reply: '2024-10-22T07:25:24.305502Z', shell.execute_reply.started: '2024-10-22T07:25:24.146068Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("PhD", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:24.308605Z', iopub.status.busy: '2024-10-22T07:25:24.308305Z', iopub.status.idle: '2024-10-22T07:25:24.490016Z', shell.execute_reply: '2024-10-22T07:25:24.488802Z', shell.execute_reply.started: '2024-10-22T07:25:24.308584Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Terminal", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:24.491912Z', iopub.status.busy: '2024-10-22T07:25:24.491556Z', iopub.status.idle: '2024-10-22T07:25:24.673992Z', shell.execute_reply: '2024-10-22T07:25:24.672759Z', shell.execute_reply.started: '2024-10-22T07:25:24.491881Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Terminal", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:24.676091Z', iopub.status.busy: '2024-10-22T07:25:24.675725Z', iopub.status.idle: '2024-10-22T07:25:24.857887Z', shell.execute_reply: '2024-10-22T07:25:24.856986Z', shell.execute_reply.started: '2024-10-22T07:25:24.676058Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("S.F.Ratio", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:24.860410Z', iopub.status.busy: '2024-10-22T07:25:24.859969Z', iopub.status.idle: '2024-10-22T07:25:25.044401Z', shell.execute_reply: '2024-10-22T07:25:25.043111Z', shell.execute_reply.started: '2024-10-22T07:25:24.860375Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("S.F.Ratio", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:25.046544Z', iopub.status.busy: '2024-10-22T07:25:25.046077Z', iopub.status.idle: '2024-10-22T07:25:25.218944Z', shell.execute_reply: '2024-10-22T07:25:25.217894Z', shell.execute_reply.started: '2024-10-22T07:25:25.046480Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("perc.alumni", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:25.221395Z', iopub.status.busy: '2024-10-22T07:25:25.220973Z', iopub.status.idle: '2024-10-22T07:25:25.397236Z', shell.execute_reply: '2024-10-22T07:25:25.396100Z', shell.execute_reply.started: '2024-10-22T07:25:25.221362Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("perc.alumni", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:25.399750Z', iopub.status.busy: '2024-10-22T07:25:25.399390Z', iopub.status.idle: '2024-10-22T07:25:25.566432Z', shell.execute_reply: '2024-10-22T07:25:25.565456Z', shell.execute_reply.started: '2024-10-22T07:25:25.399718Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Expend", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:25.569143Z', iopub.status.busy: '2024-10-22T07:25:25.568761Z', iopub.status.idle: '2024-10-22T07:25:25.735392Z', shell.execute_reply: '2024-10-22T07:25:25.734195Z', shell.execute_reply.started: '2024-10-22T07:25:25.569111Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Expend", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:25.737407Z', iopub.status.busy: '2024-10-22T07:25:25.736971Z', iopub.status.idle: '2024-10-22T07:25:25.904348Z', shell.execute_reply: '2024-10-22T07:25:25.903155Z', shell.execute_reply.started: '2024-10-22T07:25:25.737376Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Grad.Rate", by="Elite", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:25.906780Z', iopub.status.busy: '2024-10-22T07:25:25.906302Z', iopub.status.idle: '2024-10-22T07:25:26.074582Z', shell.execute_reply: '2024-10-22T07:25:26.073542Z', shell.execute_reply.started: '2024-10-22T07:25:25.906747Z'}
+fig, ax = subplots(figsize=(8, 8))
+College.boxplot("Grad.Rate", by="Private", ax=ax);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.077351Z', iopub.status.busy: '2024-10-22T07:25:26.076935Z', iopub.status.idle: '2024-10-22T07:25:26.096731Z', shell.execute_reply: '2024-10-22T07:25:26.095065Z', shell.execute_reply.started: '2024-10-22T07:25:26.077284Z'}
+mean_grad_rate = College.groupby("Elite", observed=True)[
+    ["AcceptanceRate", "EnrollmentRate", "Grad.Rate"]
+].mean()
+mean_grad_rate
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.099397Z', iopub.status.busy: '2024-10-22T07:25:26.098905Z', iopub.status.idle: '2024-10-22T07:25:26.347874Z', shell.execute_reply: '2024-10-22T07:25:26.346724Z', shell.execute_reply.started: '2024-10-22T07:25:26.099353Z'}
+mean_grad_rate.plot(
+    y=["AcceptanceRate", "EnrollmentRate", "Grad.Rate"], kind="bar", rot=0
+);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.349987Z', iopub.status.busy: '2024-10-22T07:25:26.349686Z', iopub.status.idle: '2024-10-22T07:25:26.365828Z', shell.execute_reply: '2024-10-22T07:25:26.364157Z', shell.execute_reply.started: '2024-10-22T07:25:26.349966Z'}
+Auto = pd.read_csv("Auto.csv", na_values={"?"})
+print(Auto.shape)
+np.unique(Auto["horsepower"])
+```
+
+### Which predictors are quantitative and which are qualitative?
+
+Rename the misleading column name acceleration to timetoacceleration since it's a tad misleading.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.369688Z', iopub.status.busy: '2024-10-22T07:25:26.368786Z', iopub.status.idle: '2024-10-22T07:25:26.445418Z', shell.execute_reply: '2024-10-22T07:25:26.444404Z', shell.execute_reply.started: '2024-10-22T07:25:26.369657Z'}
+Auto["timetoacceleration"] = Auto["acceleration"]
+Auto = Auto.drop("acceleration", axis=1)
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.447296Z', iopub.status.busy: '2024-10-22T07:25:26.447006Z', iopub.status.idle: '2024-10-22T07:25:26.559072Z', shell.execute_reply: '2024-10-22T07:25:26.557871Z', shell.execute_reply.started: '2024-10-22T07:25:26.447275Z'}
+Auto = Auto.dropna()
+Auto.shape
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.561833Z', iopub.status.busy: '2024-10-22T07:25:26.561563Z', iopub.status.idle: '2024-10-22T07:25:26.666001Z', shell.execute_reply: '2024-10-22T07:25:26.664733Z', shell.execute_reply.started: '2024-10-22T07:25:26.561811Z'}
+Auto.describe()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.667828Z', iopub.status.busy: '2024-10-22T07:25:26.667558Z', iopub.status.idle: '2024-10-22T07:25:26.762361Z', shell.execute_reply: '2024-10-22T07:25:26.761103Z', shell.execute_reply.started: '2024-10-22T07:25:26.667806Z'}
+Auto["origin"] = Auto.origin.astype("category")
+Auto["year"] = Auto.year.astype("category")
+Auto["cylinders"] = Auto.cylinders.astype("category")
+print(np.unique(Auto["year"]))
+print(np.unique(Auto["cylinders"]))
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.764387Z', iopub.status.busy: '2024-10-22T07:25:26.764049Z', iopub.status.idle: '2024-10-22T07:25:26.872197Z', shell.execute_reply: '2024-10-22T07:25:26.870392Z', shell.execute_reply.started: '2024-10-22T07:25:26.764324Z'}
+Auto["origin"] = Auto["origin"].cat.rename_categories(
+    {1: "American", 2: "European", 3: "Japanese"}
+)
+np.unique(Auto["origin"])
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.874694Z', iopub.status.busy: '2024-10-22T07:25:26.874423Z', iopub.status.idle: '2024-10-22T07:25:26.967445Z', shell.execute_reply: '2024-10-22T07:25:26.966291Z', shell.execute_reply.started: '2024-10-22T07:25:26.874671Z'}
+Auto.head()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:26.969516Z', iopub.status.busy: '2024-10-22T07:25:26.969222Z', iopub.status.idle: '2024-10-22T07:25:27.070198Z', shell.execute_reply: '2024-10-22T07:25:27.068936Z', shell.execute_reply.started: '2024-10-22T07:25:26.969494Z'}
+Auto = Auto.set_index("name")
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:27.072171Z', iopub.status.busy: '2024-10-22T07:25:27.071905Z', iopub.status.idle: '2024-10-22T07:25:27.157595Z', shell.execute_reply: '2024-10-22T07:25:27.156410Z', shell.execute_reply.started: '2024-10-22T07:25:27.072148Z'}
+Auto
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:27.159817Z', iopub.status.busy: '2024-10-22T07:25:27.159514Z', iopub.status.idle: '2024-10-22T07:25:27.251271Z', shell.execute_reply: '2024-10-22T07:25:27.250026Z', shell.execute_reply.started: '2024-10-22T07:25:27.159794Z'}
+Auto_new = Auto.drop(Auto.index[10:86])
+Auto_new.describe()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:27.252925Z', iopub.status.busy: '2024-10-22T07:25:27.252647Z', iopub.status.idle: '2024-10-22T07:25:27.324858Z', shell.execute_reply: '2024-10-22T07:25:27.323239Z', shell.execute_reply.started: '2024-10-22T07:25:27.252903Z'}
+Auto_new
+```
+
+Using the full data set, investigate the predictors graphically, using scatter plots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:27.326559Z', iopub.status.busy: '2024-10-22T07:25:27.326283Z', iopub.status.idle: '2024-10-22T07:25:28.943394Z', shell.execute_reply: '2024-10-22T07:25:28.942238Z', shell.execute_reply.started: '2024-10-22T07:25:27.326536Z'}
+pd.plotting.scatter_matrix(Auto, figsize=(14, 14));
+```
+
+### Findings:
+1. Weight and displacement seem to be negatively correlated with MPG.
+2. timetoacceleration (0–60 mph in seconds) seems to be positively correlated with MPG. As time to acceleration increases, MPG also increases. The longer the time to acceleration, the better the fuel efficiency.
+3. weight is also positively correlated with displacement. As weight increases, so does displacement, i.e., as the body weight increases, so does displacement need to increase.
+4. Displacement is seen to increase as the number of cylinders increase. This is expected since displacement is a function of the number of cylinders, amongst other components.
+
+We can conclude that MPG can be predicted using the variables weight, displacement and timetoacceleration.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:28.945325Z', iopub.status.busy: '2024-10-22T07:25:28.945047Z', iopub.status.idle: '2024-10-22T07:25:28.957263Z', shell.execute_reply: '2024-10-22T07:25:28.955628Z', shell.execute_reply.started: '2024-10-22T07:25:28.945303Z'}
+mean_mpg_origin = Auto.groupby(["origin"], observed=True)[["mpg"]].mean()
+mean_mpg_origin
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:28.960149Z', iopub.status.busy: '2024-10-22T07:25:28.959877Z', iopub.status.idle: '2024-10-22T07:25:29.205694Z', shell.execute_reply: '2024-10-22T07:25:29.204607Z', shell.execute_reply.started: '2024-10-22T07:25:28.960126Z'}
+mean_mpg_year = Auto.groupby(["year"], observed=True)[["mpg"]].mean()
+mean_mpg_year
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:29.207902Z', iopub.status.busy: '2024-10-22T07:25:29.207630Z', iopub.status.idle: '2024-10-22T07:25:29.363337Z', shell.execute_reply: '2024-10-22T07:25:29.362327Z', shell.execute_reply.started: '2024-10-22T07:25:29.207879Z'}
+mean_mpg_cylinders = Auto.groupby(["cylinders"], observed=True)[["mpg"]].mean()
+mean_mpg_cylinders
+```
+
+We can also observe that fuel efficiency is affected by the make of the car. Japanese > European > American
+The year also plays a significant role. Later model cars are more fuel efficient than the earlier models. Cars are also more fuel efficient with lesser number of cylinders. These can also be used as predictors to deduce the MPG.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:29.365285Z', iopub.status.busy: '2024-10-22T07:25:29.364990Z', iopub.status.idle: '2024-10-22T07:25:29.451853Z', shell.execute_reply: '2024-10-22T07:25:29.450554Z', shell.execute_reply.started: '2024-10-22T07:25:29.365261Z'}
+Boston = load_data("Boston")
+Boston.columns
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:29.453526Z', iopub.status.busy: '2024-10-22T07:25:29.453226Z', iopub.status.idle: '2024-10-22T07:25:29.536226Z', shell.execute_reply: '2024-10-22T07:25:29.535104Z', shell.execute_reply.started: '2024-10-22T07:25:29.453505Z'}
+Boston.shape
+```
+
+The rows represent data for 506 suburbs in Boston. The columns represent housing values and variables of interest that may predict housing values in each suburb.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:29.538265Z', iopub.status.busy: '2024-10-22T07:25:29.537923Z', iopub.status.idle: '2024-10-22T07:25:29.692204Z', shell.execute_reply: '2024-10-22T07:25:29.690950Z', shell.execute_reply.started: '2024-10-22T07:25:29.538231Z'}
+Boston.describe()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:29.694521Z', iopub.status.busy: '2024-10-22T07:25:29.694146Z', iopub.status.idle: '2024-10-22T07:25:29.875076Z', shell.execute_reply: '2024-10-22T07:25:29.873639Z', shell.execute_reply.started: '2024-10-22T07:25:29.694492Z'}
+Boston_quant = Boston.drop("chas", axis=1)
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:29.876806Z', iopub.status.busy: '2024-10-22T07:25:29.876543Z', iopub.status.idle: '2024-10-22T07:25:30.001471Z', shell.execute_reply: '2024-10-22T07:25:30.000232Z', shell.execute_reply.started: '2024-10-22T07:25:29.876784Z'}
+print(np.unique(Boston_quant["zn"]))
+median_medv = Boston_quant.groupby(["zn"], observed=True)[["medv"]].median()
+median_medv
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:30.003560Z', iopub.status.busy: '2024-10-22T07:25:30.003266Z', iopub.status.idle: '2024-10-22T07:25:31.708203Z', shell.execute_reply: '2024-10-22T07:25:31.706867Z', shell.execute_reply.started: '2024-10-22T07:25:30.003538Z'}
+sns.catplot(
+    data=Boston_quant,
+    x="zn",
+    y="medv",
+    kind="bar",
+    height=10,
+    aspect=2,
+    estimator=median,
+);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:31.710075Z', iopub.status.busy: '2024-10-22T07:25:31.709765Z', iopub.status.idle: '2024-10-22T07:25:31.726736Z', shell.execute_reply: '2024-10-22T07:25:31.725288Z', shell.execute_reply.started: '2024-10-22T07:25:31.710053Z'}
+print(np.unique(Boston_quant["rad"]))
+mean_rad = Boston_quant.groupby(["rad"], observed=True)[["medv"]].mean()
+mean_rad
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:31.729152Z', iopub.status.busy: '2024-10-22T07:25:31.728803Z', iopub.status.idle: '2024-10-22T07:25:32.424303Z', shell.execute_reply: '2024-10-22T07:25:32.422984Z', shell.execute_reply.started: '2024-10-22T07:25:31.729127Z'}
+sns.catplot(data=Boston_quant, x="rad", y="medv", kind="bar", height=10, aspect=2);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:32.448387Z', iopub.status.busy: '2024-10-22T07:25:32.447934Z', iopub.status.idle: '2024-10-22T07:25:35.174680Z', shell.execute_reply: '2024-10-22T07:25:35.173638Z', shell.execute_reply.started: '2024-10-22T07:25:32.448339Z'}
+sns.set_theme(style="ticks")
+g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["medv"]);
+```
+
+Plotting the other quantitative columns against medv (Median value of owner-occupied homes), we can see that:
+1. crim is negatively correlated with medv. i.e., as crime rate increases, median value of homes decrease.
+2. indus is negatively correlated with medv which is expected as industrialisation of a town increases, the house prices decrease.
+3. nox is negatively correlated with medv which is also expected.
+4. as the number of rooms (rm) increase, so does the value of the home.
+5. as the proportion of homes built prior to 1940 increase, the value of homes in that area decrease. There are some notable outliers, but that appears to be the general trend.
+6. There is a clear relationship in the lsat (lower status of population percent) versus medv where medv decreases with the increase in lstat on the x-axis.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:35.176389Z', iopub.status.busy: '2024-10-22T07:25:35.176069Z', iopub.status.idle: '2024-10-22T07:25:35.185685Z', shell.execute_reply: '2024-10-22T07:25:35.184689Z', shell.execute_reply.started: '2024-10-22T07:25:35.176364Z'}
+Boston_quant["zn"].value_counts()
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:35.188676Z', iopub.status.busy: '2024-10-22T07:25:35.188180Z', iopub.status.idle: '2024-10-22T07:25:37.689859Z', shell.execute_reply: '2024-10-22T07:25:37.688725Z', shell.execute_reply.started: '2024-10-22T07:25:35.188644Z'}
+g = sns.pairplot(Boston_quant, height=5, aspect=2, diag_kind="kde", y_vars=["crim"]);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:37.691602Z', iopub.status.busy: '2024-10-22T07:25:37.691337Z', iopub.status.idle: '2024-10-22T07:25:38.597389Z', shell.execute_reply: '2024-10-22T07:25:38.596278Z', shell.execute_reply.started: '2024-10-22T07:25:37.691580Z'}
+sns.catplot(data=Boston_quant, x="zn", y="crim", kind="bar", height=6, aspect=2);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:38.599286Z', iopub.status.busy: '2024-10-22T07:25:38.599012Z', iopub.status.idle: '2024-10-22T07:25:38.775939Z', shell.execute_reply: '2024-10-22T07:25:38.775178Z', shell.execute_reply.started: '2024-10-22T07:25:38.599266Z'}
+sns.displot(data=Boston_quant, x="indus", y="crim", height=4, aspect=3);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:38.777499Z', iopub.status.busy: '2024-10-22T07:25:38.777238Z', iopub.status.idle: '2024-10-22T07:25:39.201690Z', shell.execute_reply: '2024-10-22T07:25:39.201092Z', shell.execute_reply.started: '2024-10-22T07:25:38.777482Z'}
+sns.displot(data=Boston_quant, x="age", y="crim", height=4, aspect=3);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.202896Z', iopub.status.busy: '2024-10-22T07:25:39.202719Z', iopub.status.idle: '2024-10-22T07:25:39.330857Z', shell.execute_reply: '2024-10-22T07:25:39.330226Z', shell.execute_reply.started: '2024-10-22T07:25:39.202883Z'}
+sns.displot(data=Boston_quant, x="nox", y="crim", height=4, aspect=3);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.332063Z', iopub.status.busy: '2024-10-22T07:25:39.331877Z', iopub.status.idle: '2024-10-22T07:25:39.458868Z', shell.execute_reply: '2024-10-22T07:25:39.458347Z', shell.execute_reply.started: '2024-10-22T07:25:39.332050Z'}
+sns.displot(data=Boston_quant, x="dis", y="crim", height=4, aspect=3);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.460021Z', iopub.status.busy: '2024-10-22T07:25:39.459859Z', iopub.status.idle: '2024-10-22T07:25:39.585746Z', shell.execute_reply: '2024-10-22T07:25:39.585231Z', shell.execute_reply.started: '2024-10-22T07:25:39.460009Z'}
+sns.displot(data=Boston_quant, x="tax", y="crim", height=4, aspect=3);
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.586907Z', iopub.status.busy: '2024-10-22T07:25:39.586737Z', iopub.status.idle: '2024-10-22T07:25:39.713756Z', shell.execute_reply: '2024-10-22T07:25:39.713155Z', shell.execute_reply.started: '2024-10-22T07:25:39.586895Z'}
+sns.displot(data=Boston_quant, x="ptratio", y="crim", height=4, aspect=3);
+```
+
+We've already seen that there appears to be a relationship b/w crime rate and medv where a higher crime rate is associated with lower property prices.
+Additionally, plotting the other quantitative variables against crime rate (crim), we can perceive the following:
+1. No-zoned areas or towns are associated with higher crime rate compared to all other zoning percentages.
+2. For some reason, industrialization of around 18% displays a spike in the crime rate compared to the other suburbs. This might be worth investigating further.
+3. Suburbs with nox > 0.55 or so have an elevated crime rate. That could be because lower strata income people live in those areas, and they are more inclined to criminal activities.
+4. There also seems to be an increasing relationship b/w crime rate and percentage  of homes built prior to 1940. Once that percentage crosses 40%, there is an increasing number of suburbs that exhibit elevated crime rates.
+5. Suburbs within a distance to Boston employment centres that range from 1 to 4.5 show an elevated crime rate. This needs to be investigated further. Where are these employment centres located?
+6. There seems to be a higher incidence of crimes for areas with tax rate around 670. Why?
+7. The crime rate does not seem to have a strong relationship with ptratio, but for around point 20.1 where the crime rate spikes compared to the other areas.
+8. Crime rate decreases as the median value of properties rise across suburbs as a whole.
+
+ *Do any of the suburbs of Boston appear to have particularly high crime rates? Tax rates? Pupil-teacher ratios? Comment on the range of each predictor.*
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.714625Z', iopub.status.busy: '2024-10-22T07:25:39.714477Z', iopub.status.idle: '2024-10-22T07:25:39.733831Z', shell.execute_reply: '2024-10-22T07:25:39.733063Z', shell.execute_reply.started: '2024-10-22T07:25:39.714613Z'}
+Boston_crim = Boston_quant.sort_values(
+    by="crim", axis=0, ascending=False, inplace=False
+)
+top_crim = Boston_crim.head()
+print(top_crim)
+df = pd.DataFrame((Boston_quant.min(), Boston_quant.max()), index=["Min", "Max"])
+df
+```
+
+As we can see from the dataset above, the top five crime rate suburbs are unzoned, have an industrialization rate of 18.1%, nox of 0.671, rooms ranging from 4.5 to 7, percentage of houses built prior to 1940 ranging from 92 to 100%, high tax rate of $666 per 10,000$ property tax , ptratio of 20.2. The lstat varies from 10.11 rto 36.98 and the median house values from 5.0 to 15.0 which are among the lowest. The index of accessibility to radial highways is 24 which is the best rank amongst all the suburbs.
+
+*How many of the suburbs in this data set bound the Charles River?*
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.734987Z', iopub.status.busy: '2024-10-22T07:25:39.734812Z', iopub.status.idle: '2024-10-22T07:25:39.814425Z', shell.execute_reply: '2024-10-22T07:25:39.813818Z', shell.execute_reply.started: '2024-10-22T07:25:39.734974Z'}
+len(Boston.query("chas == 1"))
+```
+
+*What is the median pupil-teacher ratio among the towns in this data set?*
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.815264Z', iopub.status.busy: '2024-10-22T07:25:39.815121Z', iopub.status.idle: '2024-10-22T07:25:39.890565Z', shell.execute_reply: '2024-10-22T07:25:39.889982Z', shell.execute_reply.started: '2024-10-22T07:25:39.815241Z'}
+median(Boston_quant["ptratio"])
+```
+
+*Which suburb of Boston has lowest median value of owner-occupied homes? What are the values of the other predictors for that suburb, and how do those values compare to the overall ranges for those predictors? Comment on your findings.*
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:39.891348Z', iopub.status.busy: '2024-10-22T07:25:39.891201Z', iopub.status.idle: '2024-10-22T07:25:40.004677Z', shell.execute_reply: '2024-10-22T07:25:40.004255Z', shell.execute_reply.started: '2024-10-22T07:25:39.891336Z'}
+lowest_medv = Boston_quant[Boston_quant["medv"] == Boston_quant["medv"].min()]
+lowest_medv
+```
+
+From the above two data points with the lowest median value for owner-occupied homes, it's evident that crime rate by itself does not determine the median value of homes for those regions. Except for lstat and crim, the other predictors match exactly the two data points. lstat for these two data points are high at 22.98 and 30.59 respectively. In these two cases, the other predictors do a better job of explaining the median value for the homes in these suburbs or these suburbs are neighbouring each other.
+
+*In this data set, how many of the suburbs average more than seven rooms per dwelling? More than eight rooms per dwelling? Comment on the suburbs that average more than eight rooms per dwelling.*
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:40.005744Z', iopub.status.busy: '2024-10-22T07:25:40.005596Z', iopub.status.idle: '2024-10-22T07:25:40.102115Z', shell.execute_reply: '2024-10-22T07:25:40.101521Z', shell.execute_reply.started: '2024-10-22T07:25:40.005732Z'}
+len(Boston_quant[Boston_quant["rm"] > 7])
+```
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:40.103322Z', iopub.status.busy: '2024-10-22T07:25:40.103132Z', iopub.status.idle: '2024-10-22T07:25:40.210117Z', shell.execute_reply: '2024-10-22T07:25:40.209437Z', shell.execute_reply.started: '2024-10-22T07:25:40.103309Z'}
+eight_rooms = Boston_quant[Boston_quant["rm"] > 8]
+print(len(eight_rooms))
+eight_rooms
+```
+
+There are 13 suburbs that average more that 8 rooms per dwelling.
+
+The median value for these dwellings range from 21.9 to 50.0 which is the priciest.
+
+The crime rate in these suburbs is extremely low with the highest at around 3.5%.
+
+Industrialization of these suburbs is also low with 19.58 the maximum.
+
+The percentage of people from the lower income strata tops out at 7.44%
+
+A substantial percentage of dwellings are built prior to 1940 which could explain the higher number of rooms with only one outlier at 8.4%.
+
+```{python}
+#| execution: {iopub.execute_input: '2024-10-22T07:25:40.211342Z', iopub.status.busy: '2024-10-22T07:25:40.211133Z', iopub.status.idle: '2024-10-22T07:25:40.305043Z', shell.execute_reply: '2024-10-22T07:25:40.304359Z', shell.execute_reply.started: '2024-10-22T07:25:40.211327Z'}
+allDone()
+```
+
