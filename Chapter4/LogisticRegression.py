@@ -12,24 +12,9 @@
 #     name: islpenv
 # ---
 
-# %% [raw]
-# {{< include codewraplatex.yml >}}
-
-# %% language="html"
-# <style>
-# table {align:left; display:block}
-# </style>
-
 # %% [markdown]
-# # Logistic Regression
-
-# %% [markdown]
-# ## Theory and Concepts
-
-# %% [markdown]
-# ### What is Logistic Regression, and how does it differ from Linear Regression?
-
-# %% [markdown] editable=true slideshow={"slide_type": ""}
+# # What is Logistic Regression, and how does it differ from Linear Regression?
+#
 # Logistic Regression and Linear Regression are both supervised learning algorithms used for predicting outcomes, but they differ in the type of outcome they predict and the mathematical approach used:
 #
 # #### Logistic Regression
@@ -103,11 +88,9 @@
 # The sigmoid curve's unique shape and properties make it a powerful tool for modeling and analyzing complex phenomena.
 #
 # ![Sigmoid Curve](Logistic-curve.png)
-
-# %% [markdown] editable=true slideshow={"slide_type": ""}
+#
 # ### What is the logistic function, and how is it used in Logistic Regression?
-
-# %% [markdown]
+#
 # #### Logistic Function
 #
 # The logistic function, also known as the sigmoid function, is a mathematical function that maps any real-valued number to a value between 0 and 1. The logistic function is defined as:
@@ -158,11 +141,9 @@
 # A probability value close to 0.5 indicates a 50% chance of the positive outcome.
 #
 # By using the logistic function, Logistic Regression can provide a probabilistic interpretation of the results, making it a powerful tool for binary classification problems.
-
-# %% [markdown]
+#
 # ### What is the concept of odds and odds ratio in Logistic Regression?
-
-# %% [markdown]
+#
 # In Logistic Regression, odds and odds ratio are essential concepts that help interpret the relationship between the predictor variables and the binary outcome variable.
 #
 # #### Odds
@@ -211,11 +192,9 @@
 # For every one-year increase in age, the odds of having a heart attack increase by 5% (OR = 1.05).
 # Smokers have 3.32 times higher odds of having a heart attack compared to non-smokers (OR = 3.32).
 # By examining the odds ratio, we can gain insights into the relationships between the predictor variables and the binary outcome variable.
-
-# %% [markdown]
+#
 # ### How does Logistic Regression handle categorical variables?
-
-# %% [markdown]
+#
 # Logistic Regression can handle categorical variables through a process called one-hot encoding or dummy coding.
 #
 # #### One-Hot Encoding
@@ -256,11 +235,9 @@
 # Include new features in the model: Include the new features in the Logistic Regression model.
 #
 # By handling categorical variables in this way, Logistic Regression can effectively model the relationships between categorical variables and the binary outcome variable.
-
-# %% [markdown]
+#
 # #### Are there alternatives to Dummy Coding?
-
-# %% [markdown]
+#
 # Yes, there are alternatives to dummy coding for handling categorical variables in Logistic Regression and other machine learning models. Some of these alternatives include:
 #
 # 1. One-Hot Encoding (OHE)
@@ -291,11 +268,9 @@
 #
 # Polynomial coding is a technique where each category of a categorical variable is represented as a polynomial function of the category's integer value. This can be useful when dealing with ordinal categorical variables.
 # Each of these alternatives has its own strengths and weaknesses, and the choice of which one to use depends on the specific problem and data.
-
-# %% [markdown]
+#
 # #### Provide an example of each except One-hot encoding.
-
-# %% [markdown]
+#
 # Here are examples of each of the alternatives to dummy coding, except one-hot encoding:
 #
 # ##### Label Encoding
@@ -370,11 +345,9 @@
 # In polynomial coding, each category is represented as a polynomial function of the category's integer value.
 #
 # These examples illustrate how each of these alternatives can be used to represent categorical variables in a machine learning model.
-
-# %% [markdown]
+#
 # #### Explain Hashing Vectorizer in detail.
-
-# %% [markdown]
+#
 # Hashing Vectorizer is a technique used to transform categorical variables into numerical representations that can be fed into machine learning algorithms.
 #
 # **How Hashing Vectorizer Works**
@@ -428,37 +401,35 @@
 # **Image Classification:** Hashing Vectorizer can be used to transform categorical variables into numerical representations for image classification tasks.
 #
 # In summary, Hashing Vectorizer is a powerful technique for transforming categorical variables into numerical representations. It has several advantages, including fast computation, scalability, and ease of implementation. However, it also has some disadvantages, including collision risk and loss of information.
-
-# %% [markdown]
+#
 # ##### Provide python example code for Hashing Vectorizer
-
-# %%
-# Here's an example of using HashingVectorizer with categorical data:
-
-from sklearn.feature_extraction.text import HashingVectorizer
-import numpy as np
-import pandas as pd
-
-# Create a sample dataframe with categorical data
-data = pd.DataFrame({
-    'Color': ['Red', 'Green', 'Blue', 'Red', 'Green', 'Blue'],
-    'Size': ['Small', 'Medium', 'Large', 'Small', 'Medium', 'Large']
-})
-
-# Create a HashingVectorizer object
-vectorizer = HashingVectorizer(n_features=10)
-
-# Fit and transform the data
-X_color = vectorizer.fit_transform(data['Color'])
-X_size = vectorizer.fit_transform(data['Size'])
-
-# Print the transformed data
-print("Color Features:")
-print(X_color.toarray())
-print("\nSize Features:")
-print(X_size.toarray())
-
-# %% [markdown]
+#
+#
+# # Here's an example of using HashingVectorizer with categorical data:
+#
+# from sklearn.feature_extraction.text import HashingVectorizer
+# import numpy as np
+# import pandas as pd
+#
+# # Create a sample dataframe with categorical data
+# data = pd.DataFrame({
+#     'Color': ['Red', 'Green', 'Blue', 'Red', 'Green', 'Blue'],
+#     'Size': ['Small', 'Medium', 'Large', 'Small', 'Medium', 'Large']
+# })
+#
+# # Create a HashingVectorizer object
+# vectorizer = HashingVectorizer(n_features=10)
+#
+# # Fit and transform the data
+# X_color = vectorizer.fit_transform(data['Color'])
+# X_size = vectorizer.fit_transform(data['Size'])
+#
+# # Print the transformed data
+# print("Color Features:")
+# print(X_color.toarray())
+# print("\nSize Features:")
+# print(X_size.toarray())
+#
 # In this example:
 #
 # We create a sample dataframe data with two categorical columns: `Color` and `Size`.
@@ -472,11 +443,9 @@ print(X_size.toarray())
 # The output will show the transformed categorical data as numerical features. Note that the actual output will depend on the hash function used by the `HashingVectorizer`, so your output may differ from the example output.
 #
 # This example demonstrates how `HashingVectorizer` can be used to transform categorical data into numerical features that can be used in machine learning models.
-
-# %% [markdown]
+#
 # ##### What are category embeddings? What are word embeddings? How do they differ from each other?
-
-# %% [markdown]
+#
 # Category embeddings and word embeddings are both techniques used in natural language processing (NLP) and machine learning to represent categorical variables and words as numerical vectors.
 #
 # **Category Embeddings**
@@ -520,11 +489,9 @@ print(X_size.toarray())
 # Interpretability: Word embeddings are often more interpretable than category embeddings, as the vector dimensions can be related to specific semantic features.
 #
 # In summary, category embeddings and word embeddings are both used to represent data as numerical vectors, but they differ in their input data, learning objectives, vector space, and interpretability.
-
-# %% [markdown]
+#
 # ##### What are high-cardinality variables?
-
-# %% [markdown]
+#
 # High-cardinality variables are categorical variables that have a large number of unique categories or levels. In other words, they are variables that can take on many different values.
 #
 # **Characteristics of High-Cardinality Variables**
@@ -570,11 +537,9 @@ print(X_size.toarray())
 # Embeddings: Embeddings can be used to represent high-cardinality variables as dense vectors, reducing the dimensionality and improving model performance.
 #
 # Grouping or binning: Grouping or binning can be used to reduce the number of unique values in high-cardinality variables.
-
-# %% [markdown]
+#
 # ##### Explain Helmert Coding in detail.
-
-# %% [markdown]
+#
 # With Helmert coding, each level of the variable is compared to "later" levels of the variable.
 #
 # The weights depend on the number of levels of the variable.
@@ -631,11 +596,8 @@ print(X_size.toarray())
 #
 # Social sciences: Helmert coding can be used to analyze the effect of different social factors on behavior and outcomes.
 #
-
-# %% [markdown]
 # ##### Explain polynomial encoding in detail.
-
-# %% [markdown]
+#
 # Polynomial coding, also known as polynomial contrasts or orthogonal polynomial coding, is a technique used in statistics and machine learning to encode categorical variables with ordered levels.
 #
 # **How Polynomial Coding Works**
@@ -689,11 +651,9 @@ print(X_size.toarray())
 # Marketing research: Polynomial coding can be used to model the relationship between marketing variables and customer behavior.
 #
 # Social sciences: Polynomial coding can be used to model the relationship between social variables and outcomes.
-
-# %% [markdown]
+#
 # ##### Are there any python libraries that perform polynomial encoding for categories?
-
-# %% [markdown]
+#
 # Yes, there are several Python libraries that can perform polynomial encoding for categorical variables:
 #
 # Category Encoders: This library provides a range of encoding methods, including polynomial encoding. You can use the `PolynomialEncoder` class to perform polynomial encoding.
@@ -701,7 +661,6 @@ print(X_size.toarray())
 # Scikit-learn: While `scikit-learn` doesn't have a specific polynomial encoding method, you can use the `OrdinalEncoder` class to encode categorical variables as integers, and then use the `PolynomialFeatures` class from the `sklearn.preprocessing` module to generate polynomial features.
 #
 # Pandas: Pandas doesn't have a built-in polynomial encoding method, but you can use the Categorical data type to encode categorical variables, and then use the numpy library to generate polynomial features.
-#
 
 # %%
 import category_encoders as ce
@@ -793,14 +752,11 @@ plt.show()
 # %% [markdown]
 # This code will generate three plots, one for each type of polynomial coding. Each plot shows the curve of the polynomial coding values as a function of the level.
 # Note that the x-axis represents the levels, and the y-axis represents the corresponding polynomial coding values. The curves are plotted using a range of x values to provide a smooth representation of the polynomial coding curves.
-
-# %% [markdown]
+#
 # ##### Flowchart for Categorical Encoding
-
-# %% [markdown]
+#
 # ![Categorical Encoding Flowchart](categoricalencodingflowchart.png)
-
-# %% [markdown]
+#
 # #### Further Reading for Categorical Encoding
 #
 # 1. <https://github.com/alteryx/categorical_encoding/blob/main/guides/notebooks/categorical-encoding-guide.ipynb>
@@ -808,11 +764,9 @@ plt.show()
 # 3. <https://www.linkedin.com/pulse/encode-categorical-features-revanth-yadama/>
 # 4. <https://www.kaggle.com/code/discdiver/category-encoders-examples>
 # 5. <https://www.kaggle.com/code/paulrohan2020/tutorial-encoding-categorical-variables>
-
-# %% [markdown]
+#
 # ### What is the difference between a logit and a probability?
-
-# %% [markdown]
+#
 # A logit and a probability are two related but distinct concepts in statistics and machine learning:
 #
 # **Probability**
@@ -836,14 +790,11 @@ plt.show()
 # Relationship: The logit function maps probabilities to logits, and the inverse logit function (also known as the sigmoid function) maps logits back to probabilities.
 #
 # The logit function is often used in logistic regression and other machine learning models to model binary outcomes, as it provides a convenient and interpretable way to represent probabilities.
-
-# %% [markdown]
+#
 # ## Model Interpretation and Evaluation
-
-# %% [markdown]
+#
 # ### How do you interpret the coefficients of a Logistic Regression model?
-
-# %% [markdown]
+#
 # **Coefficient Interpretation**
 #
 # In Logistic Regression, the coefficients represent the change in the log-odds of the outcome variable for a one-unit change in the predictor variable, while holding all other predictor variables constant.
@@ -883,11 +834,9 @@ plt.show()
 # $OR = e^{2.5} ≈ 12.18$
 #
 # This means that for every one-unit increase in GPA, the odds of being admitted to the university increase by a factor of approximately 12.18.
-
-# %% [markdown] editable=true slideshow={"slide_type": ""}
+#
 # ### What is the concept of pseudo-R-squared in Logistic Regression?
-
-# %% [markdown] editable=true slideshow={"slide_type": ""}
+#
 # **Pseudo-R-squared** is a measure of goodness of fit for Logistic Regression models, which is analogous to the R-squared measure used in linear regression. However, unlike R-squared, pseudo-R-squared is not a direct measure of the proportion of variance explained by the model.
 #
 # **Why do we need pseudo-R-squared?**
@@ -979,37 +928,30 @@ r2_cs = 1 - (np.log(y_test.shape[0]) - np.sum(y_test * np.log(y_pred_proba) + (1
 
 print("Cox-Snell R-squared:", r2_cs)
 
-# %% [markdown] editable=true slideshow={"slide_type": ""}
+# %% [markdown]
 # ### How do you evaluate the performance of a Logistic Regression model?
-
-# %% [markdown] editable=true slideshow={"slide_type": ""}
+#
 # ### What is the difference between accuracy, precision, recall, and F1-score in Logistic Regression?
-
-# %% [markdown]
+#
 # ### How do you handle class imbalance in Logistic Regression?
-
-# %% [markdown]
+#
 # ## Model Building and Assumptions
 # 1. What are the assumptions of Logistic Regression?
 # 2. How do you check for multicollinearity in Logistic Regression?
 # 3. What is the concept of interaction terms in Logistic Regression?
 # 4. How do you handle missing values in Logistic Regression?
 # 5. What is the difference between a simple and a multiple Logistic Regression model?
-
-# %% [markdown]
+#
 # ## Applications and Case Studies
 # 1. What are some common applications of Logistic Regression?
 # 2. How is Logistic Regression used in credit risk assessment?
 # 3. What role does Logistic Regression play in medical diagnosis?
 # 4. How is Logistic Regression used in marketing and customer churn prediction?
 # 5. What are some common challenges faced when implementing Logistic Regression in real-world scenarios?
-
-# %% [markdown]
+#
 # ## Advanced Topics
 # 1. What is the concept of regularization in Logistic Regression?
 # 2. How does L1 and L2 regularization differ in Logistic Regression?
 # 3. What is the concept of elastic net regularization in Logistic Regression?
 # 4. How does Logistic Regression relate to other machine learning algorithms, such as Decision Trees and Random Forests?
 # 5. What are some advanced techniques for handling high-dimensional data in Logistic Regression?
-
-# %%

@@ -13,9 +13,6 @@
 #     name: python3
 # ---
 
-# %% [raw]
-# {{< include codewraplatex.yml >}}
-
 # %% [markdown]
 # # Lab - Logistic Regression, LDA, QDA, and KNN
 
@@ -273,7 +270,7 @@ lda.scalings_
 # %% [markdown]
 # These values provide the linear combination of Lag1 and Lag2 that are used to form the LDA decision rule. In other words, these are the multipliers of the elements of X = x in (4.24). 
 # $$
-# {\large \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k) }
+# \delta_k =  x^T\Sigma^{-1}\mu_k + \frac {\mu_k^T\Sigma^{-1}\mu_k} {2} + log(\pi_k)
 # $$
 # If −0.64 × Lag1 − 0.51 × Lag2 is large, then the LDA classifier will predict a market increase, and if it is small, then the LDA classifier will predict a market decline.
 
@@ -352,11 +349,13 @@ np.mean(qda_pred == L_test)
 # %% [markdown]
 # This level of accuracy is quite impressive for stock market data, which is known to be quite hard to model accurately. This suggests that the quadratic form assumed by QDA may capture the true relationship more accurately than the linear forms assumed by LDA and logistic regression. However, we recommend evaluating this method’s performance on a larger test set before betting that this approach will consistently beat the market!
 
-# %%
-The score() function is an alternate way of obtaining the level of accuracy.
+# %% [markdown]
+# The score() function is an alternate way of obtaining the level of accuracy.
 
 # %%
 qda.score(X_test, L_test)
 
 # %%
 allDone();
+
+# %%

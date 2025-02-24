@@ -12,9 +12,6 @@
 #     name: python3
 # ---
 
-# %% [raw]
-# {{< include codewraplatex.yml >}}
-
 # %%
 import numpy as np
 
