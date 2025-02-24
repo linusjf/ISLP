@@ -7,25 +7,13 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.4
 #   kernelspec:
-#     display_name: islpenv
+#     display_name: Python 3 (ipykernel)
 #     language: python
-#     name: islpenv
+#     name: python3
 # ---
 
-# %% [markdown]
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .qmd
-#       format_name: quarto
-#       format_version: '1.0'
-#       jupytext_version: 1.16.4
-#   kernelspec:
-#     display_name: islpenv
-#     language: python
-#     name: islpenv
-# ---
+# %% [raw]
+# {{< include codewraplatex.yml >}}
 
 # %%
 from IPython.core.interactiveshell import InteractiveShell

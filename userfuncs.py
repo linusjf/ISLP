@@ -12,21 +12,6 @@
 #     name: islpenv
 # ---
 
-# %% [markdown]
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .qmd
-#       format_name: quarto
-#       format_version: '1.0'
-#       jupytext_version: 1.16.4
-#   kernelspec:
-#     display_name: islpenv
-#     language: python
-#     name: islpenv
-# ---
-
 # %% [raw]
 # {{< include codewraplatex.yml >}}
 
