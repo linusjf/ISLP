@@ -178,8 +178,10 @@ cython_debug/
 *.html
 
 # Output files
+*.qmd
 *.out
 **/libs/**
 *.aux
 **/*_files/**
 **/_freeze/**
+**/.jupyter_cache/**
