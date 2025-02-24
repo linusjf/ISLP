@@ -1,7 +1,7 @@
 project:
   type: default
   execute-dir: project
-  output-dir: project
+  output-dir: .
 
 toc: true
 
