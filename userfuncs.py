@@ -12,6 +12,9 @@
 #     name: islpenv
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %%
 from matplotlib.pyplot import subplots
 import numpy as np

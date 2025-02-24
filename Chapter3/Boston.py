@@ -12,6 +12,9 @@
 #     name: islpenv
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% [markdown]
 # # Exercise 15: This problem involves the Boston data set, which we saw in the lab for this chapter.
 

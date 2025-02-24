@@ -12,6 +12,9 @@
 #     name: islpenv
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% [markdown]
 # # Lab: Cross-Validation and the Bootstrap
 

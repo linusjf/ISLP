@@ -12,6 +12,9 @@
 #     name: python3
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% [markdown]
 # ## Import notebook functions
 

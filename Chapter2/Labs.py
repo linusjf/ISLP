@@ -13,6 +13,9 @@
 #     name: islpenv
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %%
 from notebookfuncs import *
 

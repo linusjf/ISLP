@@ -13,6 +13,9 @@
 #     name: python3
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% [markdown]
 #
 # # Linear and Quadratic Discriminant Analysis with covariance ellipsoid

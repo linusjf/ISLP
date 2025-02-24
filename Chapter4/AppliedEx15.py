@@ -12,6 +12,9 @@
 #     name: islpenv
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% [markdown]
 # # Applied: Exercise 15
 

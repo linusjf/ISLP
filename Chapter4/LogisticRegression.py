@@ -12,6 +12,9 @@
 #     name: islpenv
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% language="html"
 # <style>
 # table {align:left; display:block}

@@ -13,6 +13,9 @@
 #     name: python3
 # ---
 
+# %% [raw]
+# {{< include codewraplatex.yml >}}
+
 # %% [markdown]
 # # Lab - Logistic Regression, LDA, QDA, and KNN
 
