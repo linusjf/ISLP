@@ -56,6 +56,11 @@ deactivate
 
 <https://www.nb-data.com/p/python-packages-for-automated-eda>
 
+## How to enable code wrap using Latex
+
+<https://github.com/quarto-dev/quarto-cli/discussions/4121>
+
+
 ## References
 
 1. <https://www.bitecode.dev/p/relieving-your-python-packaging-pain>
