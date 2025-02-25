@@ -186,3 +186,4 @@ cython_debug/
 **/*_files/**
 **/_freeze/**
 **/.jupyter_cache/**
+**/*.quarto_ipynb
