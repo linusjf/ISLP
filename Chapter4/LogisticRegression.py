@@ -15,7 +15,7 @@
 # %% [markdown]
 # # What is Logistic Regression, and how does it differ from Linear Regression?
 #
-# Logistic Regression and Linear Regression are both supervised learning algorithms used for predicting outcomes, but they differ in the type of outcome they predict and the mathematical approach used:
+# Logistic Regression and Linear Regression are both supervised learning algorithms used for predicting outcomes, but they differ in the type of outcome they predict and the mathematical approach used.
 #
 # #### Logistic Regression
 #
@@ -406,30 +406,32 @@
 #
 #
 # # Here's an example of using HashingVectorizer with categorical data:
-#
-# from sklearn.feature_extraction.text import HashingVectorizer
-# import numpy as np
-# import pandas as pd
-#
-# # Create a sample dataframe with categorical data
-# data = pd.DataFrame({
-#     'Color': ['Red', 'Green', 'Blue', 'Red', 'Green', 'Blue'],
-#     'Size': ['Small', 'Medium', 'Large', 'Small', 'Medium', 'Large']
-# })
-#
-# # Create a HashingVectorizer object
-# vectorizer = HashingVectorizer(n_features=10)
-#
-# # Fit and transform the data
-# X_color = vectorizer.fit_transform(data['Color'])
-# X_size = vectorizer.fit_transform(data['Size'])
-#
-# # Print the transformed data
-# print("Color Features:")
-# print(X_color.toarray())
-# print("\nSize Features:")
-# print(X_size.toarray())
-#
+
+# %%
+from sklearn.feature_extraction.text import HashingVectorizer
+import numpy as np
+import pandas as pd
+
+# Create a sample dataframe with categorical data
+data = pd.DataFrame({
+    'Color': ['Red', 'Green', 'Blue', 'Red', 'Green', 'Blue'],
+    'Size': ['Small', 'Medium', 'Large', 'Small', 'Medium', 'Large']
+})
+
+# Create a HashingVectorizer object
+vectorizer = HashingVectorizer(n_features=10)
+
+# Fit and transform the data
+X_color = vectorizer.fit_transform(data['Color'])
+X_size = vectorizer.fit_transform(data['Size'])
+
+# Print the transformed data
+print("Color Features:")
+print(X_color.toarray())
+print("\nSize Features:")
+print(X_size.toarray())
+
+# %% [markdown]
 # In this example:
 #
 # We create a sample dataframe data with two categorical columns: `Color` and `Size`.

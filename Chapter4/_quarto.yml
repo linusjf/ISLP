@@ -1,0 +1,23 @@
+project:
+  type: default
+  execute-dir: project
+  output-dir: .
+
+toc: true
+
+execute:
+  freeze: auto
+  cache: true
+  enabled: true
+
+format:
+  pdf:
+    documentclass: report
+    margin-left: 30mm
+    margin-right: 30mm
+    keep-tex: true
+    include-in-header:
+       text: |
+         \usepackage{fvextra}
+         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+         \DefineVerbatimEnvironment{OutputCode}{Verbatim}{breaklines,commandchars=\\\{\}}
