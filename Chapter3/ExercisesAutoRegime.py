@@ -12,9 +12,6 @@
 #     name: islpenv
 # ---
 
-# %% [raw]
-# {{< include codewraplatex.yml >}}
-
 # %% [markdown]
 # # Auto dataset two regimes: Pre-oilshock and Post-oilshock
 

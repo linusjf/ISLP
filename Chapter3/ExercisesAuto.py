@@ -12,9 +12,6 @@
 #     name: islpenv
 # ---
 
-# %% [raw]
-# {{< include codewraplatex.yml >}}
-
 # %% [markdown]
 # # Applied : Auto dataset - Simple Linear Regression
 

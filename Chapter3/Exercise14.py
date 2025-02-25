@@ -12,9 +12,6 @@
 #     name: islpenv
 # ---
 
-# %% [raw]
-# {{< include codewraplatex.yml >}}
-
 # %% [markdown]
 # # Exercise 14: This problem focuses on the collinearity problem.
 

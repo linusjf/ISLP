@@ -182,6 +182,7 @@ cython_debug/
 *.out
 **/libs/**
 *.aux
+**/.quarto/**
 **/*_files/**
 **/_freeze/**
 **/.jupyter_cache/**

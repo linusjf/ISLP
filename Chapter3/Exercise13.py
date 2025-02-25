@@ -21,11 +21,12 @@
 # %%
 from notebookfuncs import *
 
-# %% [markdown]
-# from IPython.display import Markdown, display, Math, Latex
-#
-# def printmd(string):
-#     display(Markdown(string))
+# %%
+from IPython.display import Markdown, display, Math, Latex
+
+def printmd(string):
+    display(Markdown(string))
+
 
 # %% [markdown]
 # ## In this exercise you will create some simulated data and will fit simple linear regression models to it. Make sure to use the default random number generator with seed set to 1 prior to starting part (a) to ensure consistent results.
