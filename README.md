@@ -14,7 +14,7 @@ source islpenv/bin/activate
 
 ## Install packages in virtual environment
 
-python -m pip install -r requirements.txt
+python -m pip install -r .txt
 
 ## Register virtual environment to Jupyter
 
@@ -26,9 +26,7 @@ python -m ipykernel install --user --name=islpenv
 
 ## Convert ipynb files to pdf
 
-./genpdf  # convert all ipynb files to pdf
-
-./genpdf -c or ./genpdf --changed-only # convert only changed files (as per git) to pdf
+./genpdf <dir> # convert all ipynb files in directory to pdf if the directory is a quarto project
 
 ## Install jupyterlab_templates extension
 jupyter labextension install jupyterlab_templates

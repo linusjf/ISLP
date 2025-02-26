@@ -1,69 +1,69 @@
 #!/usr/bin/env bash
-
+# Script name and description
 # genpdf - Generate PDF files from Jupyter notebooks
-#
-# This script converts Jupyter notebooks to PDF format. It can either process
-# all notebooks in the current directory (and one level deep) or only process
-# notebooks that have corresponding changed Python files in git.
-#
+
+# Script usage and dependencies
+# This script converts notebook files to PDF format. It can process
+# all notebooks in the specified project directory. The specified directory must be
+# a Quarto project i.e., it must have a _quarto.yml file that specifies how to
+# generate the pdf files.
+
 # Usage:
-#   genpdf             - Convert all found notebooks to PDF
-#   genpdf -c          - Convert only notebooks with changed .py files
-#   genpdf --changed-only  - Same as -c
-#
-# Options:
-#   -c, --changed-only    Only process notebooks with changed .py files
-#
+#   genpdf <dir> - Convert all found ipynb files in directory to PDF
+
 # Dependencies:
-#   - quarto
-#   - git (when using --changed-only)
-#
-# Output:
-#   - Generated PDFs will be in the same directory as source notebooks
-#   - Errors are logged to genpdfall.out
-#
+# quarto
+# tee
+# find
+
+# Function to check if required dependencies are installed
 require() {
   hash "$@" || exit 127
 }
 
-# Set default value for changed_only
-changed_only=false
-# Parse command line options
+# Function to print usage
+usage() {
+  echo "usage: ${0} <dir1> ... <dirn>"
+  echo "dir<1-n> - Quarto project directory"
+  exit 1
+}
 
-while [ $# -gt 0 ]; do
-  case "$1" in
-    -c | --changed-only)
-      changed_only=true
-      ;;
-    *)
-      echo "Unknown option: $1"
-      exit 1
-      ;;
-  esac
-  shift
-done
+# Check is required dependencies are met
+require find quarto tee
 
-require find git quarto tee
+# Check if any directories are provided as arguments
+if [ $# -eq 0 ]; then
+  usage
+fi
+
+# Remove any existing output file
 rm -f genpdf.out || {
   echo "File permissions problem"
   exit 1
 }
+
+# Initialize exit code
 declare -i exitcode=0
-nbfiles=()
 
-if [ "$changed_only" = true ]; then
-  readarray -t nbfiles < <(git status -s "$@" | awk -F " " 'BEGIN {FILTER=".py$"} {if (match(tolower($2), FILTER)) {print $2}}' | sed 's/\.py$/.ipynb/')
-else
-  readarray -t nbfiles < <(find . -maxdepth 2 -name "*.ipynb" -not -path "./.ipynb_checkpoints/*")
-fi
+# Iterate over each provided directory
+for proj in "$@"; do
+  echo "Processing $proj..."
+  # Check if the directory is a quarto project
+  if [ ! -f "$proj/_quarto.yml" ]; then
+    # Display error message and set exit code if not a quarto project
+    echo "Error: $proj is not a Quarto project (missing _quarto.yml)"
+    exitcode=$((exitcode + 1))
+    continue
+  fi
+  # Convert ipynb files to quarto markdown files
+  find "$proj" -maxdepth 1 -name "*.ipynb" -type f -exec quarto convert {} \;
+  # Render the quarto project and redirect output to log file
+  quarto render "$proj" --to pdf 2>&1 | tee -a genpdf.out
+  # update exit code
+  exitcode=$(("$exitcode" + $?))
+done
 
-if [ ${#nbfiles[@]} -eq 0 ]; then
-  echo "No files found."
-else
-  quarto render "${nbfiles[@]}" --to pdf -- -V code-block-wrap=true 2>&1 | tee genpdf.out
-  exitcode=$?
-fi
-
+# Display error message and exit
 if [ "$exitcode" -gt 0 ]; then
   echo "Errors generating pdf files. Check genpdf.out for errors."
 fi
