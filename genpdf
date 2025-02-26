@@ -52,7 +52,7 @@ for proj in "$@"; do
   if [ ! -f "$proj/_quarto.yml" ]; then
     # Display error message and set exit code if not a quarto project
     echo "Error: $proj is not a Quarto project (missing _quarto.yml)"
-    exitcode=$((exitcode + 1))
+    ((exitcode = exitcode | 1))
     continue
   fi
   # Convert ipynb files to quarto markdown files
@@ -60,7 +60,7 @@ for proj in "$@"; do
   # Render the quarto project and redirect output to log file
   quarto render "$proj" --to pdf 2>&1 | tee -a genpdf.out
   # update exit code
-  exitcode=$(("$exitcode" + $?))
+  ((exitcode = exitcode | $?))
 done
 
 # Display error message and exit
