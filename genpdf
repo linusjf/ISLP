@@ -16,15 +16,25 @@
 # tee
 # find
 
+# Uncomment this for debug mode
+# set -x
+
 # Function to check if required dependencies are installed
 require() {
-  hash "$@" || exit 127
+  for cmd in "$@"; do
+    if ! command -v "$cmd" &> /dev/null; then
+      echo "Error: $cmd is not installed"
+      exit 127
+    fi
+  done
 }
 
 # Function to print usage
 usage() {
-  echo "usage: ${0} <dir1> ... <dirn>"
-  echo "dir<1-n> - Quarto project directory"
+  cat << EOF
+usage: ${0} <dir1> ... <dirn>
+dir<1-n> - Quarto project directory
+EOF
   exit 1
 }
 
@@ -48,19 +58,17 @@ declare -i exitcode=0
 # Iterate over each provided directory
 for proj in "$@"; do
   echo "Processing $proj..."
-  # Check if the directory is a quarto project
-  if [ ! -f "$proj/_quarto.yml" ]; then
-    # Display error message and set exit code if not a quarto project
+  if [ -f "$proj/_quarto.yml" ]; then
+    # exit on error if qmd file generation fails
+    set -e
+    find "$proj" -maxdepth 1 -name "*.ipynb" -type f -exec quarto convert {} \;
+    set +e
+    quarto render "$proj" --to pdf 2>&1 | tee -a genpdf.out
+    exitcode=$((exitcode | $?))
+  else
     echo "Error: $proj is not a Quarto project (missing _quarto.yml)"
-    ((exitcode = exitcode | 1))
-    continue
+    exitcode=$((exitcode | 1))
   fi
-  # Convert ipynb files to quarto markdown files
-  find "$proj" -maxdepth 1 -name "*.ipynb" -type f -exec quarto convert {} \;
-  # Render the quarto project and redirect output to log file
-  quarto render "$proj" --to pdf 2>&1 | tee -a genpdf.out
-  # update exit code
-  ((exitcode = exitcode | $?))
 done
 
 # Display error message and exit

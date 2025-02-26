@@ -472,7 +472,7 @@ l = [(0.0975) ** (1/p) for p in no_of_parameters]
 # %%
 from sympy import Symbol
 from mpmath import e
-from algebra_with_sympy import Eqn, solve
+
 
 X1 = Symbol("hours.studied")
 X2 = Symbol("undergrad.GPA")
@@ -501,8 +501,9 @@ logit_probability.subs([(X1, hours_studied),(X2, undergrad_GPA)])
 # **How many hours would the student in part (a) need to study to have a 50% chance of getting an A in the class?**
 
 # %%
+from sympy import solve, Eq
 prob = logit_probability.subs(X2, undergrad_GPA)
-eqn_to_solve = Eqn(0.5, prob)
+eqn_to_solve = Eq(0.5, prob)
 solve(eqn_to_solve,X1)
 
 # %% [markdown]
@@ -593,7 +594,7 @@ odds = 0.37
 probability = Symbol("P(X)")
 odds_formula = probability / (1 - probability)
 print(odds_formula)
-odds_equation = Eqn(odds, odds_formula )
+odds_equation = Eq(odds, odds_formula )
 print(odds_equation)
 solve(odds_equation, probability)
 
