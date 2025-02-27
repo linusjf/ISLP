@@ -35,7 +35,7 @@ if [ "$#" -eq 0 ]; then
 fi
 
 # Create a temporary log file
-LOG_FILE=$(mktemp)
+LOG_FILE=$(mktemp -t genpdf_log.XXXXXX)
 
 # Initialize exit code
 declare -i exitcode=0
