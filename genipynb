@@ -1,2 +1,11 @@
 #!/usr/bin/env bash
-find . -maxdepth 2 -type f -name "*.py" -exec python -m jupytext --to 'ipynb' --update "{}" \;
+set -e # Exit on error
+
+# Ensure jupytext is installed
+command -v jupytext > /dev/null 2>&1 || {
+  echo "Error: jupytext is not installed." >&2
+  exit 1
+}
+
+# Convert Python files to Jupyter notebooks
+find . -maxdepth 2 -type f -name "*.py" -print -exec python -m jupytext --to 'ipynb' --update "{}" \;

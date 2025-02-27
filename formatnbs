@@ -1,2 +1,11 @@
 #!/usr/bin/env bash
-find . -maxdepth 2 -type f -name "*.py" -exec python -m black "{}" \;
+set -e # Exit immediately on errors
+
+# Ensure black is installed
+command -v black > /dev/null 2>&1 || {
+  echo "Error: black is not installed." >&2
+  exit 1
+}
+
+# Find and format Python files (batch processing for efficiency)
+find . -maxdepth 2 -type f -name "*.py" -print0 | xargs -0 black

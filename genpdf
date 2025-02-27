@@ -1,29 +1,14 @@
 #!/usr/bin/env bash
-# Script name and description
-# genpdf - Generate PDF files from Jupyter notebooks
+# genpdf - Generate PDF files from Jupyter notebooks in Quarto projects.
 
-# Script usage and dependencies
-# This script converts notebook files to PDF format. It can process
-# all notebooks in the specified project directory. The specified directory must be
-# a Quarto project i.e., it must have a _quarto.yml file that specifies how to
-# generate the pdf files.
-
-# Usage:
-#   genpdf <dir> - Convert all found ipynb files in directory to PDF
-
-# Dependencies:
-# quarto
-# tee
-# find
-
-# Uncomment this for debug mode
-# set -x
+# Exit immediately on errors
+set -e
 
 # Function to check if required dependencies are installed
 require() {
   for cmd in "$@"; do
     if ! command -v "$cmd" &> /dev/null; then
-      echo "Error: $cmd is not installed"
+      echo "Error: '$cmd' is not installed or not in PATH." >&2
       exit 127
     fi
   done
@@ -32,47 +17,48 @@ require() {
 # Function to print usage
 usage() {
   cat << EOF
-usage: ${0} <dir1> ... <dirn>
-dir<1-n> - Quarto project directory
+Usage: ${0} <dir1> ... <dirn>
+Convert Jupyter notebooks in Quarto project directories to PDF.
+
+Arguments:
+  <dir1> ... <dirn>  Quarto project directories containing _quarto.yml
 EOF
   exit 1
 }
 
-# Check is required dependencies are met
+# Check required dependencies
 require find quarto tee
 
-# Check if any directories are provided as arguments
-if [ $# -eq 0 ]; then
+# Validate input arguments
+if [ "$#" -eq 0 ]; then
   usage
 fi
 
-# Remove any existing output file
-rm -f genpdf.out || {
-  echo "File permissions problem"
-  exit 1
-}
+# Create a temporary log file
+LOG_FILE=$(mktemp)
 
 # Initialize exit code
 declare -i exitcode=0
 
-# Iterate over each provided directory
+# Iterate over provided directories
 for proj in "$@"; do
-  echo "Processing $proj..."
-  if [ -f "$proj/_quarto.yml" ]; then
-    # exit on error if qmd file generation fails
-    set -e
-    find "$proj" -maxdepth 1 -name "*.ipynb" -type f -exec quarto convert {} \;
-    set +e
-    quarto render "$proj" --to pdf 2>&1 | tee -a genpdf.out
-    exitcode=$((exitcode | $?))
+  echo "Processing '${proj}'..."
+
+  if [ -f "${proj}/_quarto.yml" ]; then
+    find "${proj}" -maxdepth 1 -name "*.ipynb" -type f -exec quarto convert {} \;
+
+    if ! quarto render "${proj}" --to pdf 2>&1 | tee -a "${LOG_FILE}"; then
+      exitcode=1
+    fi
   else
-    echo "Error: $proj is not a Quarto project (missing _quarto.yml)"
-    exitcode=$((exitcode | 1))
+    echo "Error: '${proj}' is not a Quarto project (missing _quarto.yml)." >&2
+    exitcode=1
   fi
 done
 
-# Display error message and exit
-if [ "$exitcode" -gt 0 ]; then
-  echo "Errors generating pdf files. Check genpdf.out for errors."
+# Display error message if any failures occurred
+if [ "$exitcode" -ne 0 ]; then
+  echo "Errors occurred while generating PDFs. See log: ${LOG_FILE}"
 fi
+
 exit "$exitcode"
