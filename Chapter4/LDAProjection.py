@@ -130,8 +130,8 @@ plt.ylim(0, 20)
 plt.legend()
 plt.show()
 
-# %%
-References: <https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec11lda.pdf>
+# %% [markdown]
+# References: <https://www.sjsu.edu/faculty/guangliang.chen/Math253S20/lec11lda.pdf>
 
 # %%
 allDone();

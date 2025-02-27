@@ -36,6 +36,7 @@ fi
 
 # Create a temporary log file
 LOG_FILE=$(mktemp -t genpdf_log.XXXXXX)
+echo "created log file(s): ${LOG_FILE}"
 
 # Initialize exit code
 declare -i exitcode=0
@@ -45,9 +46,8 @@ for proj in "$@"; do
   echo "Processing '${proj}'..."
 
   if [ -f "${proj}/_quarto.yml" ]; then
-    find "${proj}" -maxdepth 1 -name "*.ipynb" -type f -exec quarto convert {} \;
-
-    if ! quarto render "${proj}" --to pdf 2>&1 | tee -a "${LOG_FILE}"; then
+    find "${proj}" -maxdepth 1 -name "*.ipynb" -type f -print -exec sh -c 'fname="$1";quarto convert "${fname}" 2>&1 | tee --append ${LOG_FILE}' shell {} \;
+    if ! quarto render "${proj}" --to pdf 2>&1 | tee --append "${LOG_FILE}"; then
       exitcode=1
     fi
   else
@@ -56,9 +56,6 @@ for proj in "$@"; do
   fi
 done
 
-# Display error message if any failures occurred
-if [ "$exitcode" -ne 0 ]; then
-  echo "Errors occurred while generating PDFs. See log: ${LOG_FILE}"
-fi
+echo "See log: ${LOG_FILE}"
 
 exit "$exitcode"
