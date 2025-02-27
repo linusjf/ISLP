@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -e # Exit on error
 
-# Ensure jupytext is installed
-command -v jupytext > /dev/null 2>&1 || {
-  echo "Error: jupytext is not installed." >&2
-  exit 1
-}
+# Ensure commands are installed
+for cmd in "find" "python" "jupytext"; do
+  command -v "$cmd" > /dev/null 2>&1 || {
+    echo "Error: ${cmd} is not installed." >&2
+    exit 1
+  }
+done
 
 # Convert Python files to Jupyter notebooks
 find . -maxdepth 2 -type f -name "*.py" -print -exec python -m jupytext --to 'ipynb' --update "{}" \;
