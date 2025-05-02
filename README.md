@@ -6,41 +6,51 @@
 
 ## Create virtual environment
 
-python -m venv islpenv
+`python -m venv islpenv`
 
 ## Activate virtual environment
 
-source islpenv/bin/activate
+`source islpenv/bin/activate`
 
 ## Install packages in virtual environment
 
-python -m pip install -r .txt
+`python -m pip install -r requirements.txt`
 
 ## Register virtual environment to Jupyter
 
-python -m ipykernel install --user --name=islpenv
+`python -m ipykernel install --user --name=islpenv`
 
 ## Convert py files to ipynb
 
-./genipynb
+`./genipynb`
 
 ## Convert ipynb files to pdf
 
-./genpdf <dir> # convert all ipynb files in directory to pdf if the directory is a quarto project
+```bash
+# convert all ipynb files in directory to pdf if the directory is a quarto project
+./genpdf <dir>
+```
 
 ## Install jupyterlab_templates extension
-jupyter labextension install jupyterlab_templates
+
+`jupyter labextension install jupyterlab_templates`
 
 ## Enable jupyterlab_templates extension
-jupyter server extension enable --py jupyterlab_templates
 
-## Set up a template directory
-## Create a directory where you will store your notebooks.
-## E.g., ~/.jupyter/templates
-## Create the following file (if it does not yet exist)
-## ~/.jupyter/jupyter_notebook_config.py
-## Add the following line to this file. This tells jupyterLab the full path to your template directory. This must be the full path, do not use the ~ shorthand
-`c.JupyterLabTemplates.templates_dir = ['/home/{username}/.jupyter/templates']`
+`jupyter server extension enable --py jupyterlab_templates`
+
+- Set up a template directory
+
+- Create a directory where you will store your notebooks
+  E.g., `~/.jupyter/templates`
+
+- Create the following file (if it does not yet exist)
+  `~/.jupyter/jupyter_notebook_config.py`
+
+- Add the following line to this file.
+  This tells jupyterLab the full path to your template directory.
+  This must be the full path, do not use the ~ shorthand
+  `c.JupyterLabTemplates.templates_dir = ['/home/{username}/.jupyter/templates']`
 
 ## Run Jupyter lab
 
@@ -57,7 +67,6 @@ deactivate
 ## How to enable code wrap using Latex
 
 <https://github.com/quarto-dev/quarto-cli/discussions/4121>
-
 
 ## References
 
